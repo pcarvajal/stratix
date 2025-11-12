@@ -1,6 +1,6 @@
 {
   "name": "customer-support-agent-example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Customer Support Agent example with real LLM integration",
   "type": "module",
   "private": true,
