@@ -1,0 +1,133 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (leave empty for latest)'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm -r --filter '!website' build
+
+      - name: Run tests
+        run: pnpm test
+        env:
+          CI: true
+
+      - name: Verify package contents
+        run: |
+          echo "Verifying package contents..."
+          for pkg in packages/*; do
+            if [ -f "$pkg/package.json" ]; then
+              echo "=== $(basename $pkg) ==="
+              cd "$pkg"
+
+              # Check for required files
+              if [ ! -f "dist/index.js" ] && [ ! -f "dist/index.d.ts" ]; then
+                echo "Warning: Missing dist files in $(basename $pkg)"
+              fi
+
+              if [ ! -f "README.md" ]; then
+                echo "Warning: Missing README.md in $(basename $pkg)"
+              fi
+
+              # Show package.json info
+              echo "Name: $(node -p "require('./package.json').name")"
+              echo "Version: $(node -p "require('./package.json').version")"
+
+              cd ../..
+            fi
+          done
+
+      - name: Publish packages
+        run: |
+          # Configure npm authentication
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+          # Publish each package
+          for pkg in packages/*; do
+            if [ -f "$pkg/package.json" ]; then
+              echo "Publishing $(basename $pkg)..."
+              cd "$pkg"
+
+              # Check if package is private
+              if [ "$(node -p "require('./package.json').private || false")" = "true" ]; then
+                echo "Skipping private package: $(basename $pkg)"
+                cd ../..
+                continue
+              fi
+
+              # Get package name and version
+              PKG_NAME=$(node -p "require('./package.json').name")
+              PKG_VERSION=$(node -p "require('./package.json').version")
+
+              # Check if this version is already published
+              if npm view "$PKG_NAME@$PKG_VERSION" version 2>/dev/null; then
+                echo "Version $PKG_VERSION of $PKG_NAME is already published, skipping..."
+                cd ../..
+                continue
+              fi
+
+              # Publish with appropriate tag
+              if [ "${{ inputs.tag }}" != "" ]; then
+                pnpm publish --access public --tag ${{ inputs.tag }} --no-git-checks
+              else
+                pnpm publish --access public --no-git-checks
+              fi
+
+              cd ../..
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create publish summary
+        if: success()
+        run: |
+          echo "## Published Packages" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          for pkg in packages/*; do
+            if [ -f "$pkg/package.json" ]; then
+              name=$(node -p "require('./$pkg/package.json').name")
+              version=$(node -p "require('./$pkg/package.json').version")
+              echo "- \`$name@$version\`" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "## Publish Failed" >> $GITHUB_STEP_SUMMARY
+          echo "Check the logs for details." >> $GITHUB_STEP_SUMMARY
