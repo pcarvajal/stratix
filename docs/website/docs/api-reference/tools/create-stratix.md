@@ -1,80 +1,87 @@
 # create-stratix
 
-Scaffolding tool for creating new Stratix projects with zero configuration.
-
-## Installation
-
-No installation required! Use with npx:
-
-```bash
-npx create-stratix my-project
-```
-
-Or with pnpm:
-
-```bash
-pnpm create stratix my-project
-```
+Scaffold a new Stratix application with zero configuration. Build production-ready applications using Domain-Driven Design, Hexagonal Architecture, CQRS patterns, and AI agents.
 
 ## Usage
 
-### Interactive Mode
-
-Simply run without arguments for an interactive experience:
-
 ```bash
-npx create-stratix
+# With npm
+npm create stratix@latest
+
+# With pnpm (recommended)
+pnpm create stratix
+
+# With yarn
+yarn create stratix
 ```
 
-You'll be prompted for:
-1. Project name
-2. Template choice (ai-agent-starter, rest-api, microservice, worker, minimal)
-3. Package manager (pnpm, npm, yarn)
-4. Git initialization
+## What You Get
 
-### Command Line Mode
+- TypeScript configured with strict mode
+- Stratix packages pre-installed
+- Project structure following DDD and hexagonal architecture
+- Testing setup with Vitest
+- Build configuration
+- Git repository initialized
+- ESLint and Prettier configured
 
-Skip prompts by providing options:
+## Project Templates
+
+Choose from 6 production-ready templates:
+
+- **REST API** - Complete REST API with authentication, CQRS commands/queries, and repository pattern
+- **Microservice** - Event-driven service with message queue integration (RabbitMQ)
+- **Monolith** - Modular monolith architecture with bounded contexts
+- **Worker** - Background job processor for async tasks
+- **AI Agent Starter** - Learn AI agents step-by-step with progressive examples (no API key needed for Level 1)
+- **Minimal** - Bare minimum setup with core Stratix packages
+
+## Interactive Prompts
+
+The CLI will guide you through:
+
+1. **Project name** - Must be a valid npm package name
+2. **Template selection** - Choose from the 6 templates above
+3. **Package manager** - npm, pnpm (recommended), or yarn
+4. **Git initialization** - Automatically create initial commit
+
+## Command Line Options
+
+You can skip the interactive prompts by providing options:
 
 ```bash
-npx create-stratix my-project --template rest-api --pm pnpm --no-git
+npm create stratix@latest my-app \
+  --template rest-api \
+  --pm pnpm \
+  --no-git \
+  --skip-install
 ```
 
-**Options**:
-- `--template <template>` - Template to use
-- `--pm <manager>` - Package manager (npm, pnpm, yarn)
+**Available options:**
+
+- `--template <name>` - Template to use: `rest-api`, `microservice`, `worker`, `monolith`, `ai-agent-starter`, or `minimal`
+- `--pm <manager>` - Package manager: `npm`, `pnpm`, or `yarn`
 - `--no-git` - Skip git initialization
+- `--skip-install` - Skip dependency installation
 
-## Templates
+## Template Details
 
 ### ai-agent-starter
 
-Interactive learning path for AI agents. Start here to learn how to build intelligent agents with Stratix.
+Learn AI agents step-by-step with progressive examples. No API key needed for Level 1!
 
 ```bash
-npx create-stratix my-learning --template ai-agent-starter
+npm create stratix@latest my-learning --template ai-agent-starter
 ```
 
-**Includes**:
-- Interactive menu with 6 progressive levels
-- Level 1: Echo Agent (no API key needed)
-- Level 2: Mock Agent with testing patterns (no API key needed)
-- Level 3-6: Real LLM, Tools, Memory, Production (requires API keys)
-- Complete documentation for each level
-- Example implementations
-- Mock LLM providers for testing
+The `ai-agent-starter` template includes progressive examples:
 
-**Learning Path**:
-```
-Level 1: Echo Agent         [FREE] (5 min)  - Agent fundamentals
-Level 2: Mock Agent         [FREE] (10 min) - Testing patterns
-Level 3: Basic LLM          [API]  (15 min) - First LLM integration
-Level 4: Agent with Tools   [API]  (20 min) - Function calling
-Level 5: Agent with Memory  [API]  (20 min) - Context management
-Level 6: Production Agent   [API]  (30 min) - Production patterns
-```
+- **Level 1: Echo Agent** - Learn basic agent structure (no API key required)
+- **Level 2: Calculator Agent** - Agent with tools
+- **Level 3: Customer Support** - Production-ready agent with OpenAI/Anthropic
+- **Level 4: Data Analysis** - Advanced agent with SQL and visualizations
 
-**Cost Estimate**: ~$0.30-0.50 for all API-based levels
+Run `pnpm start` in the ai-agent-starter project to see an interactive menu.
 
 **Perfect For**:
 - Learning AI agent patterns
@@ -82,18 +89,12 @@ Level 6: Production Agent   [API]  (30 min) - Production patterns
 - Testing strategies for AI agents
 - Production-ready AI patterns
 
-**After Creation**:
-```bash
-cd my-learning
-pnpm start  # Opens interactive menu
-```
-
 ### minimal
 
-Bare minimum Stratix setup. Perfect for learning or starting from scratch.
+Bare minimum setup with core Stratix packages. Perfect for learning or starting from scratch.
 
 ```bash
-npx create-stratix my-app --template minimal
+npm create stratix@latest my-app --template minimal
 ```
 
 **Includes**:
@@ -121,14 +122,15 @@ my-app/
 
 ### rest-api
 
-Complete REST API with CQRS pattern and Fastify.
+Complete REST API with authentication, CQRS pattern and Fastify.
 
 ```bash
-npx create-stratix my-api --template rest-api
+npm create stratix@latest my-api --template rest-api
 ```
 
 **Includes**:
 - Fastify HTTP server
+- Authentication
 - Full CQRS setup (commands, queries, event bus)
 - Example domain entity (Item)
 - Repository pattern implementation
@@ -143,10 +145,10 @@ npx create-stratix my-api --template rest-api
 
 ### worker
 
-Background job processor application.
+Background job processor for async tasks.
 
 ```bash
-npx create-stratix my-worker --template worker
+npm create stratix@latest my-worker --template worker
 ```
 
 **Includes**:
@@ -163,10 +165,10 @@ npx create-stratix my-worker --template worker
 
 ### microservice
 
-Microservice with RabbitMQ messaging.
+Event-driven service with message queue integration (RabbitMQ).
 
 ```bash
-npx create-stratix my-service --template microservice
+npm create stratix@latest my-service --template microservice
 ```
 
 **Includes**:
@@ -183,13 +185,76 @@ npx create-stratix my-service --template microservice
 - Event consumption
 - Inter-service communication
 
+### monolith
+
+Modular monolith architecture with bounded contexts.
+
+```bash
+npm create stratix@latest my-monolith --template monolith
+```
+
+**Includes**:
+- Multiple bounded contexts
+- Shared kernel
+- Domain event bus
+- CQRS pattern
+- Module isolation
+- Unified HTTP API
+
+**Perfect For**:
+- Large applications with clear domain boundaries
+- Teams wanting to start monolith and potentially split later
+- Projects requiring strong domain separation
+
+## Example Usage
+
+### Interactive Mode
+
+```bash
+$ npm create stratix@latest
+
+Welcome to Stratix!
+
+Let's create your new application
+
+✔ What is your project named? my-stratix-app
+✔ Which template would you like to use? REST API - Complete REST API with authentication
+✔ Which package manager do you want to use? pnpm (recommended)
+✔ Initialize git repository? Yes
+
+Creating project...
+Installing dependencies...
+Git initialized!
+
+Your Stratix app is ready!
+
+Next steps:
+
+  cd my-stratix-app
+  pnpm run dev
+
+Happy coding!
+```
+
+### Command Line Mode
+
+```bash
+# Create a microservice with pnpm
+npm create stratix@latest my-service --template microservice --pm pnpm
+
+# Create an AI agent starter project
+npm create stratix@latest ai-demo --template ai-agent-starter --pm pnpm
+
+# Create minimal project without git
+npm create stratix@latest minimal-app --template minimal --no-git
+```
+
 ## After Creation
 
 ### Start Development
 
 ```bash
 cd my-project
-pnpm install
 pnpm run dev
 ```
 
@@ -203,15 +268,14 @@ pnpm run dev
 - `pnpm run lint` - Lint code
 - `pnpm run format` - Format code
 
-## Examples
+## Detailed Examples
 
 ### Learn AI Agents
 
 ```bash
-npx create-stratix my-learning --template ai-agent-starter --pm pnpm
+npm create stratix@latest my-learning --template ai-agent-starter --pm pnpm
 cd my-learning
-pnpm install
-pnpm start
+pnpm run dev
 ```
 
 The interactive menu will guide you through all levels. Start with Level 1 (Echo Agent) - no API key needed!
@@ -219,9 +283,8 @@ The interactive menu will guide you through all levels. Start with Level 1 (Echo
 ### Create a REST API
 
 ```bash
-npx create-stratix my-api --template rest-api --pm pnpm
+npm create stratix@latest my-api --template rest-api --pm pnpm
 cd my-api
-pnpm install
 pnpm run dev
 ```
 
@@ -243,113 +306,48 @@ curl http://localhost:3000/items
 ### Create a Microservice
 
 ```bash
-npx create-stratix my-service --template microservice --pm pnpm
+npm create stratix@latest my-service --template microservice --pm pnpm
 cd my-service
 
 # Start RabbitMQ
 docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 
 # Start service
-pnpm install
 pnpm run dev
 ```
 
 ### Create a Worker
 
 ```bash
-npx create-stratix my-worker --template worker --pm pnpm
+npm create stratix@latest my-worker --template worker --pm pnpm
 cd my-worker
-pnpm install
 pnpm run dev
 ```
 
-## Template Customization
+## Requirements
 
-After project creation, you can customize:
-
-1. **Dependencies**: Add packages as needed
-   ```bash
-   pnpm add <package>
-   ```
-
-2. **Configuration**: Update `tsconfig.json`, linting rules, etc.
-
-3. **Structure**: The templates provide a starting point - modify as needed
-
-## Environment Variables
-
-Templates include `.gitignore` with `.env` excluded. Create a `.env` file:
-
-```bash
-# .env
-PORT=3000
-NODE_ENV=development
-
-# For microservice template
-RABBITMQ_URL=amqp://localhost:5672
-
-# For worker template
-REDIS_URL=redis://localhost:6379
-```
+- Node.js 18.0.0 or higher
+- npm, pnpm, or yarn
 
 ## Project Structure
 
-All templates follow the same clean architecture structure:
+All templates follow Stratix's layered architecture:
 
 ```
 src/
-├── domain/              # Business logic (pure)
-│   ├── entities/       # Domain entities and aggregates
-│   ├── value-objects/  # Value objects
-│   ├── events/         # Domain events
-│   └── repositories/   # Repository interfaces
-├── application/         # Use cases and orchestration
-│   ├── commands/       # Write operations
-│   ├── queries/        # Read operations
-│   └── events/         # Event handlers
-├── infrastructure/      # External concerns
-│   ├── persistence/    # Database implementations
-│   ├── http/          # HTTP controllers
-│   └── messaging/      # Message queue implementations
-└── index.ts            # Application entry point
+├── domain/           # Domain layer (entities, value objects, repositories)
+├── application/      # Application layer (use cases, commands, queries)
+└── infrastructure/   # Infrastructure layer (persistence, HTTP, external services)
 ```
 
-## Next Steps
+## Learn More
 
-After creating your project:
-
-1. Read the generated README.md
-2. Explore the example code
-3. Run the development server
-4. Add your domain entities
-5. Implement use cases
-6. Add infrastructure implementations
-
-## Troubleshooting
-
-### Permission Denied
-
-```bash
-chmod +x node_modules/.bin/create-stratix
-```
-
-### Port Already in Use
-
-Change the port in `.env` or `src/index.ts`:
-
-```typescript
-const PORT = process.env.PORT || 3001;
-```
-
-### RabbitMQ Connection Failed (Microservice)
-
-Ensure RabbitMQ is running:
-
-```bash
-docker ps | grep rabbitmq
-```
-
-## See Also
-
+- [Stratix Documentation](https://stratix.dev/docs)
+- [GitHub Repository](https://github.com/pcarvajal/stratix)
+- [Examples](https://github.com/pcarvajal/stratix/tree/main/examples)
 - [Quick Start Guide](../../getting-started/quick-start.md)
 - [Project Structure](../../core-concepts/architecture.md)
+
+## License
+
+MIT

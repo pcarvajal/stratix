@@ -1,6 +1,6 @@
 # @stratix/runtime
 
-Application runtime and plugin system for building modular Stratix applications.
+Plugin system and application builder for Stratix.
 
 ## Installation
 
@@ -8,290 +8,224 @@ Application runtime and plugin system for building modular Stratix applications.
 pnpm add @stratix/runtime
 ```
 
-## ApplicationBuilder
+## What's Included
 
-Fluent builder for configuring and starting your application.
+- **ApplicationBuilder** - Fluent API to configure your application
+- **Application** - Main application class with lifecycle management
+- **PluginRegistry** - Plugin registration and dependency resolution
+- **LifecycleManager** - Plugin lifecycle management (initialize, start, stop)
+- **DependencyGraph** - Automatic plugin ordering based on dependencies
+- **DefaultPluginContext** - Context passed to plugins during initialization
+- **Error Types** - Specialized errors for runtime operations
 
-### Basic Usage
+## Core Features
+
+### Application Builder
+
+Fluent API for configuring and building Stratix applications:
 
 ```typescript
 import { ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/impl-di-awilix';
 import { ConsoleLogger } from '@stratix/impl-logger-console';
 
-async function bootstrap() {
-  const container = new AwilixContainer();
-  const logger = new ConsoleLogger();
-
-  const app = await ApplicationBuilder.create()
-    .useContainer(container)
-    .useLogger(logger)
-    .build();
-
-  await app.start();
-
-  // Graceful shutdown
-  process.on('SIGINT', async () => {
-    await app.stop();
-    process.exit(0);
-  });
-}
-
-bootstrap();
-```
-
-### With Plugins
-
-```typescript
-import { RabbitMQPlugin } from '@stratix/ext-rabbitmq';
-import { OpenTelemetryPlugin } from '@stratix/ext-opentelemetry';
-
 const app = await ApplicationBuilder.create()
-  .useContainer(container)
-  .useLogger(logger)
-  .usePlugin(new RabbitMQPlugin(eventBus), {
-    url: 'amqp://localhost:5672',
-    exchange: 'app.events',
-    queue: 'my-service'
-  })
-  .usePlugin(new OpenTelemetryPlugin(), {
-    serviceName: 'my-service',
-    endpoint: 'http://localhost:4318'
-  })
+  .useContainer(new AwilixContainer())
+  .useLogger(new ConsoleLogger())
+  .usePlugin(new DatabasePlugin())
+  .usePlugin(new CachePlugin(), { ttl: 3600 })
   .build();
 
 await app.start();
+```
+
+### Plugin Lifecycle
+
+Plugins follow a three-phase lifecycle:
+
+1. **Initialize** - Configure and register services
+2. **Start** - Connect to external resources
+3. **Stop** - Gracefully shutdown in reverse order
+
+```typescript
+import type { Plugin, PluginContext } from '@stratix/abstractions';
+
+class DatabasePlugin implements Plugin {
+  readonly metadata = {
+    name: 'database',
+    version: '1.0.0',
+    dependencies: ['logger']
+  };
+
+  async initialize(context: PluginContext): Promise<void> {
+    const config = context.getConfig();
+    context.container.register('database', () => new Database(config));
+  }
+
+  async start(): Promise<void> {
+    // Connect to database
+  }
+
+  async stop(): Promise<void> {
+    // Disconnect from database
+  }
+
+  async healthCheck(): Promise<HealthCheckResult> {
+    // Check database connection
+  }
+}
+```
+
+### Dependency Resolution
+
+Plugins are automatically initialized in dependency order:
+
+```typescript
+// Even though registered out of order, plugins initialize correctly
+const app = await ApplicationBuilder.create()
+  .useContainer(container)
+  .useLogger(logger)
+  .usePlugin(apiPlugin)        // depends on database
+  .usePlugin(databasePlugin)   // depends on logger
+  .usePlugin(loggerPlugin)     // no dependencies
+  .build();
+
+// Initialization order: logger → database → api
+```
+
+### Health Checks
+
+Built-in health monitoring for all plugins:
+
+```typescript
+const app = await ApplicationBuilder.create()
+  .useContainer(container)
+  .useLogger(logger)
+  .usePlugin(new DatabasePlugin())
+  .usePlugin(new CachePlugin())
+  .build();
+
+await app.start();
+
+// Check overall application health
+const health = await app.healthCheck();
+console.log(health.status);  // UP, DEGRADED, or DOWN
+console.log(health.details); // Individual plugin health status
+```
+
+### Plugin Configuration
+
+Configure plugins before or after registration:
+
+```typescript
+const app = await ApplicationBuilder.create()
+  .useContainer(container)
+  .useLogger(logger)
+  .usePlugin(databasePlugin, { host: 'localhost', port: 5432 })
+  .configurePlugin('cache', { ttl: 3600 })
+  .build();
+```
+
+### Multiple Plugin Registration
+
+Register multiple plugins at once:
+
+```typescript
+const app = await ApplicationBuilder.create()
+  .useContainer(container)
+  .useLogger(logger)
+  .usePlugins([
+    new LoggerPlugin(),
+    new DatabasePlugin(),
+    new CachePlugin(),
+    new ApiPlugin()
+  ])
+  .build();
 ```
 
 ## API Reference
 
 ### ApplicationBuilder
 
-**Static Methods**:
-- `create(): ApplicationBuilder` - Create a new builder instance
-
-**Configuration Methods**:
-- `useContainer(container: Container): this` - Configure the DI container
-- `useLogger(logger: Logger): this` - Configure the logger
-- `usePlugin(plugin: Plugin, config?: unknown): this` - Register a plugin
-
-**Build Methods**:
-- `build(): Promise<Application>` - Build and configure the application
+- `create()` - Creates a new ApplicationBuilder instance
+- `useContainer(container)` - Sets the DI container (required)
+- `useLogger(logger)` - Sets the logger (required)
+- `usePlugin(plugin, config?)` - Registers a plugin with optional configuration
+- `usePlugins(plugins)` - Registers multiple plugins
+- `configurePlugin(name, config)` - Sets configuration for a plugin
+- `build()` - Builds and initializes the application
+- `pluginCount` - Returns the number of registered plugins
 
 ### Application
 
-**Methods**:
-- `start(): Promise<void>` - Start the application and all registered plugins
-- `stop(): Promise<void>` - Stop the application and cleanup resources
+- `start()` - Starts all plugins in dependency order
+- `stop()` - Stops all plugins in reverse dependency order
+- `resolve<T>(token)` - Resolves a service from the DI container
+- `getContainer()` - Gets the DI container
+- `getPlugins()` - Gets all registered plugins
+- `getPlugin(name)` - Gets a plugin by name
+- `getLifecyclePhase()` - Gets the current lifecycle phase
+- `healthCheck()` - Performs health checks on all plugins
 
-## Plugin System
+### LifecyclePhase
 
-### Creating a Plugin
+Lifecycle phases enum:
 
-```typescript
-import { Plugin, Container } from '@stratix/abstractions';
+- `UNINITIALIZED` - Before initialization
+- `INITIALIZING` - During initialization
+- `INITIALIZED` - After initialization, before start
+- `STARTING` - During start
+- `STARTED` - Running
+- `STOPPING` - During shutdown
+- `STOPPED` - After shutdown
 
-interface MyPluginConfig {
-  apiKey: string;
-  endpoint: string;
-}
+### Error Types
 
-export class MyPlugin implements Plugin {
-  name = 'my-plugin';
+- `RuntimeError` - Base error class
+- `CircularDependencyError` - Circular dependency detected
+- `MissingDependencyError` - Plugin dependency not found
+- `DuplicatePluginError` - Plugin name already registered
+- `PluginLifecycleError` - Plugin lifecycle method failed
 
-  async onStart(container: Container, config: unknown): Promise<void> {
-    const pluginConfig = config as MyPluginConfig;
-
-    // Initialize your plugin
-    console.log(`Starting ${this.name} with endpoint: ${pluginConfig.endpoint}`);
-
-    // Register services in the container
-    container.register('myService', () => new MyService(pluginConfig.apiKey), {
-      lifetime: ServiceLifetime.SINGLETON
-    });
-  }
-
-  async onStop(): Promise<void> {
-    // Cleanup resources
-    console.log(`Stopping ${this.name}`);
-  }
-}
-```
-
-### Using the Plugin
-
-```typescript
-const app = await ApplicationBuilder.create()
-  .useContainer(container)
-  .useLogger(logger)
-  .usePlugin(new MyPlugin(), {
-    apiKey: process.env.API_KEY,
-    endpoint: 'https://api.example.com'
-  })
-  .build();
-```
-
-## Lifecycle Hooks
-
-The runtime executes the following lifecycle:
-
-1. **Build Phase**
-   - Container is configured
-   - Logger is configured
-   - Plugins are registered
-
-2. **Start Phase**
-   - Application starts
-   - Plugins `onStart()` is called in registration order
-   - Services are initialized
-
-3. **Runtime Phase**
-   - Application is running
-   - Services are available
-
-4. **Stop Phase**
-   - Application stops
-   - Plugins `onStop()` is called in reverse registration order
-   - Resources are cleaned up
-
-## Error Handling
-
-```typescript
-try {
-  const app = await ApplicationBuilder.create()
-    .useContainer(container)
-    .useLogger(logger)
-    .build();
-
-  await app.start();
-} catch (error) {
-  console.error('Failed to start application:', error);
-  process.exit(1);
-}
-```
-
-## Best Practices
-
-### 1. Graceful Shutdown
-
-Always handle shutdown signals to cleanup resources properly:
-
-```typescript
-const shutdown = async () => {
-  logger.info('Shutting down...');
-  await app.stop();
-  process.exit(0);
-};
-
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
-```
-
-### 2. Configuration Validation
-
-Validate plugin configuration early:
-
-```typescript
-export class MyPlugin implements Plugin {
-  name = 'my-plugin';
-
-  async onStart(container: Container, config: unknown): Promise<void> {
-    const pluginConfig = this.validateConfig(config);
-    // Use validated config
-  }
-
-  private validateConfig(config: unknown): MyPluginConfig {
-    if (!config || typeof config !== 'object') {
-      throw new Error('Invalid plugin configuration');
-    }
-    // Validate required fields
-    return config as MyPluginConfig;
-  }
-
-  async onStop(): Promise<void> {}
-}
-```
-
-### 3. Plugin Dependencies
-
-If a plugin depends on another plugin, ensure proper ordering:
-
-```typescript
-const app = await ApplicationBuilder.create()
-  .useContainer(container)
-  .useLogger(logger)
-  .usePlugin(new DatabasePlugin(), dbConfig)     // Must be first
-  .usePlugin(new CachePlugin(), cacheConfig)      // Depends on database
-  .build();
-```
-
-## Examples
-
-### Minimal Application
-
-```typescript
-const app = await ApplicationBuilder.create()
-  .useContainer(new AwilixContainer())
-  .useLogger(new ConsoleLogger())
-  .build();
-
-await app.start();
-```
-
-### Full-Featured Application
+## Example: Complete Application
 
 ```typescript
 import { ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/impl-di-awilix';
-import { ConsoleLogger, LogLevel } from '@stratix/impl-logger-console';
-import { RabbitMQPlugin } from '@stratix/ext-rabbitmq';
-import { OpenTelemetryPlugin } from '@stratix/ext-opentelemetry';
-import { SecretsPlugin } from '@stratix/ext-secrets';
+import { ConsoleLogger } from '@stratix/impl-logger-console';
 
-async function bootstrap() {
-  const container = new AwilixContainer();
-  const logger = new ConsoleLogger({ level: LogLevel.INFO });
-  const eventBus = new InMemoryEventBus();
+// Build application
+const app = await ApplicationBuilder.create()
+  .useContainer(new AwilixContainer())
+  .useLogger(new ConsoleLogger())
+  .usePlugin(new PostgresPlugin(), {
+    host: 'localhost',
+    port: 5432,
+    database: 'myapp'
+  })
+  .usePlugin(new RedisPlugin(), {
+    host: 'localhost',
+    port: 6379
+  })
+  .build();
 
-  const app = await ApplicationBuilder.create()
-    .useContainer(container)
-    .useLogger(logger)
-    .usePlugin(new SecretsPlugin(), {
-      provider: 'aws-secrets-manager',
-      region: 'us-east-1'
-    })
-    .usePlugin(new RabbitMQPlugin(eventBus), {
-      url: process.env.RABBITMQ_URL,
-      exchange: 'app.events',
-      queue: 'my-service',
-      bindings: [
-        { routingKey: 'order.placed' },
-        { routingKey: 'payment.processed' }
-      ]
-    })
-    .usePlugin(new OpenTelemetryPlugin(), {
-      serviceName: 'my-service',
-      endpoint: process.env.OTEL_ENDPOINT
-    })
-    .build();
+// Start application
+await app.start();
 
-  await app.start();
-  logger.info('Application started successfully');
+// Application is running
+console.log('Phase:', app.getLifecyclePhase()); // STARTED
 
-  const shutdown = async () => {
-    logger.info('Shutting down...');
-    await app.stop();
-    logger.info('Application stopped');
-    process.exit(0);
-  };
+// Check health
+const health = await app.healthCheck();
+console.log('Health:', health.status);
 
-  process.on('SIGINT', shutdown);
-  process.on('SIGTERM', shutdown);
-}
+// Access services via DI container
+const database = app.resolve('database');
 
-bootstrap().catch((error) => {
-  console.error('Failed to start application:', error);
-  process.exit(1);
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  await app.stop();
+  process.exit(0);
 });
 ```
 

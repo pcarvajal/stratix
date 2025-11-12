@@ -189,28 +189,276 @@ console.log(event.occurredAt); // Date
 
 ## Built-in Value Objects
 
+Stratix provides production-ready value objects with validation and rich behavior.
+
 ### Money
 
+Monetary values with currency support and arithmetic operations.
+
 ```typescript
-import { Money } from '@stratix/primitives';
+import { Money, Currency } from '@stratix/primitives';
 
-const usd = Money.USD(100); // $100.00
-const eur = Money.EUR(50);  // €50.00
+const price = Money.create(99.99, Currency.USD);
+const discounted = price.multiply(0.8); // $79.99
+const total = price.add(discounted); // $179.99
 
-const total = usd.add(Money.USD(50)); // $150.00
-const doubled = usd.multiply(2);      // $200.00
+console.log(price.format()); // "$99.99"
+console.log(Currency.EUR.symbol); // "€"
+```
+
+### Currency
+
+ISO 4217 currency codes with metadata.
+
+```typescript
+import { Currency } from '@stratix/primitives';
+
+console.log(Currency.USD.code); // "USD"
+console.log(Currency.USD.symbol); // "$"
+console.log(Currency.USD.name); // "United States Dollar"
+console.log(Currency.USD.decimalPlaces); // 2
 ```
 
 ### Email
+
+Email address validation with domain extraction.
 
 ```typescript
 import { Email } from '@stratix/primitives';
 
 const email = Email.create('user@example.com');
 console.log(email.value); // 'user@example.com'
+console.log(email.domain); // 'example.com'
+console.log(email.localPart); // 'user'
+```
 
-// Validation happens in create()
-Email.create('invalid-email'); // throws Error
+### PhoneNumber
+
+International phone numbers with country calling codes.
+
+```typescript
+import { PhoneNumber } from '@stratix/primitives';
+
+const phone = PhoneNumber.create('+1', '4155552671');
+console.log(phone.format()); // "+1 415-555-2671"
+console.log(phone.countryCode); // "+1"
+```
+
+### URL
+
+URL validation and parsing.
+
+```typescript
+import { URL } from '@stratix/primitives';
+
+const url = URL.create('https://example.com/path');
+console.log(url.protocol); // "https"
+console.log(url.domain); // "example.com"
+console.log(url.path); // "/path"
+```
+
+### UUID
+
+UUID v4 generation and validation.
+
+```typescript
+import { UUID } from '@stratix/primitives';
+
+const id = UUID.generate();
+console.log(id.value); // "550e8400-e29b-41d4-a716-446655440000"
+
+const parsed = UUID.create('550e8400-e29b-41d4-a716-446655440000');
+console.log(UUID.isValid('invalid')); // false
+```
+
+### DateRange
+
+Date ranges with overlap detection and duration calculations.
+
+```typescript
+import { DateRange } from '@stratix/primitives';
+
+const range = DateRange.create(
+  new Date('2024-01-01'),
+  new Date('2024-12-31')
+);
+
+console.log(range.durationInDays()); // 366
+console.log(range.contains(new Date('2024-06-15'))); // true
+console.log(range.overlaps(otherRange)); // boolean
+```
+
+### Percentage
+
+Percentage values with validation and conversion support.
+
+```typescript
+import { Percentage } from '@stratix/primitives';
+
+const discountResult = Percentage.fromPercentage(15); // 15%
+if (discountResult.isSuccess) {
+  const discount = discountResult.value;
+  console.log(discount.asPercentage()); // 15
+  console.log(discount.asDecimal()); // 0.15
+  console.log(discount.format()); // "15%"
+}
+
+// From decimal
+const taxResult = Percentage.fromDecimal(0.085); // 8.5%
+if (taxResult.isSuccess) {
+  console.log(taxResult.value.asPercentage()); // 8.5
+}
+```
+
+### Address
+
+Physical addresses with country support.
+
+```typescript
+import { Address } from '@stratix/primitives';
+
+const address = Address.create({
+  street: '123 Main St',
+  city: 'San Francisco',
+  state: 'CA',
+  postalCode: '94105',
+  country: 'US'
+});
+
+console.log(address.format()); // "123 Main St, San Francisco, CA 94105, US"
+```
+
+## AI Agent Building Blocks
+
+Stratix treats AI agents as first-class domain entities with their own base classes and supporting infrastructure.
+
+### AIAgent
+
+Base class for building AI agents as aggregate roots.
+
+```typescript
+import { AIAgent, AgentResult } from '@stratix/primitives';
+import type { AgentVersion, AgentCapability, ModelConfig } from '@stratix/primitives';
+
+class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse> {
+  readonly name = 'Customer Support Agent';
+  readonly description = 'Handles customer support tickets';
+  readonly version: AgentVersion = { major: 1, minor: 0, patch: 0 };
+  readonly capabilities: AgentCapability[] = ['CUSTOMER_SUPPORT'];
+  readonly model: ModelConfig = {
+    provider: 'anthropic',
+    model: 'claude-3-sonnet',
+    temperature: 0.7,
+    maxTokens: 2000
+  };
+
+  async execute(ticket: SupportTicket): Promise<AgentResult<SupportResponse>> {
+    // Implementation with LLM provider
+    const response = await this.processTicket(ticket);
+
+    return AgentResult.success(response, {
+      model: this.model.model,
+      cost: 0.02,
+      tokensUsed: 1500,
+      executionTime: 2500
+    });
+  }
+}
+```
+
+### AgentResult
+
+Type-safe result wrapper for agent executions with metadata tracking.
+
+```typescript
+import { AgentResult } from '@stratix/primitives';
+
+// Success case
+const result = AgentResult.success(
+  { response: "Hello!", sentiment: "positive" },
+  {
+    model: "claude-3-sonnet",
+    cost: 0.02,
+    tokensUsed: 1500,
+    executionTime: 2000
+  }
+);
+
+if (result.isSuccess()) {
+  console.log(result.data); // { response: "Hello!", sentiment: "positive" }
+  console.log(result.metadata.cost); // 0.02
+}
+
+// Failure case
+const failedResult = AgentResult.failure(
+  new Error("API timeout"),
+  { model: "gpt-4", stage: "execution" }
+);
+
+if (failedResult.isFailure()) {
+  console.error(failedResult.error.message); // "API timeout"
+}
+```
+
+### AgentContext
+
+Execution context for agent runs.
+
+```typescript
+import type { AgentContext } from '@stratix/primitives';
+
+const context: AgentContext = {
+  userId: 'user-123',
+  sessionId: 'session-456',
+  environment: 'production',
+  metadata: {
+    source: 'web',
+    priority: 'high'
+  }
+};
+```
+
+### AgentMemory
+
+Interface for agent memory persistence.
+
+```typescript
+import type { AgentMemory } from '@stratix/primitives';
+
+class RedisAgentMemory implements AgentMemory {
+  async store(key: string, value: unknown): Promise<void> {
+    // Store in Redis
+  }
+
+  async retrieve(key: string): Promise<unknown | undefined> {
+    // Retrieve from Redis
+  }
+
+  async delete(key: string): Promise<void> {
+    // Delete from Redis
+  }
+}
+```
+
+### ExecutionTrace
+
+Detailed execution tracing for debugging and observability.
+
+```typescript
+import type { ExecutionTrace } from '@stratix/primitives';
+
+const trace: ExecutionTrace = {
+  traceId: 'trace-789',
+  steps: [
+    { name: 'validate-input', duration: 10, success: true },
+    { name: 'llm-call', duration: 2000, success: true },
+    { name: 'format-response', duration: 5, success: true }
+  ],
+  totalDuration: 2015,
+  success: true
+};
+
+const result = AgentResult.success(data, metadata).withTrace(trace);
 ```
 
 ## See Also

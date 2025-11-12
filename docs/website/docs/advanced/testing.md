@@ -271,9 +271,310 @@ describe('GetProductHandler', () => {
 });
 ```
 
+## Testing AI Agents
+
+Stratix provides comprehensive testing utilities for AI agents through the `@stratix/testing` package.
+
+### AgentTester
+
+The `AgentTester` class provides a high-level API for testing AI agents with mock responses:
+
+```typescript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { AgentTester, expectSuccess, expectData } from '@stratix/testing';
+import { CustomerSupportAgent } from '../agents/CustomerSupportAgent';
+
+describe('CustomerSupportAgent', () => {
+  let tester: AgentTester;
+  let agent: CustomerSupportAgent;
+
+  beforeEach(() => {
+    tester = new AgentTester({ timeout: 5000 });
+    agent = new CustomerSupportAgent({ provider: tester.getMockProvider() });
+  });
+
+  it('should respond to greetings', async () => {
+    tester.setMockResponse({
+      content: 'Hello! How can I help you today?',
+      usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
+    });
+
+    const result = await tester.test(agent, { message: 'Hi' });
+
+    expect(result.passed).toBe(true);
+    expectSuccess(result.result);
+    expect(result.duration).toBeLessThan(1000);
+  });
+
+  it('should handle multi-turn conversations', async () => {
+    tester.setMockResponses([
+      { content: 'Hello! How can I help?', usage: { promptTokens: 10, completionTokens: 15, totalTokens: 25 } },
+      { content: 'Sure, I can help with that.', usage: { promptTokens: 20, completionTokens: 18, totalTokens: 38 } }
+    ]);
+
+    const result1 = await tester.test(agent, { message: 'Hi' });
+    const result2 = await tester.test(agent, { message: 'I need help' });
+
+    expect(result1.passed).toBe(true);
+    expect(result2.passed).toBe(true);
+    tester.assertCallCount(2);
+  });
+
+  it('should track costs correctly', async () => {
+    tester.setMockResponse({
+      content: 'Response',
+      usage: { promptTokens: 100, completionTokens: 50, totalTokens: 150 }
+    });
+
+    const result = await tester.test(agent, { message: 'Test' });
+
+    expect(result.result.usage?.totalTokens).toBe(150);
+  });
+
+  it('should handle errors gracefully', async () => {
+    tester.setMockResponse({
+      content: '',
+      usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+      error: new Error('API rate limit exceeded')
+    });
+
+    const result = await tester.test(agent, { message: 'Test' });
+
+    expect(result.passed).toBe(false);
+    tester.assertFailure(result);
+  });
+});
+```
+
+### Agent Assertions
+
+The `@stratix/testing` package provides specialized assertions for agent results:
+
+```typescript
+import {
+  expectSuccess,
+  expectFailure,
+  expectData,
+  expectDataContains,
+  expectCostWithinBudget,
+  expectDurationWithinLimit,
+  expectErrorContains,
+  expectModel
+} from '@stratix/testing';
+
+describe('Agent Assertions', () => {
+  it('should validate success', async () => {
+    const result = await agent.execute(input);
+    expectSuccess(result);  // Throws if result is failure
+  });
+
+  it('should validate failure', async () => {
+    const result = await agent.execute(invalidInput);
+    expectFailure(result);  // Throws if result is success
+  });
+
+  it('should validate data', async () => {
+    const result = await agent.execute(input);
+    expectData(result, { status: 'completed', score: 0.95 });
+  });
+
+  it('should validate partial data', async () => {
+    const result = await agent.execute(input);
+    expectDataContains(result, { status: 'completed' });
+  });
+
+  it('should validate cost', async () => {
+    const result = await agent.execute(input);
+    expectCostWithinBudget(result, 0.05);  // Max $0.05
+  });
+
+  it('should validate duration', async () => {
+    const result = await agent.execute(input);
+    expectDurationWithinLimit(result, 2000);  // Max 2 seconds
+  });
+
+  it('should validate error messages', async () => {
+    const result = await agent.execute(invalidInput);
+    expectErrorContains(result, 'Invalid input format');
+  });
+
+  it('should validate model used', async () => {
+    const result = await agent.execute(input);
+    expectModel(result, 'gpt-4o');
+  });
+});
+```
+
+### MockLLMProvider
+
+For more control, use `MockLLMProvider` directly:
+
+```typescript
+import { MockLLMProvider } from '@stratix/testing';
+
+describe('Advanced Mocking', () => {
+  let mockProvider: MockLLMProvider;
+
+  beforeEach(() => {
+    mockProvider = new MockLLMProvider();
+  });
+
+  it('should set single response', async () => {
+    mockProvider.setResponse({
+      content: '{"result": "success"}',
+      usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
+    });
+
+    const agent = new MyAgent({ provider: mockProvider });
+    const result = await agent.execute(input);
+
+    expect(result.isSuccess).toBe(true);
+  });
+
+  it('should set multiple responses', async () => {
+    mockProvider.setResponses([
+      { content: 'First response', usage: { promptTokens: 10, completionTokens: 15, totalTokens: 25 } },
+      { content: 'Second response', usage: { promptTokens: 20, completionTokens: 18, totalTokens: 38 } }
+    ]);
+
+    const result1 = await agent.execute(input1);
+    const result2 = await agent.execute(input2);
+
+    expect(result1.value).toContain('First');
+    expect(result2.value).toContain('Second');
+  });
+
+  it('should inspect call history', async () => {
+    mockProvider.setResponse({
+      content: 'Response',
+      usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
+    });
+
+    await agent.execute({ message: 'Test' });
+
+    const history = mockProvider.getCallHistory();
+    expect(history.length).toBe(1);
+    expect(history[0].model).toBe('gpt-4o');
+    expect(history[0].messages[0].content).toBe('Test');
+  });
+
+  it('should get last call', async () => {
+    mockProvider.setResponse({
+      content: 'Response',
+      usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
+    });
+
+    await agent.execute({ message: 'Test' });
+
+    const lastCall = mockProvider.getLastCall();
+    expect(lastCall?.temperature).toBe(0.7);
+  });
+
+  it('should reset state', async () => {
+    mockProvider.setResponse({
+      content: 'Response',
+      usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
+    });
+
+    await agent.execute(input);
+    mockProvider.reset();
+
+    expect(mockProvider.getCallCount()).toBe(0);
+  });
+});
+```
+
+### Test Helpers
+
+Utility functions for creating test data and contexts:
+
+```typescript
+import {
+  createTestContext,
+  createTestAgentId,
+  createDeterministicAgentId,
+  wait,
+  createTimeout,
+  measureTime,
+  repeatTest,
+  runInParallel,
+  expectToReject
+} from '@stratix/testing';
+
+describe('Test Helpers', () => {
+  it('should create test context', () => {
+    const context = createTestContext({
+      userId: 'user-123',
+      sessionId: 'session-456',
+      budget: 1.0
+    });
+
+    expect(context.getUserId()).toBe('user-123');
+    expect(context.getSessionId()).toBe('session-456');
+  });
+
+  it('should create test agent ID', () => {
+    const id1 = createTestAgentId();
+    const id2 = createTestAgentId();
+
+    expect(id1).not.toBe(id2);
+  });
+
+  it('should create deterministic ID', () => {
+    const id1 = createDeterministicAgentId('test');
+    const id2 = createDeterministicAgentId('test');
+
+    expect(id1).toBe(id2);
+  });
+
+  it('should wait for duration', async () => {
+    const start = Date.now();
+    await wait(100);
+    const duration = Date.now() - start;
+
+    expect(duration).toBeGreaterThanOrEqual(100);
+  });
+
+  it('should measure execution time', async () => {
+    const { result, duration } = await measureTime(async () => {
+      await wait(100);
+      return 'done';
+    });
+
+    expect(result).toBe('done');
+    expect(duration).toBeGreaterThanOrEqual(100);
+  });
+
+  it('should repeat test', async () => {
+    const results = await repeatTest(3, async (i) => {
+      return `iteration-${i}`;
+    });
+
+    expect(results).toEqual(['iteration-0', 'iteration-1', 'iteration-2']);
+  });
+
+  it('should run tests in parallel', async () => {
+    const results = await runInParallel([
+      async () => 'test1',
+      async () => 'test2',
+      async () => 'test3'
+    ]);
+
+    expect(results).toEqual(['test1', 'test2', 'test3']);
+  });
+
+  it('should expect rejection', async () => {
+    await expectToReject(
+      Promise.reject(new Error('Test error')),
+      /Test error/
+    );
+  });
+});
+```
+
 ## Testing with @stratix/testing
 
-The `@stratix/testing` package provides powerful utilities.
+The `@stratix/testing` package provides powerful utilities for general testing.
 
 ### TestApplication
 
@@ -327,19 +628,45 @@ describe('Product Use Cases', () => {
 Build test entities with fluent API:
 
 ```typescript
-import { EntityBuilder } from '@stratix/testing';
+import { EntityBuilder, entityBuilder } from '@stratix/testing';
 
 describe('Order', () => {
-  it('should calculate total', () => {
-    const order = EntityBuilder.for(Order)
-      .with('customerId', 'customer-123')
-      .with('items', [
-        { productId: 'product-1', quantity: 2, price: 10.00 },
-        { productId: 'product-2', quantity: 1, price: 5.00 }
-      ])
+  it('should build entity with props', () => {
+    const user = new EntityBuilder(User)
+      .withProps({ email: 'test@example.com', name: 'Test User' })
       .build();
 
-    expect(order.total).toBe(25.00);
+    expect(user.email).toBe('test@example.com');
+    expect(user.name).toBe('Test User');
+  });
+
+  it('should build entity with custom ID', () => {
+    const userId = EntityId.create<'User'>();
+    const user = new EntityBuilder(User)
+      .withProps({ email: 'test@example.com' })
+      .withId(userId)
+      .build();
+
+    expect(user.id).toBe(userId);
+  });
+
+  it('should build multiple entities', () => {
+    const users = new EntityBuilder(User)
+      .withProps({ role: 'admin' })
+      .buildMany(3);
+
+    expect(users).toHaveLength(3);
+    users.forEach(user => {
+      expect(user.role).toBe('admin');
+    });
+  });
+
+  it('should use builder helper', () => {
+    const user = entityBuilder(User)
+      .withProps({ email: 'test@example.com' })
+      .build();
+
+    expect(user.email).toBe('test@example.com');
   });
 });
 ```
@@ -351,14 +678,57 @@ Generate test data easily:
 ```typescript
 import { DataFactory } from '@stratix/testing';
 
-describe('User Registration', () => {
-  it('should register user', async () => {
+describe('DataFactory', () => {
+  it('should generate email', () => {
+    const email1 = DataFactory.email('user');
+    const email2 = DataFactory.email('user');
+
+    expect(email1).toBe('user1@example.com');
+    expect(email2).toBe('user2@example.com');
+  });
+
+  it('should generate string', () => {
+    const str = DataFactory.string('prefix');
+    expect(str).toContain('prefix');
+  });
+
+  it('should generate number', () => {
+    const num = DataFactory.number(1, 10);
+    expect(num).toBeGreaterThanOrEqual(1);
+    expect(num).toBeLessThanOrEqual(10);
+  });
+
+  it('should generate entity ID', () => {
+    const id = DataFactory.entityId<'User'>();
+    expect(id.toString()).toMatch(/^[0-9a-f-]{36}$/);
+  });
+
+  it('should generate boolean', () => {
+    const bool = DataFactory.boolean();
+    expect(typeof bool).toBe('boolean');
+  });
+
+  it('should generate date', () => {
+    const date = DataFactory.date(7);  // 7 days ago
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const days = diff / (1000 * 60 * 60 * 24);
+
+    expect(days).toBeCloseTo(7, 0);
+  });
+
+  it('should pick from array', () => {
+    const status = DataFactory.pick(['active', 'inactive', 'pending']);
+    expect(['active', 'inactive', 'pending']).toContain(status);
+  });
+
+  it('should reset counter', () => {
+    DataFactory.email('test');
+    DataFactory.email('test');
+    DataFactory.reset();
+
     const email = DataFactory.email('test');
-    const name = DataFactory.string('name', 10);
-
-    const result = await registerUser({ email, name });
-
-    expect(result.isSuccess).toBe(true);
+    expect(email).toBe('test1@example.com');
   });
 });
 ```
@@ -623,12 +993,147 @@ jobs:
 
 ## Best Practices
 
+### General Testing
+
 1. **Test Behavior, Not Implementation**: Focus on what the code does, not how
 2. **Keep Tests Fast**: Use in-memory implementations for unit tests
 3. **Isolate Tests**: Each test should be independent
 4. **Use Descriptive Names**: Test names should describe the scenario
 5. **Arrange-Act-Assert**: Follow the AAA pattern consistently
 6. **Test Edge Cases**: Don't just test the happy path
+
+### AI Agent Testing
+
+1. **Use MockLLMProvider for Unit Tests**:
+   - Avoid real API calls in unit tests
+   - Keep tests fast and deterministic
+   - Use real providers only in integration tests
+
+2. **Test Multi-Turn Conversations**:
+   - Use `setMockResponses()` to simulate conversation flows
+   - Verify context is maintained across turns
+   - Test conversation state management
+
+3. **Verify Token Usage and Costs**:
+   - Always check that cost tracking works correctly
+   - Test budget enforcement with `expectCostWithinBudget()`
+   - Verify token counts match expectations
+
+4. **Test Error Scenarios**:
+   - Test API rate limits (mock errors)
+   - Test network failures
+   - Test invalid inputs and outputs
+   - Verify graceful degradation
+
+5. **Inspect Call History**:
+   - Use `getCallHistory()` to verify LLM parameters
+   - Check that prompts are constructed correctly
+   - Verify temperature, max tokens, and other settings
+
+6. **Performance Testing**:
+   - Use `measureTime()` for timing tests
+   - Set appropriate timeouts with AgentTester
+   - Test timeout handling with `createTimeout()`
+
+7. **Test Tool Usage**:
+   - Mock tool responses for agent tests
+   - Verify tools are called with correct parameters
+   - Test tool validation logic separately
+
+### Example Test Structure
+
+```typescript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { AgentTester, expectSuccess, expectCostWithinBudget } from '@stratix/testing';
+
+describe('ProductRecommendationAgent', () => {
+  let tester: AgentTester;
+  let agent: ProductRecommendationAgent;
+
+  beforeEach(() => {
+    // Setup
+    tester = new AgentTester({ timeout: 5000 });
+    agent = new ProductRecommendationAgent({
+      provider: tester.getMockProvider(),
+      database: mockDatabase
+    });
+  });
+
+  describe('Happy Path', () => {
+    it('should recommend products based on user preferences', async () => {
+      // Arrange
+      tester.setMockResponse({
+        content: JSON.stringify({
+          recommendations: ['product-1', 'product-2', 'product-3'],
+          confidence: 0.85
+        }),
+        usage: { promptTokens: 50, completionTokens: 30, totalTokens: 80 }
+      });
+
+      // Act
+      const result = await tester.test(agent, {
+        userId: 'user-123',
+        category: 'electronics'
+      });
+
+      // Assert
+      expect(result.passed).toBe(true);
+      expectSuccess(result.result);
+      expect(result.result.value.recommendations).toHaveLength(3);
+      expectCostWithinBudget(result.result, 0.01);
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should handle API errors gracefully', async () => {
+      // Arrange
+      tester.setMockResponse({
+        content: '',
+        usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+        error: new Error('API rate limit exceeded')
+      });
+
+      // Act
+      const result = await tester.test(agent, { userId: 'user-123' });
+
+      // Assert
+      expect(result.passed).toBe(false);
+      tester.assertFailure(result);
+    });
+  });
+
+  describe('Performance', () => {
+    it('should respond within time limit', async () => {
+      tester.setMockResponse({
+        content: JSON.stringify({ recommendations: [] }),
+        usage: { promptTokens: 10, completionTokens: 10, totalTokens: 20 }
+      });
+
+      const { duration } = await measureTime(async () => {
+        await tester.test(agent, { userId: 'user-123' });
+      });
+
+      expect(duration).toBeLessThan(500);
+    });
+  });
+
+  describe('Call Verification', () => {
+    it('should call LLM with correct parameters', async () => {
+      tester.setMockResponse({
+        content: JSON.stringify({ recommendations: [] }),
+        usage: { promptTokens: 10, completionTokens: 10, totalTokens: 20 }
+      });
+
+      await tester.test(agent, { userId: 'user-123', category: 'electronics' });
+
+      const lastCall = tester.getMockProvider().getLastCall();
+      expect(lastCall?.model).toBe('gpt-4o');
+      expect(lastCall?.temperature).toBe(0.7);
+      expect(lastCall?.messages[0].content).toContain('electronics');
+    });
+  });
+});
+```
 
 ## Next Steps
 

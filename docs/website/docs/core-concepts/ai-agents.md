@@ -111,8 +111,8 @@ interface LLMProvider {
 ```
 
 **Available Providers**:
-- `OpenAIProvider` - GPT-4, GPT-3.5, embeddings
-- `AnthropicProvider` - Claude 3 family
+- `OpenAIProvider` - GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo, embeddings
+- `AnthropicProvider` - Claude 3.5 Sonnet, Opus, Sonnet, Haiku
 - `MockLLMProvider` - Testing and development
 
 **Switching Providers**:
@@ -121,20 +121,24 @@ interface LLMProvider {
 // OpenAI
 import { OpenAIProvider } from '@stratix/ext-ai-agents-openai';
 const provider = new OpenAIProvider({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY,
+  organization: 'org-123',  // Optional
+  baseURL: 'https://api.openai.com'  // Optional
 });
 
 // Anthropic
 import { AnthropicProvider } from '@stratix/ext-ai-agents-anthropic';
 const provider = new AnthropicProvider({
-  apiKey: process.env.ANTHROPIC_API_KEY
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  baseURL: 'https://api.anthropic.com'  // Optional
 });
 
 // Mock (for testing)
 import { MockLLMProvider } from '@stratix/testing';
-const provider = new MockLLMProvider({
-  responses: ['Mocked response'],
-  cost: 0.001
+const mockProvider = new MockLLMProvider();
+mockProvider.setResponse({
+  content: 'Mocked response',
+  usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
 });
 ```
 
@@ -371,42 +375,204 @@ class BlogWritingPipeline {
 }
 ```
 
+## Provider Comparison
+
+| Feature | OpenAI | Anthropic |
+|---------|---------|-----------|
+| Chat Completion | ✓ | ✓ |
+| Streaming | ✓ | ✓ |
+| Function/Tool Calling | ✓ | ✓ |
+| Embeddings | ✓ | ✗ |
+| Structured Output | ✓ (JSON schemas) | ✗ |
+| Vision | ✓ | ✓ |
+| Latest Model | GPT-4o | Claude 3.5 Sonnet |
+| Cost (1K tokens) | ~$0.0025-0.03 | ~$0.003-0.015 |
+
 ## Testing AI Agents
 
-Use mock providers for deterministic testing:
+Use `AgentTester` for comprehensive agent testing:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { MockLLMProvider } from '@stratix/testing';
+import { AgentTester, expectSuccess } from '@stratix/testing';
 
 describe('CustomerSupportAgent', () => {
-  it('should respond to greeting', async () => {
-    const mockProvider = new MockLLMProvider({
-      responses: ['Hello! How can I help you today?'],
-      cost: 0.001,
-      tokensPerRequest: 50
-    });
+  let tester: AgentTester;
 
-    const agent = new CustomerSupportAgent(mockProvider);
-    const result = await agent.execute({ message: 'Hi' });
-
-    expect(result.isSuccess).toBe(true);
-    expect(result.value.response).toBe('Hello! How can I help you today?');
+  beforeEach(() => {
+    tester = new AgentTester({ timeout: 5000 });
   });
 
-  it('should handle failures gracefully', async () => {
-    const mockProvider = new MockLLMProvider({
-      responses: [],
-      failureRate: 1.0  // Always fail
+  it('should respond to greeting', async () => {
+    const agent = new CustomerSupportAgent(...);
+
+    tester.setMockResponse({
+      content: 'Hello! How can I help you today?',
+      usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
     });
 
-    const agent = new CustomerSupportAgent(mockProvider);
-    const result = await agent.execute({ message: 'Hi' });
+    const result = await tester.test(agent, { message: 'Hi' });
 
-    expect(result.isFailure).toBe(true);
+    expect(result.passed).toBe(true);
+    expectSuccess(result.result);
+    expect(result.duration).toBeLessThan(1000);
+  });
+
+  it('should handle multi-turn conversations', async () => {
+    tester.setMockResponses([
+      { content: 'Hello! How can I help?', usage: { promptTokens: 10, completionTokens: 15, totalTokens: 25 } },
+      { content: 'Sure, I can help with that.', usage: { promptTokens: 20, completionTokens: 18, totalTokens: 38 } }
+    ]);
+
+    const result1 = await tester.test(agent, { message: 'Hi' });
+    const result2 = await tester.test(agent, { message: 'I need help' });
+
+    expect(result1.passed).toBe(true);
+    expect(result2.passed).toBe(true);
+    tester.assertCallCount(2);
   });
 });
 ```
+
+**Using MockLLMProvider directly**:
+
+```typescript
+import { MockLLMProvider } from '@stratix/testing';
+
+const mockProvider = new MockLLMProvider();
+mockProvider.setResponse({
+  content: '{"result": "success"}',
+  usage: { promptTokens: 10, completionTokens: 20, totalTokens: 30 }
+});
+
+const agent = new MyAgent({ provider: mockProvider });
+const result = await agent.execute(input);
+
+// Verify LLM was called correctly
+expect(mockProvider.getCallCount()).toBe(1);
+expect(mockProvider.getLastCall()?.model).toBe('gpt-4o');
+```
+
+See the [Testing Guide](../advanced/testing.md) for comprehensive testing strategies.
+
+## Streaming Responses
+
+Both OpenAI and Anthropic providers support streaming for real-time responses:
+
+```typescript
+import { OpenAIProvider } from '@stratix/ext-ai-agents-openai';
+
+const provider = new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY });
+
+// Stream chat completion
+for await (const chunk of provider.streamChat({
+  model: 'gpt-4o',
+  messages: [
+    { role: 'user', content: 'Tell me a story', timestamp: new Date() }
+  ]
+})) {
+  process.stdout.write(chunk.content);
+
+  if (chunk.isComplete) {
+    console.log('\nUsage:', chunk.usage);
+    console.log('Cost:', provider.calculateCost('gpt-4o', chunk.usage!));
+  }
+}
+```
+
+**Anthropic Streaming**:
+
+```typescript
+import { AnthropicProvider } from '@stratix/ext-ai-agents-anthropic';
+
+const provider = new AnthropicProvider({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+for await (const chunk of provider.streamChat({
+  model: 'claude-3-5-sonnet-20241022',
+  messages: [
+    { role: 'user', content: 'Explain quantum computing', timestamp: new Date() }
+  ]
+})) {
+  process.stdout.write(chunk.content);
+
+  if (chunk.isComplete) {
+    console.log('\nStream completed');
+  }
+}
+```
+
+## Embeddings
+
+Generate vector embeddings for semantic search (OpenAI only):
+
+```typescript
+import { OpenAIProvider } from '@stratix/ext-ai-agents-openai';
+
+const provider = new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY });
+
+const response = await provider.embeddings({
+  model: 'text-embedding-3-small',
+  input: [
+    'The quick brown fox',
+    'jumps over the lazy dog'
+  ]
+});
+
+console.log('Embeddings count:', response.embeddings.length);
+console.log('Embedding dimensions:', response.embeddings[0].embedding.length);
+console.log('Total cost:', response.totalCost);
+
+// Use embeddings for similarity search
+const similarity = cosineSimilarity(
+  response.embeddings[0].embedding,
+  response.embeddings[1].embedding
+);
+```
+
+**Available Embedding Models**:
+- `text-embedding-3-small` - 1,536 dimensions, cost-effective
+- `text-embedding-3-large` - 3,072 dimensions, highest quality
+- `text-embedding-ada-002` - 1,536 dimensions, legacy model
+
+**Note**: Anthropic does not provide embedding models. Use OpenAI or another provider for embeddings.
+
+## Structured Output
+
+OpenAI supports structured JSON output with schemas:
+
+```typescript
+const response = await provider.chat({
+  model: 'gpt-4o',
+  messages: [
+    {
+      role: 'user',
+      content: 'Extract user info: John Doe, 30 years old, lives in NYC',
+      timestamp: new Date()
+    }
+  ],
+  responseFormat: {
+    type: 'json_schema',
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        age: { type: 'number' },
+        city: { type: 'string' }
+      },
+      required: ['name', 'age', 'city']
+    }
+  }
+});
+
+const userInfo = JSON.parse(response.content);
+console.log(userInfo);
+// { name: 'John Doe', age: 30, city: 'NYC' }
+```
+
+**Response Format Options**:
+- `{ type: 'json_object' }` - Forces JSON output
+- `{ type: 'json_schema', schema: {...} }` - Forces specific JSON schema
+- `{ type: 'text' }` - Plain text (default)
 
 ## Cost Tracking
 
@@ -423,11 +589,31 @@ console.log({
 });
 
 // Provider calculates cost based on model pricing
-const cost = provider.calculateCost('gpt-4', {
+const cost = provider.calculateCost('gpt-4o', {
   promptTokens: 1000,
   completionTokens: 500,
   totalTokens: 1500
 });
+```
+
+**Cost Examples** (January 2025 pricing):
+
+```typescript
+// GPT-4o
+const gpt4oCost = openAIProvider.calculateCost('gpt-4o', {
+  promptTokens: 1000,
+  completionTokens: 500,
+  totalTokens: 1500
+});
+// ~$0.0125
+
+// Claude 3.5 Sonnet
+const claudeCost = anthropicProvider.calculateCost('claude-3-5-sonnet-20241022', {
+  promptTokens: 1000,
+  completionTokens: 500,
+  totalTokens: 1500
+});
+// ~$0.0045
 ```
 
 ## Production Patterns

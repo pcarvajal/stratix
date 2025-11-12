@@ -1,6 +1,6 @@
 # @stratix/abstractions
 
-Core abstractions and interfaces that define the contracts for Stratix applications.
+Pure TypeScript interfaces with zero runtime code.
 
 ## Installation
 
@@ -8,261 +8,214 @@ Core abstractions and interfaces that define the contracts for Stratix applicati
 pnpm add @stratix/abstractions
 ```
 
-## Repository Pattern
+## What's Included
 
-Generic repository interface for data access.
+### Dependency Injection
+
+- **Container** - Dependency injection container interface
+- **Token** - Type-safe dependency tokens
+- **Factory** - Factory function types for service creation
+- **ServiceLifetime** - Service lifetime scopes (Singleton, Transient, Scoped)
+- **RegisterOptions** - Service registration configuration
+
+### CQRS and Messaging
+
+- **Command** - Command interface for state changes
+- **CommandHandler** - Command handler interface
+- **CommandBus** - Command bus for dispatching commands
+- **Query** - Query interface for data retrieval
+- **QueryHandler** - Query handler interface
+- **QueryBus** - Query bus for dispatching queries
+- **Event** - Event interface for domain events
+- **EventHandler** - Event handler interface
+- **EventBus** - Event bus for publishing and subscribing to events
+
+### Infrastructure
+
+- **Logger** - Logging interface (info, warn, error, debug)
+- **LogLevel** - Log level enumeration
+- **Repository** - Data persistence abstraction
+- **UnitOfWork** - Transaction management interface
+- **HealthCheck** - Health check interface
+- **HealthCheckResult** - Health check result type
+- **HealthStatus** - Health status enumeration
+
+### Plugin System
+
+- **Plugin** - Plugin lifecycle interface (initialize, start, stop, healthCheck)
+- **PluginContext** - Context provided to plugins during initialization
+- **PluginMetadata** - Plugin metadata (name, version, dependencies)
+
+### AI Agents
+
+- **AgentOrchestrator** - Interface for managing AI agent lifecycle and execution
+- **AgentExecutionContext** - Context for agent execution
+- **AgentExecutionResult** - Result of agent execution
+
+## Usage Examples
+
+### Logger Interface
 
 ```typescript
-import { Repository } from '@stratix/abstractions';
-import { User, UserId } from './domain/entities/User';
+import type { Logger, LogLevel } from '@stratix/abstractions';
 
-interface UserRepository extends Repository<User, UserId> {
-  findByEmail(email: string): Promise<User | null>;
-}
-```
+class MyService {
+  constructor(private logger: Logger) {}
 
-**Base Methods**:
-- `save(entity: T): Promise<void>`: Save or update an entity
-- `findById(id: TId): Promise<T | null>`: Find entity by ID
-- `delete(id: TId): Promise<void>`: Delete an entity
-- `exists(id: TId): Promise<boolean>`: Check if entity exists
-
-## CQRS Pattern
-
-### Commands
-
-Commands represent write operations that change state.
-
-```typescript
-import { Command, CommandHandler } from '@stratix/abstractions';
-import { Result, Success, Failure } from '@stratix/primitives';
-
-export interface CreateUserInput {
-  email: string;
-  name: string;
-}
-
-export interface CreateUserOutput {
-  id: string;
-}
-
-export class CreateUser implements Command {
-  constructor(public readonly data: CreateUserInput) {}
-}
-
-export class CreateUserHandler implements CommandHandler<CreateUser, Result<CreateUserOutput>> {
-  constructor(private readonly userRepository: UserRepository) {}
-
-  async handle(command: CreateUser): Promise<Result<CreateUserOutput>> {
-    try {
-      const user = User.create(command.data.email, command.data.name);
-      await this.userRepository.save(user);
-      return Success.create({ id: user.id.toString() });
-    } catch (error) {
-      return Failure.create(error as Error);
-    }
+  doSomething(): void {
+    this.logger.info('Operation started');
+    this.logger.debug('Debug information', { userId: 123 });
+    this.logger.error('Something went wrong', new Error('Failed'));
   }
 }
 ```
 
-**Interfaces**:
-- `Command`: Marker interface for commands
-- `CommandHandler<TCommand, TResult>`: Command handler interface
+### Repository Pattern
+
+```typescript
+import type { Repository } from '@stratix/abstractions';
+import { EntityId } from '@stratix/primitives';
+
+interface User {
+  id: EntityId<'User'>;
+  email: string;
+  name: string;
+}
+
+class UserService {
+  constructor(private userRepository: Repository<User, EntityId<'User'>>) {}
+
+  async getUser(id: EntityId<'User'>): Promise<User | null> {
+    return this.userRepository.findById(id);
+  }
+
+  async saveUser(user: User): Promise<void> {
+    await this.userRepository.save(user);
+  }
+}
+```
+
+**Repository API**:
+- `save(entity: T): Promise<void>` - Save or update an entity
+- `findById(id: TId): Promise<T | null>` - Find entity by ID
+- `delete(id: TId): Promise<void>` - Delete an entity
+- `exists(id: TId): Promise<boolean>` - Check if entity exists
+
+### Command Handler
+
+```typescript
+import type { Command, CommandHandler } from '@stratix/abstractions';
+import type { Result } from '@stratix/primitives';
+
+interface CreateUserCommand extends Command {
+  email: string;
+  name: string;
+}
+
+class CreateUserHandler implements CommandHandler<CreateUserCommand, string> {
+  async handle(command: CreateUserCommand): Promise<Result<string>> {
+    // Handle command logic
+    return Success.create(userId);
+  }
+}
+```
+
+**Command API**:
+- `Command` - Marker interface for commands
+- `CommandHandler<TCommand, TResult>` - Command handler interface
   - `handle(command: TCommand): Promise<TResult>`
-
-### Queries
-
-Queries represent read operations that don't change state.
-
-```typescript
-import { Query, QueryHandler } from '@stratix/abstractions';
-import { Result, Success, Failure } from '@stratix/primitives';
-
-export interface GetUserInput {
-  id: string;
-}
-
-export interface UserDto {
-  id: string;
-  email: string;
-  name: string;
-}
-
-export class GetUser implements Query {
-  constructor(public readonly data: GetUserInput) {}
-}
-
-export class GetUserHandler implements QueryHandler<GetUser, Result<UserDto>> {
-  constructor(private readonly userRepository: UserRepository) {}
-
-  async handle(query: GetUser): Promise<Result<UserDto>> {
-    try {
-      const user = await this.userRepository.findById(EntityId.fromString(query.data.id));
-
-      if (!user) {
-        return Failure.create(new Error('User not found'));
-      }
-
-      return Success.create({
-        id: user.id.toString(),
-        email: user.email,
-        name: user.name,
-      });
-    } catch (error) {
-      return Failure.create(error as Error);
-    }
-  }
-}
-```
-
-**Interfaces**:
-- `Query`: Marker interface for queries
-- `QueryHandler<TQuery, TResult>`: Query handler interface
-  - `handle(query: TQuery): Promise<TResult>`
-
-### Command and Query Buses
-
-```typescript
-import { CommandBus, QueryBus } from '@stratix/abstractions';
-
-// Register handlers
-commandBus.register(CreateUser, createUserHandler);
-queryBus.register(GetUser, getUserHandler);
-
-// Dispatch
-const createResult = await commandBus.dispatch(new CreateUser({ email: 'user@example.com' }));
-const getResult = await queryBus.dispatch(new GetUser({ id: 'user-123' }));
-```
-
-**CommandBus API**:
-- `register<T extends Command>(command: Constructor<T>, handler: CommandHandler<T, any>): void`
-- `dispatch<TResult>(command: Command): Promise<TResult>`
-
-**QueryBus API**:
-- `register<T extends Query>(query: Constructor<T>, handler: QueryHandler<T, any>): void`
-- `dispatch<TResult>(query: Query): Promise<TResult>`
-
-## Event-Driven Architecture
-
-### Event Handler
-
-```typescript
-import { EventHandler } from '@stratix/abstractions';
-
-class UserCreatedEventHandler implements EventHandler<UserCreatedEvent> {
-  constructor(private readonly logger: Logger) {}
-
-  async handle(event: UserCreatedEvent): Promise<void> {
-    this.logger.info('User created', { userId: event.userId });
-    // Send welcome email, etc.
-  }
-}
-```
-
-**Interface**:
-- `EventHandler<TEvent>`: Event handler interface
-  - `handle(event: TEvent): Promise<void>`
+- `CommandBus` - Command bus for dispatching commands
+  - `register<T extends Command>(command: Constructor<T>, handler: CommandHandler<T, any>): void`
+  - `dispatch<TResult>(command: Command): Promise<TResult>`
 
 ### Event Bus
 
 ```typescript
-import { EventBus } from '@stratix/abstractions';
+import type { Event, EventHandler, EventBus } from '@stratix/abstractions';
 
-// Subscribe to events
-eventBus.subscribe(UserCreatedEvent, userCreatedHandler);
+interface UserCreatedEvent extends Event {
+  userId: string;
+  email: string;
+}
 
-// Publish events
-await eventBus.publish([new UserCreatedEvent('user-123', 'user@example.com')]);
-```
-
-**EventBus API**:
-- `subscribe<T extends DomainEvent>(event: Constructor<T>, handler: EventHandler<T>): void`
-- `publish(events: DomainEvent[]): Promise<void>`
-
-## Logging
-
-```typescript
-import { Logger, LogLevel } from '@stratix/abstractions';
-
-class MyService {
-  constructor(private readonly logger: Logger) {}
-
-  async doSomething() {
-    this.logger.info('Starting operation', { userId: '123' });
-    this.logger.debug('Debug information');
-    this.logger.warn('Warning message');
-    this.logger.error('Error occurred', { error: new Error() });
+class EmailNotificationHandler implements EventHandler<UserCreatedEvent> {
+  async handle(event: UserCreatedEvent): Promise<void> {
+    // Send welcome email
   }
 }
+
+// Subscribe to events
+eventBus.subscribe('UserCreated', new EmailNotificationHandler());
+
+// Publish events
+await eventBus.publish({
+  type: 'UserCreated',
+  userId: '123',
+  email: 'user@example.com',
+  timestamp: new Date(),
+});
 ```
 
-**Logger API**:
-- `info(message: string, meta?: Record<string, unknown>): void`
-- `debug(message: string, meta?: Record<string, unknown>): void`
-- `warn(message: string, meta?: Record<string, unknown>): void`
-- `error(message: string, meta?: Record<string, unknown>): void`
+**Event API**:
+- `Event` - Event interface for domain events
+- `EventHandler<TEvent>` - Event handler interface
+  - `handle(event: TEvent): Promise<void>`
+- `EventBus` - Event bus for publishing and subscribing to events
+  - `subscribe<T extends DomainEvent>(event: Constructor<T>, handler: EventHandler<T>): void`
+  - `publish(events: DomainEvent[]): Promise<void>`
 
-**LogLevel**:
-- `DEBUG = 0`
-- `INFO = 1`
-- `WARN = 2`
-- `ERROR = 3`
-
-## Dependency Injection
-
-### Container
+### Plugin Interface
 
 ```typescript
-import { Container, ServiceLifetime } from '@stratix/abstractions';
+import type { Plugin, PluginContext } from '@stratix/abstractions';
 
-// Register services
-container.register('userRepository', () => new InMemoryUserRepository(), {
-  lifetime: ServiceLifetime.SINGLETON
-});
+export class DatabasePlugin implements Plugin {
+  name = 'database';
+  version = '1.0.0';
+  dependencies = ['logger'];
 
-container.register('createUserHandler', (c) => {
-  return new CreateUserHandler(c.resolve('userRepository'));
-}, {
-  lifetime: ServiceLifetime.SCOPED
-});
-
-// Resolve services
-const handler = container.resolve<CreateUserHandler>('createUserHandler');
-```
-
-**Container API**:
-- `register<T>(name: string, factory: (container: Container) => T, options?: RegistrationOptions): void`
-- `resolve<T>(name: string): T`
-- `has(name: string): boolean`
-- `createScope(): Container`
-
-**ServiceLifetime**:
-- `SINGLETON`: One instance for the entire application
-- `SCOPED`: One instance per scope (request)
-- `TRANSIENT`: New instance every time
-
-## Plugin System
-
-```typescript
-import { Plugin } from '@stratix/abstractions';
-
-class MyPlugin implements Plugin {
-  name = 'my-plugin';
-
-  async onStart(container: Container, config: unknown): Promise<void> {
-    // Initialize plugin
+  async initialize(context: PluginContext): Promise<void> {
+    // Register services
+    context.container.register('db', () => new Database());
   }
 
-  async onStop(): Promise<void> {
-    // Cleanup
+  async start(): Promise<void> {
+    // Start database connection
+  }
+
+  async stop(): Promise<void> {
+    // Close database connection
+  }
+
+  async healthCheck(): Promise<HealthCheckResult> {
+    return { status: HealthStatus.Healthy };
   }
 }
 ```
 
 **Plugin API**:
-- `name: string`: Plugin name
-- `onStart(container: Container, config: unknown): Promise<void>`: Called on application start
-- `onStop(): Promise<void>`: Called on application shutdown
+- `name: string` - Plugin name
+- `version: string` - Plugin version
+- `dependencies?: string[]` - Array of plugin names this plugin depends on
+- `initialize(context: PluginContext): Promise<void>` - Called during initialization phase
+- `start(): Promise<void>` - Called when plugin should start
+- `stop(): Promise<void>` - Called on graceful shutdown
+- `healthCheck(): Promise<HealthCheckResult>` - Returns plugin health status
+
+## Why Abstractions?
+
+All Stratix packages depend on abstractions, not implementations. This enables:
+
+- **Dependency Inversion** - High-level modules don't depend on low-level modules
+- **Swappable Implementations** - Switch implementations without changing code
+- **Easy Testing** - Mock interfaces for unit tests
+- **Zero Coupling** - No runtime dependencies between layers
+- **Tree-shakeable** - Only import types, zero runtime code
+- **Framework Agnostic** - Use any implementation you prefer
+
+## Zero Runtime Code
+
+This package contains only TypeScript interfaces and types. It compiles to zero JavaScript code, making it perfect for defining contracts between layers without adding bundle size.
 
 ## See Also
 

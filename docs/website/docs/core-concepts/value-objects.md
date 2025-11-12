@@ -73,62 +73,180 @@ email1 === email2;     // false (different instances)
 
 ## Built-in Value Objects
 
-Stratix provides rich value objects out of the box:
+Stratix provides production-ready value objects with validation and rich behavior:
+
+### Money
+
+Monetary values with currency support and arithmetic operations.
+
+```typescript
+import { Money, Currency } from '@stratix/primitives';
+
+const price = Money.create(99.99, Currency.USD);
+const tax = Money.create(10.00, Currency.USD);
+
+const total = price.add(tax); // Money { amount: 109.99, currency: USD }
+console.log(total.format()); // '$109.99'
+console.log(total.isGreaterThan(price)); // true
+
+const discount = price.multiply(0.1); // Money { amount: 9.99, currency: USD }
+
+// Currency validation
+const usd = Money.create(100, Currency.USD);
+const eur = Money.create(100, Currency.EUR);
+
+const mixed = usd.add(eur); // Throws error: Cannot add EUR to USD
+```
+
+### Currency
+
+ISO 4217 currency codes with metadata.
+
+```typescript
+import { Currency } from '@stratix/primitives';
+
+console.log(Currency.USD.code); // "USD"
+console.log(Currency.USD.symbol); // "$"
+console.log(Currency.USD.name); // "United States Dollar"
+console.log(Currency.USD.decimalPlaces); // 2
+
+console.log(Currency.EUR.symbol); // "€"
+console.log(Currency.JPY.decimalPlaces); // 0
+```
 
 ### Email
+
+Email address validation with domain extraction.
 
 ```typescript
 import { Email } from '@stratix/primitives';
 
-const email = Email.create('user@example.com').value;
-console.log(email.value);        // 'user@example.com'
-console.log(email.domain);       // 'example.com'
-console.log(email.localPart);    // 'user'
+const email = Email.create('user@example.com');
+console.log(email.value); // 'user@example.com'
+console.log(email.domain); // 'example.com'
+console.log(email.localPart); // 'user'
+
+// Validation
+Email.create('invalid-email'); // Throws validation error
 ```
 
-### Money
+### PhoneNumber
+
+International phone numbers with country calling codes.
 
 ```typescript
-import { Money } from '@stratix/primitives';
+import { PhoneNumber } from '@stratix/primitives';
 
-const price = Money.USD(99.99);
-const tax = Money.USD(10.00);
+const phone = PhoneNumber.create('+1', '4155552671');
+console.log(phone.format()); // "+1 415-555-2671"
+console.log(phone.countryCode); // "+1"
+console.log(phone.nationalNumber); // "4155552671"
+```
 
-const totalResult = price.add(tax);     // Result<Money, DomainError>
-if (totalResult.isSuccess) {
-  const total = totalResult.value;      // Money { amount: 109.99, currency: 'USD' }
-  console.log(total.format());          // '$109.99'
-  console.log(total.isGreaterThan(price)); // true
-}
+### URL
 
-const discount = price.multiply(0.1);   // Money { amount: 9.99, currency: 'USD' }
+URL validation and parsing.
 
-// Currency validation
-const usd = Money.USD(100);
-const eur = Money.EUR(100);
+```typescript
+import { URL } from '@stratix/primitives';
 
-const result = usd.add(eur);            // Result with error
-if (result.isFailure) {
-  console.log(result.error.message);    // 'Cannot add EUR to USD'
-}
+const url = URL.create('https://example.com/path?query=value');
+console.log(url.protocol); // "https"
+console.log(url.domain); // "example.com"
+console.log(url.path); // "/path"
+console.log(url.queryString); // "query=value"
+```
+
+### UUID
+
+UUID v4 generation and validation.
+
+```typescript
+import { UUID } from '@stratix/primitives';
+
+const id = UUID.generate();
+console.log(id.value); // "550e8400-e29b-41d4-a716-446655440000"
+
+const parsed = UUID.create('550e8400-e29b-41d4-a716-446655440000');
+console.log(UUID.isValid('550e8400-e29b-41d4-a716-446655440000')); // true
+console.log(UUID.isValid('invalid')); // false
 ```
 
 ### DateRange
 
+Date ranges with overlap detection and duration calculations.
+
 ```typescript
 import { DateRange } from '@stratix/primitives';
 
-const start = new Date('2025-01-01');
-const end = new Date('2025-12-31');
+const range = DateRange.create(
+  new Date('2024-01-01'),
+  new Date('2024-12-31')
+);
 
-const range = DateRange.create(start, end).value;
+console.log(range.durationInDays()); // 366
+console.log(range.contains(new Date('2024-06-15'))); // true
+console.log(range.overlaps(otherRange)); // boolean
 
-console.log(range.contains(new Date('2025-06-15'))); // true
-console.log(range.durationInDays());                 // 365
-console.log(range.overlaps(otherRange));             // boolean
+// Create from now
+const nextWeek = DateRange.fromNow(7); // 7 days from today
+```
+
+### Percentage
+
+Percentage values with validation and conversion support.
+
+```typescript
+import { Percentage } from '@stratix/primitives';
+
+const discountResult = Percentage.fromPercentage(15); // 15%
+if (discountResult.isSuccess) {
+  const discount = discountResult.value;
+  console.log(discount.asPercentage()); // 15
+  console.log(discount.asDecimal()); // 0.15
+  console.log(discount.format()); // "15%"
+}
+
+// From decimal
+const taxResult = Percentage.fromDecimal(0.085); // 8.5%
+if (taxResult.isSuccess) {
+  console.log(taxResult.value.asPercentage()); // 8.5
+}
+
+// Apply to number
+const applyResult = discount.applyTo(100);
+if (applyResult.isSuccess) {
+  console.log(applyResult.value); // 15 (15% of 100)
+}
+
+// Validation
+const invalid = Percentage.fromPercentage(150);
+console.log(invalid.isFailure); // true
+```
+
+### Address
+
+Physical addresses with country support.
+
+```typescript
+import { Address } from '@stratix/primitives';
+
+const address = Address.create({
+  street: '123 Main St',
+  city: 'San Francisco',
+  state: 'CA',
+  postalCode: '94105',
+  country: 'US'
+});
+
+console.log(address.street); // "123 Main St"
+console.log(address.city); // "San Francisco"
+console.log(address.format()); // "123 Main St, San Francisco, CA 94105, US"
 ```
 
 ### EntityId
+
+Type-safe entity identifiers using phantom types.
 
 ```typescript
 import { EntityId } from '@stratix/primitives';
@@ -137,78 +255,112 @@ type UserId = EntityId<'User'>;
 type OrderId = EntityId<'Order'>;
 
 const userId = EntityId.create<'User'>();
-console.log(userId.toString()); // 'usr_1a2b3c4d5e6f'
+console.log(userId.toString()); // "550e8400-e29b-41d4-a716-446655440000"
 
-const orderId = EntityId.fromString<'Order'>('ord_abc123');
-console.log(orderId.toString()); // 'ord_abc123'
+const orderId = EntityId.fromString<'Order'>('550e8400-e29b-41d4-a716-446655440000');
 
-// Type-safe - cannot compare different entity types
-userId.equals(orderId); // TypeScript error
+// Type-safe - cannot mix different entity types
+function processUser(id: UserId) { }
+processUser(userId); // OK
+processUser(orderId); // TypeScript error
 ```
 
-## Advanced Value Objects
+## Creating Custom Value Objects
 
-### Complex Value Object: Address
+While Stratix provides many built-in value objects, you can create your own for domain-specific concepts.
+
+### Complex Value Object: Price
+
+A price that includes tax calculations and discount support.
 
 ```typescript
-interface AddressProps {
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
+import { ValueObject } from '@stratix/primitives';
+import { Money, Currency, Percentage } from '@stratix/primitives';
+
+interface PriceProps {
+  baseAmount: Money;
+  taxRate: Percentage;
+  discount?: Percentage;
 }
 
-class Address extends ValueObject<AddressProps> {
-  get street(): string {
-    return this.props.street;
+class Price extends ValueObject<PriceProps> {
+  get baseAmount(): Money {
+    return this.props.baseAmount;
   }
 
-  get city(): string {
-    return this.props.city;
+  get taxRate(): Percentage {
+    return this.props.taxRate;
   }
 
-  get state(): string {
-    return this.props.state;
+  get discount(): Percentage | undefined {
+    return this.props.discount;
   }
 
-  get zipCode(): string {
-    return this.props.zipCode;
+  get taxAmount(): Money {
+    return this.props.baseAmount.multiply(this.props.taxRate.asDecimal());
   }
 
-  get country(): string {
-    return this.props.country;
+  get discountAmount(): Money {
+    if (!this.props.discount) {
+      return Money.create(0, this.props.baseAmount.currency);
+    }
+    return this.props.baseAmount.multiply(this.props.discount.asDecimal());
   }
 
-  static create(props: AddressProps): Result<Address, DomainError> {
-    // Validate all fields
-    if (!props.street || props.street.trim().length === 0) {
-      return Failure.create(new DomainError('EMPTY_STREET', 'Street is required'));
+  get total(): Result<Money, DomainError> {
+    const afterDiscountResult = this.props.baseAmount.subtract(this.discountAmount);
+    if (afterDiscountResult.isFailure) {
+      return afterDiscountResult;
     }
 
-    if (!props.city || props.city.trim().length === 0) {
-      return Failure.create(new DomainError('EMPTY_CITY', 'City is required'));
-    }
-
-    if (!props.zipCode || !/^\d{5}(-\d{4})?$/.test(props.zipCode)) {
-      return Failure.create(new DomainError('INVALID_ZIP_CODE', 'Invalid zip code'));
-    }
-
-    return Success.create(new Address(props));
+    return afterDiscountResult.value.add(this.taxAmount);
   }
 
-  format(): string {
-    return `${this.props.street}, ${this.props.city}, ${this.props.state} ${this.props.zipCode}, ${this.props.country}`;
+  static create(
+    baseAmount: Money,
+    taxRate: Percentage,
+    discount?: Percentage
+  ): Price {
+    return new Price({ baseAmount, taxRate, discount });
   }
 
-  equals(other: Address): boolean {
-    return (
-      this.props.street === other.props.street &&
-      this.props.city === other.props.city &&
-      this.props.state === other.props.state &&
-      this.props.zipCode === other.props.zipCode &&
-      this.props.country === other.props.country
-    );
+  applyDiscount(discount: Percentage): Price {
+    return new Price({
+      baseAmount: this.props.baseAmount,
+      taxRate: this.props.taxRate,
+      discount
+    });
+  }
+
+  protected getEqualityComponents(): unknown[] {
+    return [
+      this.props.baseAmount,
+      this.props.taxRate,
+      this.props.discount
+    ];
+  }
+}
+
+// Usage
+const baseAmount = Money.create(100, Currency.USD);
+const taxRate = Percentage.fromPercentage(8.5); // 8.5% tax
+
+if (baseAmount.isSuccess && taxRate.isSuccess) {
+  const price = Price.create(baseAmount.value, taxRate.value);
+  const totalResult = price.total;
+
+  if (totalResult.isSuccess) {
+    console.log(totalResult.value.format()); // "$108.50"
+  }
+
+  const discount = Percentage.fromPercentage(10);
+  if (discount.isSuccess) {
+    const discounted = price.applyDiscount(discount.value);
+    const discountedTotal = discounted.total;
+
+    if (discountedTotal.isSuccess) {
+      console.log(discountedTotal.value.format()); // "$97.65" (10% off, then tax)
+    }
   }
 }
 ```
