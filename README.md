@@ -24,6 +24,9 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 **1. AI Agents as First-Class Citizens**
 - Agents extend domain entities (not service classes)
 - Type-safe LLM providers (OpenAI, Anthropic)
+- Streaming support for real-time responses
+- Embeddings for semantic search (OpenAI)
+- Structured output with JSON schemas (OpenAI)
 - Production patterns: budget tracking, retries, audit logging
 - Mock providers for deterministic testing
 - Observable by default
@@ -38,6 +41,7 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 - Domain-Driven Design patterns built-in
 - Result pattern eliminates exceptions
 - Phantom types prevent ID mixing
+- 11 built-in value objects (Money, Email, UUID, etc.)
 - Comprehensive test utilities
 
 ## Quick Start
@@ -54,6 +58,7 @@ pnpm start
 - `ai-agent-starter` - Learn AI agents progressively (FREE to start)
 - `rest-api` - REST API with DDD/CQRS
 - `microservice` - Event-driven architecture
+- `monolith` - Modular monolith with bounded contexts
 - `worker` - Background job processing
 - `minimal` - Start from scratch
 
@@ -85,11 +90,21 @@ class CustomerSupportAgent extends AIAgent<Ticket, Response> {
   }
 }
 
-// Set up orchestration
+// Set up provider and orchestration
+const provider = new OpenAIProvider({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 const orchestrator = new StratixAgentOrchestrator(
   repository,
   auditLog,
-  new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY })
+  provider,
+  {
+    auditEnabled: true,
+    budgetEnforcement: true,
+    autoRetry: true,
+    maxRetries: 3
+  }
 );
 
 // Execute with budget control
@@ -147,8 +162,17 @@ class DataAgent extends AIAgent<Query, Analysis> {
 
 ### Testing with Mocks
 ```typescript
-import { MockLLMProvider } from '@stratix/testing';
+import { AgentTester, MockLLMProvider } from '@stratix/testing';
 
+// High-level testing
+const tester = new AgentTester(agent, { timeout: 5000 });
+const result = await tester.run(input);
+
+expectSuccess(result);
+expectCostWithinBudget(result, 0.10);
+expectDurationWithinLimit(result, 2000);
+
+// Or use MockLLMProvider directly
 const mockProvider = new MockLLMProvider({
   responses: ['Mocked response'],
   cost: 0.001
@@ -207,9 +231,10 @@ Dependencies flow downward. Clean architecture. Zero coupling.
 npm create stratix my-learning -- --template ai-agent-starter
 cd my-learning && pnpm start
 
-# Level 1: Echo Agent (no API key)
-# Level 2: Mock Agent (testing patterns)
-# Level 3-6: Real LLM, Tools, Memory, Production
+# Level 1: Echo Agent (no API key) - Available
+# Level 2: Calculator Agent (with tools) - Available
+# Level 3: Customer Support (OpenAI/Anthropic) - Coming soon
+# Level 4: Data Analysis (SQL + visualizations) - Coming soon
 ```
 
 **Example Applications**
@@ -227,17 +252,17 @@ cd examples/rest-api && pnpm dev
 ## Core Packages
 
 **AI Agent System:**
-- `@stratix/primitives` - AIAgent, AgentContext, AgentResult
-- `@stratix/impl-ai-agents` - Orchestrator, audit logging
-- `@stratix/ext-ai-agents-openai` - OpenAI provider
-- `@stratix/ext-ai-agents-anthropic` - Anthropic provider
-- `@stratix/testing` - MockLLMProvider, test utilities
+- `@stratix/primitives` - AIAgent, AgentContext, AgentResult, 11 value objects
+- `@stratix/impl-ai-agents` - Orchestrator, budget enforcement, audit logging
+- `@stratix/ext-ai-agents-openai` - OpenAI provider (streaming, embeddings, structured output)
+- `@stratix/ext-ai-agents-anthropic` - Anthropic provider (streaming, tool use)
+- `@stratix/testing` - AgentTester, MockLLMProvider, assertions, test utilities
 
 **Framework:**
-- `@stratix/abstractions` - Interfaces (Container, EventBus, Logger)
-- `@stratix/runtime` - Plugin system, ApplicationBuilder
-- `@stratix/impl-*` - DI, CQRS, logging implementations
-- `@stratix/ext-*` - PostgreSQL, Redis, RabbitMQ, observability
+- `@stratix/abstractions` - Interfaces (Container, EventBus, Logger, Repository)
+- `@stratix/runtime` - Plugin system, ApplicationBuilder, lifecycle management
+- `@stratix/impl-*` - DI (Awilix), CQRS (in-memory), logging (console)
+- `@stratix/ext-*` - PostgreSQL, MongoDB, Redis, RabbitMQ, OpenTelemetry, Secrets
 
 ## Why Stratix?
 
