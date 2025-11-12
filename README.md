@@ -10,8 +10,12 @@ Build scalable, maintainable applications with production-ready AI agents, Domai
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Version](https://img.shields.io/badge/version-0.x-orange.svg)](https://github.com/pcarvajal/stratix)
+[![Status](https://img.shields.io/badge/status-pre--release-yellow.svg)](https://github.com/pcarvajal/stratix)
 
 </div>
+
+> **Pre-release Notice (0.x)**: Stratix is in active development. The API may change without prior notice until version 1.0.0. Recommended for early adopters and testing. See [Versioning Policy](./docs/website/docs/getting-started/versioning.md) for details.
 
 ## Why Stratix?
 

@@ -2,6 +2,10 @@
 
 Welcome to **Stratix**, the TypeScript framework with AI Agents as First-Class Citizens.
 
+:::caution Pre-release Status (0.x)
+Stratix is currently in active development (version 0.x). The API may change without prior notice until version 1.0.0. Recommended for early adopters and testing. See our [Versioning Policy](./versioning.md) for details.
+:::
+
 ## What is Stratix?
 
 Stratix is a modern TypeScript framework that brings **AI Agents**, **Domain-Driven Design (DDD)**, **Hexagonal Architecture**, and **CQRS** patterns to your applications with production-ready AI integration, minimal boilerplate, and maximum type safety.

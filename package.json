@@ -1,6 +1,6 @@
 {
   "name": "stratix",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Modern TypeScript framework with Domain-Driven Design, hexagonal architecture, and native AI agent support",
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
