@@ -2,22 +2,37 @@
 
 RabbitMQ extension for Stratix framework providing durable messaging with event bus capabilities.
 
+## Installation
+
+```bash
+pnpm add @stratix/ext-rabbitmq
+```
+
 ## Features
 
 - Durable message queuing
-- Event bus with topic-based routing
+- Event bus implementation with topic-based routing
 - Automatic retries with exponential backoff
 - Dead letter queues for failed messages
 - Message acknowledgment
 - Connection health checks
+- Configurable exchange types (topic, direct, fanout, headers)
+- Prefetch control for consumers
 
-## Installation
+## Configuration
 
-```bash
-npm install @stratix/ext-rabbitmq
+```typescript
+interface RabbitMQConfig {
+  url: string;                    // Required: RabbitMQ connection URL
+  exchangeName?: string;          // Default: 'events'
+  exchangeType?: 'topic' | 'direct' | 'fanout' | 'headers';  // Default: 'topic'
+  prefetch?: number;              // Default: 10
+  enableDLQ?: boolean;            // Default: true
+  maxRetries?: number;            // Default: 3
+}
 ```
 
-## Usage
+## Quick Example
 
 ```typescript
 import { ApplicationBuilder } from '@stratix/runtime';
@@ -29,6 +44,7 @@ const app = await ApplicationBuilder.create()
     'rabbitmq': {
       url: 'amqp://localhost:5672',
       exchangeName: 'events',
+      exchangeType: 'topic',
       prefetch: 10,
       enableDLQ: true,
       maxRetries: 3
@@ -40,17 +56,37 @@ await app.start();
 
 // Access event bus
 const eventBus = app.resolve('rabbitmq:eventBus');
-await eventBus.publish([event]);
+
+// Publish events
+await eventBus.publish([
+  {
+    id: '123',
+    type: 'UserCreated',
+    data: { userId: 'user-123', email: 'john@example.com' },
+    timestamp: new Date()
+  }
+]);
+
+// Subscribe to events
+await eventBus.subscribe('UserCreated', async (event) => {
+  console.log('User created:', event.data);
+});
 ```
 
-## Configuration
+## Exports
 
-- `url`: RabbitMQ connection URL (required)
-- `exchangeName`: Exchange name for events (default: 'events')
-- `exchangeType`: Exchange type (default: 'topic')
-- `prefetch`: Prefetch count for consumers (default: 10)
-- `enableDLQ`: Enable dead letter queue (default: true)
-- `maxRetries`: Max retry attempts (default: 3)
+- `RabbitMQPlugin` - Main plugin class
+- `RabbitMQConfig` - Configuration interface
+- `RabbitMQEventBus` - Event bus implementation
+- `RabbitMQEventBusOptions` - Event bus configuration options
+
+## Services Registered
+
+The plugin registers the following services in the DI container:
+
+- `rabbitmq:eventBus` - RabbitMQEventBus instance
+- `rabbitmq:connection` - Native AMQP connection
+- `rabbitmq:channel` - Native AMQP channel
 
 ## License
 

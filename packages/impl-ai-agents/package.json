@@ -20,7 +20,8 @@
     "clean": "rm -rf dist"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "keywords": [
     "ai",
