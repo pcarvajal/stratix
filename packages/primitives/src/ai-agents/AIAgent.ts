@@ -19,7 +19,7 @@ import type { AgentMemory } from './AgentMemory.js';
  *   readonly name = 'Customer Support Agent';
  *   readonly description = 'Handles customer support tickets';
  *   readonly version = AgentVersionFactory.create('1.0.0');
- *   readonly capabilities = [AgentCapability.CUSTOMER_SUPPORT];
+ *   readonly capabilities = [AgentCapabilities.CUSTOMER_SUPPORT, 'ticket_routing'];
  *   readonly model = {
  *     provider: 'anthropic',
  *     model: 'claude-3-sonnet',

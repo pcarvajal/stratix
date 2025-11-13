@@ -642,15 +642,41 @@ interface AgentExecutionMetadata {
 
 ### AgentCapability
 
-Enumeration of agent capabilities.
+Type for agent capability identifiers. Can be any string, allowing for custom capabilities.
 
 ```typescript
-enum AgentCapability {
-  TEXT_GENERATION = 'text_generation',
-  FUNCTION_CALLING = 'function_calling',
-  STREAMING = 'streaming',
-  EMBEDDINGS = 'embeddings'
-}
+type AgentCapability = string;
+```
+
+**Built-in Capabilities:**
+
+The framework provides common capabilities as constants for convenience:
+
+```typescript
+const AgentCapabilities = {
+  CUSTOMER_SUPPORT: 'customer_support',
+  DATA_ANALYSIS: 'data_analysis',
+  KNOWLEDGE_RETRIEVAL: 'knowledge_retrieval',
+  SENTIMENT_ANALYSIS: 'sentiment_analysis',
+  SQL_GENERATION: 'sql_generation',
+  VISUALIZATION: 'visualization',
+  CONTENT_CREATION: 'content_creation',
+  CODE_GENERATION: 'code_generation',
+  DECISION_SUPPORT: 'decision_support',
+} as const;
+```
+
+**Usage:**
+
+```typescript
+// Using built-in capabilities
+capabilities: [AgentCapabilities.CUSTOMER_SUPPORT, AgentCapabilities.DATA_ANALYSIS]
+
+// Using custom capabilities
+capabilities: ['legal_advice', 'medical_diagnosis', 'translation']
+
+// Mixing both
+capabilities: [AgentCapabilities.CODE_GENERATION, 'custom_capability']
 ```
 
 ---

@@ -4,7 +4,7 @@ import { AgentResult } from '../../ai-agents/AgentResult.js';
 import { AgentContext } from '../../ai-agents/AgentContext.js';
 import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
 import { EntityId } from '../../core/EntityId.js';
-import { AgentVersionFactory, AgentCapability } from '../../ai-agents/types.js';
+import { AgentVersionFactory, AgentCapabilities } from '../../ai-agents/types.js';
 import type { ModelConfig } from '../../ai-agents/types.js';
 
 // Test implementation of AIAgent
@@ -12,7 +12,7 @@ class TestAgent extends AIAgent<{ input: string }, { output: string }> {
   readonly name = 'Test Agent';
   readonly description = 'A simple test agent';
   readonly version = AgentVersionFactory.create('1.0.0');
-  readonly capabilities = [AgentCapability.CUSTOMER_SUPPORT];
+  readonly capabilities = [AgentCapabilities.CUSTOMER_SUPPORT];
   readonly model: ModelConfig = {
     provider: 'test',
     model: 'test-model',
@@ -40,7 +40,7 @@ describe('AIAgent', () => {
       expect(agent.name).toBe('Test Agent');
       expect(agent.description).toBe('A simple test agent');
       expect(agent.version.value).toBe('1.0.0');
-      expect(agent.capabilities).toContain(AgentCapability.CUSTOMER_SUPPORT);
+      expect(agent.capabilities).toContain(AgentCapabilities.CUSTOMER_SUPPORT);
     });
 
     it('should have model configuration', () => {
@@ -58,8 +58,8 @@ describe('AIAgent', () => {
     });
 
     it('should check capabilities', () => {
-      expect(agent.hasCapability(AgentCapability.CUSTOMER_SUPPORT)).toBe(true);
-      expect(agent.hasCapability(AgentCapability.DATA_ANALYSIS)).toBe(false);
+      expect(agent.hasCapability(AgentCapabilities.CUSTOMER_SUPPORT)).toBe(true);
+      expect(agent.hasCapability(AgentCapabilities.DATA_ANALYSIS)).toBe(false);
     });
   });
 
@@ -129,23 +129,23 @@ describe('AIAgent', () => {
       expect(metadata.name).toBe('Test Agent');
       expect(metadata.description).toBe('A simple test agent');
       expect(metadata.version).toBe('1.0.0');
-      expect(metadata.capabilities).toContain(AgentCapability.CUSTOMER_SUPPORT);
+      expect(metadata.capabilities).toContain(AgentCapabilities.CUSTOMER_SUPPORT);
       expect(metadata.model.provider).toBe('test');
     });
 
     it('should support multiple capabilities', () => {
       const agent = new (class extends TestAgent {
         readonly capabilities = [
-          AgentCapability.CUSTOMER_SUPPORT,
-          AgentCapability.DATA_ANALYSIS,
-          AgentCapability.KNOWLEDGE_RETRIEVAL,
+          AgentCapabilities.CUSTOMER_SUPPORT,
+          AgentCapabilities.DATA_ANALYSIS,
+          AgentCapabilities.KNOWLEDGE_RETRIEVAL,
         ];
       })(EntityId.create<'AIAgent'>(), new Date(), new Date());
 
       expect(agent.capabilities).toHaveLength(3);
-      expect(agent.hasCapability(AgentCapability.CUSTOMER_SUPPORT)).toBe(true);
-      expect(agent.hasCapability(AgentCapability.DATA_ANALYSIS)).toBe(true);
-      expect(agent.hasCapability(AgentCapability.KNOWLEDGE_RETRIEVAL)).toBe(true);
+      expect(agent.hasCapability(AgentCapabilities.CUSTOMER_SUPPORT)).toBe(true);
+      expect(agent.hasCapability(AgentCapabilities.DATA_ANALYSIS)).toBe(true);
+      expect(agent.hasCapability(AgentCapabilities.KNOWLEDGE_RETRIEVAL)).toBe(true);
     });
 
     it('should support semantic versioning', () => {

@@ -1,7 +1,7 @@
 import {
   AIAgent,
   AgentResult,
-  AgentCapability,
+  AgentCapabilities,
   AgentVersionFactory,
   EntityId,
 } from '@stratix/primitives';
@@ -41,9 +41,9 @@ export class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse
   readonly description = 'Handles customer support tickets with intelligent, empathetic responses';
   readonly version = AgentVersionFactory.create('1.0.0');
   readonly capabilities = [
-    AgentCapability.CUSTOMER_SUPPORT,
-    AgentCapability.KNOWLEDGE_RETRIEVAL,
-    AgentCapability.SENTIMENT_ANALYSIS,
+    AgentCapabilities.CUSTOMER_SUPPORT,
+    AgentCapabilities.KNOWLEDGE_RETRIEVAL,
+    AgentCapabilities.SENTIMENT_ANALYSIS,
   ];
   readonly model: ModelConfig = {
     provider: 'openai',

@@ -11,6 +11,7 @@ export type { AgentMemory } from './AgentMemory.js';
 export type {
   AgentId,
   AgentVersion,
+  AgentCapability,
   ModelConfig,
   AgentMessage,
   AgentCost,
@@ -21,4 +22,4 @@ export type {
   LLMCall,
 } from './types.js';
 
-export { AgentCapability, AgentVersionFactory } from './types.js';
+export { AgentCapabilities, AgentVersionFactory } from './types.js';

@@ -337,14 +337,14 @@ Stratix treats AI agents as first-class domain entities with their own base clas
 Base class for building AI agents as aggregate roots.
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentCapabilities } from '@stratix/primitives';
 import type { AgentVersion, AgentCapability, ModelConfig } from '@stratix/primitives';
 
 class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse> {
   readonly name = 'Customer Support Agent';
   readonly description = 'Handles customer support tickets';
   readonly version: AgentVersion = { major: 1, minor: 0, patch: 0 };
-  readonly capabilities: AgentCapability[] = ['CUSTOMER_SUPPORT'];
+  readonly capabilities: AgentCapability[] = [AgentCapabilities.CUSTOMER_SUPPORT, 'ticket_routing'];
   readonly model: ModelConfig = {
     provider: 'anthropic',
     model: 'claude-3-sonnet',
