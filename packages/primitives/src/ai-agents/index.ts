@@ -7,6 +7,18 @@ export { ExecutionTrace } from './ExecutionTrace.js';
 // Memory
 export type { AgentMemory } from './AgentMemory.js';
 
+// Domain Events
+export type {
+  AIAgentDomainEvent,
+  AgentExecutionStarted,
+  AgentExecutionCompleted,
+  AgentExecutionFailed,
+  AgentToolUsed,
+  AgentContextUpdated,
+  AgentMemoryStored,
+  AIAgentEvent,
+} from './events.js';
+
 // Types
 export type {
   AgentId,

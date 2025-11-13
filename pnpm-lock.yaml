@@ -166,6 +166,19 @@ importers:
         specifier: ^5.3.0
         version: 5.9.3
 
+  examples/ai-agents/event-driven-agent:
+    dependencies:
+      '@stratix/primitives':
+        specifier: workspace:*
+        version: link:../../../packages/primitives
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.24
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+
   examples/rest-api:
     dependencies:
       '@stratix/abstractions':
