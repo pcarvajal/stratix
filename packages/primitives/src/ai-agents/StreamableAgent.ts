@@ -34,12 +34,12 @@ export interface StreamOptions {
   /**
    * Callback invoked for each chunk
    */
-  onChunk?: (chunk: StreamChunk<any>) => void;
+  onChunk?: (chunk: StreamChunk<unknown>) => void;
 
   /**
    * Callback invoked when streaming completes
    */
-  onComplete?: (result: AgentResult<any>) => void;
+  onComplete?: (result: AgentResult<unknown>) => void;
 
   /**
    * Callback invoked when streaming encounters an error
@@ -290,7 +290,7 @@ export class StreamingHelper {
 
             // If ended and no more chunks, we're done
             if (ended) {
-              return { value: undefined as any, done: true };
+              return { value: undefined, done: true };
             }
 
             // Wait for next chunk

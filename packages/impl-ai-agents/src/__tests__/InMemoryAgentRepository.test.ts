@@ -5,7 +5,8 @@ import {
   AgentResult,
   EntityId,
   AgentVersionFactory,
-  AgentCapability,
+  AgentCapabilities,
+  type AgentCapability,
   type ModelConfig,
 } from '@stratix/primitives';
 
@@ -45,7 +46,7 @@ describe('InMemoryAgentRepository', () => {
 
   describe('save and findById', () => {
     it('should save and retrieve an agent', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
 
       await repository.save(agent);
       const retrieved = await repository.findById(agent.getAgentId());
@@ -62,7 +63,7 @@ describe('InMemoryAgentRepository', () => {
     });
 
     it('should update existing agent', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
       // Update agent (save again with same ID)
@@ -75,15 +76,15 @@ describe('InMemoryAgentRepository', () => {
 
   describe('findByCapability', () => {
     it('should find agents by capability', async () => {
-      const agent1 = new TestAgent('Support1', [AgentCapability.CUSTOMER_SUPPORT]);
-      const agent2 = new TestAgent('Support2', [AgentCapability.CUSTOMER_SUPPORT]);
-      const agent3 = new TestAgent('Analysis1', [AgentCapability.DATA_ANALYSIS]);
+      const agent1 = new TestAgent('Support1', [AgentCapabilities.CUSTOMER_SUPPORT]);
+      const agent2 = new TestAgent('Support2', [AgentCapabilities.CUSTOMER_SUPPORT]);
+      const agent3 = new TestAgent('Analysis1', [AgentCapabilities.DATA_ANALYSIS]);
 
       await repository.save(agent1);
       await repository.save(agent2);
       await repository.save(agent3);
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
 
       expect(supportAgents).toHaveLength(2);
       expect(supportAgents.some((a) => a.name === 'Support1')).toBe(true);
@@ -91,25 +92,25 @@ describe('InMemoryAgentRepository', () => {
     });
 
     it('should return empty array for non-existent capability', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
-      const agents = await repository.findByCapability(AgentCapability.DATA_ANALYSIS);
+      const agents = await repository.findByCapability(AgentCapabilities.DATA_ANALYSIS);
 
       expect(agents).toEqual([]);
     });
 
     it('should find agents with multiple capabilities', async () => {
       const agent = new TestAgent('MultiAgent', [
-        AgentCapability.CUSTOMER_SUPPORT,
-        AgentCapability.KNOWLEDGE_RETRIEVAL,
+        AgentCapabilities.CUSTOMER_SUPPORT,
+        AgentCapabilities.KNOWLEDGE_RETRIEVAL,
       ]);
 
       await repository.save(agent);
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       const knowledgeAgents = await repository.findByCapability(
-        AgentCapability.KNOWLEDGE_RETRIEVAL
+        AgentCapabilities.KNOWLEDGE_RETRIEVAL
       );
 
       expect(supportAgents).toHaveLength(1);
@@ -119,22 +120,22 @@ describe('InMemoryAgentRepository', () => {
     });
 
     it('should update capability index when agent is updated', async () => {
-      const agent1 = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent1 = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent1);
 
       // Create new agent with same ID but different capabilities
-      const agent2 = new TestAgent('Agent1Updated', [AgentCapability.DATA_ANALYSIS]);
+      const agent2 = new TestAgent('Agent1Updated', [AgentCapabilities.DATA_ANALYSIS]);
       // Simulate same ID by using the internal structure directly
       const updatedAgent = new (class extends TestAgent {
         getAgentId() {
           return agent1.getAgentId();
         }
-      })('Agent1Updated', [AgentCapability.DATA_ANALYSIS]);
+      })('Agent1Updated', [AgentCapabilities.DATA_ANALYSIS]);
 
       await repository.save(updatedAgent);
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
-      const analysisAgents = await repository.findByCapability(AgentCapability.DATA_ANALYSIS);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
+      const analysisAgents = await repository.findByCapability(AgentCapabilities.DATA_ANALYSIS);
 
       // Old capability should be removed
       expect(supportAgents).toHaveLength(0);
@@ -145,9 +146,9 @@ describe('InMemoryAgentRepository', () => {
 
   describe('findAll', () => {
     it('should return all agents', async () => {
-      const agent1 = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
-      const agent2 = new TestAgent('Agent2', [AgentCapability.DATA_ANALYSIS]);
-      const agent3 = new TestAgent('Agent3', [AgentCapability.KNOWLEDGE_RETRIEVAL]);
+      const agent1 = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
+      const agent2 = new TestAgent('Agent2', [AgentCapabilities.DATA_ANALYSIS]);
+      const agent3 = new TestAgent('Agent3', [AgentCapabilities.KNOWLEDGE_RETRIEVAL]);
 
       await repository.save(agent1);
       await repository.save(agent2);
@@ -167,7 +168,7 @@ describe('InMemoryAgentRepository', () => {
 
   describe('delete', () => {
     it('should delete an agent', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
       await repository.delete(agent.getAgentId());
@@ -177,12 +178,12 @@ describe('InMemoryAgentRepository', () => {
     });
 
     it('should remove agent from capability index', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
       await repository.delete(agent.getAgentId());
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       expect(supportAgents).toHaveLength(0);
     });
 
@@ -195,7 +196,7 @@ describe('InMemoryAgentRepository', () => {
 
   describe('exists', () => {
     it('should return true for existing agent', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
       const exists = await repository.exists(agent.getAgentId());
@@ -213,8 +214,8 @@ describe('InMemoryAgentRepository', () => {
 
   describe('clear', () => {
     it('should clear all agents', async () => {
-      const agent1 = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
-      const agent2 = new TestAgent('Agent2', [AgentCapability.DATA_ANALYSIS]);
+      const agent1 = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
+      const agent2 = new TestAgent('Agent2', [AgentCapabilities.DATA_ANALYSIS]);
 
       await repository.save(agent1);
       await repository.save(agent2);
@@ -226,12 +227,12 @@ describe('InMemoryAgentRepository', () => {
     });
 
     it('should clear capability indexes', async () => {
-      const agent = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
       repository.clear();
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       expect(supportAgents).toHaveLength(0);
     });
   });
@@ -240,11 +241,11 @@ describe('InMemoryAgentRepository', () => {
     it('should return agent count', async () => {
       expect(repository.count()).toBe(0);
 
-      const agent1 = new TestAgent('Agent1', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent1 = new TestAgent('Agent1', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent1);
       expect(repository.count()).toBe(1);
 
-      const agent2 = new TestAgent('Agent2', [AgentCapability.DATA_ANALYSIS]);
+      const agent2 = new TestAgent('Agent2', [AgentCapabilities.DATA_ANALYSIS]);
       await repository.save(agent2);
       expect(repository.count()).toBe(2);
 
@@ -256,29 +257,29 @@ describe('InMemoryAgentRepository', () => {
   describe('Real-world usage patterns', () => {
     it('should handle multiple agents with overlapping capabilities', async () => {
       const agent1 = new TestAgent('Support+Knowledge', [
-        AgentCapability.CUSTOMER_SUPPORT,
-        AgentCapability.KNOWLEDGE_RETRIEVAL,
+        AgentCapabilities.CUSTOMER_SUPPORT,
+        AgentCapabilities.KNOWLEDGE_RETRIEVAL,
       ]);
 
       const agent2 = new TestAgent('Support+Sentiment', [
-        AgentCapability.CUSTOMER_SUPPORT,
-        AgentCapability.SENTIMENT_ANALYSIS,
+        AgentCapabilities.CUSTOMER_SUPPORT,
+        AgentCapabilities.SENTIMENT_ANALYSIS,
       ]);
 
       const agent3 = new TestAgent('Knowledge+Translation', [
-        AgentCapability.KNOWLEDGE_RETRIEVAL,
-        AgentCapability.TRANSLATION,
+        AgentCapabilities.KNOWLEDGE_RETRIEVAL,
+        'translation',
       ]);
 
       await repository.save(agent1);
       await repository.save(agent2);
       await repository.save(agent3);
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       const knowledgeAgents = await repository.findByCapability(
-        AgentCapability.KNOWLEDGE_RETRIEVAL
+        AgentCapabilities.KNOWLEDGE_RETRIEVAL
       );
-      const translationAgents = await repository.findByCapability(AgentCapability.TRANSLATION);
+      const translationAgents = await repository.findByCapability('translation');
 
       expect(supportAgents).toHaveLength(2);
       expect(knowledgeAgents).toHaveLength(2);
@@ -287,14 +288,14 @@ describe('InMemoryAgentRepository', () => {
 
     it('should handle agent lifecycle', async () => {
       // Register agent
-      const agent = new TestAgent('CustomerSupport', [AgentCapability.CUSTOMER_SUPPORT]);
+      const agent = new TestAgent('CustomerSupport', [AgentCapabilities.CUSTOMER_SUPPORT]);
       await repository.save(agent);
 
       expect(await repository.exists(agent.getAgentId())).toBe(true);
       expect(repository.count()).toBe(1);
 
       // Find agent by capability
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       expect(supportAgents).toHaveLength(1);
 
       // Delete agent
@@ -304,7 +305,7 @@ describe('InMemoryAgentRepository', () => {
       expect(repository.count()).toBe(0);
 
       const supportAgentsAfter = await repository.findByCapability(
-        AgentCapability.CUSTOMER_SUPPORT
+        AgentCapabilities.CUSTOMER_SUPPORT
       );
       expect(supportAgentsAfter).toHaveLength(0);
     });
@@ -312,7 +313,7 @@ describe('InMemoryAgentRepository', () => {
     it('should handle bulk operations', async () => {
       const agents = Array.from(
         { length: 10 },
-        (_, i) => new TestAgent(`Agent${i}`, [AgentCapability.CUSTOMER_SUPPORT])
+        (_, i) => new TestAgent(`Agent${i}`, [AgentCapabilities.CUSTOMER_SUPPORT])
       );
 
       // Save all agents
@@ -322,7 +323,7 @@ describe('InMemoryAgentRepository', () => {
 
       expect(repository.count()).toBe(10);
 
-      const supportAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const supportAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       expect(supportAgents).toHaveLength(10);
 
       // Delete half
@@ -332,7 +333,7 @@ describe('InMemoryAgentRepository', () => {
 
       expect(repository.count()).toBe(5);
 
-      const remainingAgents = await repository.findByCapability(AgentCapability.CUSTOMER_SUPPORT);
+      const remainingAgents = await repository.findByCapability(AgentCapabilities.CUSTOMER_SUPPORT);
       expect(remainingAgents).toHaveLength(5);
     });
   });
