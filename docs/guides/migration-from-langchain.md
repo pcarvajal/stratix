@@ -37,7 +37,7 @@ This guide helps you migrate your LangChain applications to Stratix AI Agent Fra
 | `langchain/llms/anthropic` | `@stratix/ext-ai-agents-anthropic`       |
 | `langchain/chains`         | `@stratix/primitives` (AIAgent)          |
 | `langchain/tools`          | `@stratix/abstractions` (AgentTool)      |
-| `langchain/memory`         | `@stratix/primitives` (AgentMemory)      |
+| `langchain/memory`         | `@stratix/primitives` (AgentMemory interface), `@stratix/impl-ai-agents` (InMemoryAgentMemory) |
 | `langchain/agents`         | `@stratix/impl-ai-agents` (Orchestrator) |
 
 ## Migration Examples

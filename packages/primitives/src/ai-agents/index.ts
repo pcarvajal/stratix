@@ -6,7 +6,6 @@ export { ExecutionTrace } from './ExecutionTrace.js';
 
 // Memory
 export type { AgentMemory } from './AgentMemory.js';
-export { InMemoryAgentMemory } from './AgentMemory.js';
 
 // Types
 export type {

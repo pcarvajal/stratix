@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { InMemoryAgentMemory } from '../../ai-agents/AgentMemory.js';
+import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
 
 describe('InMemoryAgentMemory', () => {
   let memory: InMemoryAgentMemory;

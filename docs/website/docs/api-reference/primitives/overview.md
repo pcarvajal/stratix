@@ -420,22 +420,33 @@ const context: AgentContext = {
 
 ### AgentMemory
 
-Interface for agent memory persistence.
+Interface for agent memory persistence. The interface is in `@stratix/primitives` as it's a domain concept.
+
+**Note:** The `InMemoryAgentMemory` implementation has been moved to `@stratix/impl-ai-agents`.
 
 ```typescript
 import type { AgentMemory } from '@stratix/primitives';
+import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
 
+// Using the built-in implementation
+const memory = new InMemoryAgentMemory();
+
+// Or create a custom implementation
 class RedisAgentMemory implements AgentMemory {
-  async store(key: string, value: unknown): Promise<void> {
+  async store(key: string, value: unknown, type: 'short' | 'long'): Promise<void> {
     // Store in Redis
   }
 
-  async retrieve(key: string): Promise<unknown | undefined> {
+  async retrieve(key: string): Promise<unknown> {
     // Retrieve from Redis
   }
 
-  async delete(key: string): Promise<void> {
-    // Delete from Redis
+  async search(query: string, limit: number): Promise<unknown[]> {
+    // Search in Redis
+  }
+
+  async clear(type: 'short' | 'long' | 'all'): Promise<void> {
+    // Clear Redis
   }
 }
 ```

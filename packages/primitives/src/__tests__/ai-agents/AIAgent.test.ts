@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { AIAgent } from '../../ai-agents/AIAgent.js';
 import { AgentResult } from '../../ai-agents/AgentResult.js';
 import { AgentContext } from '../../ai-agents/AgentContext.js';
-import { InMemoryAgentMemory } from '../../ai-agents/AgentMemory.js';
+import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
 import { EntityId } from '../../core/EntityId.js';
 import { AgentVersionFactory, AgentCapability } from '../../ai-agents/types.js';
 import type { ModelConfig } from '../../ai-agents/types.js';

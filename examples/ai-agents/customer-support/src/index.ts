@@ -1,8 +1,9 @@
-import { AgentContext, InMemoryAgentMemory } from '@stratix/primitives';
+import { AgentContext } from '@stratix/primitives';
 import {
   StratixAgentOrchestrator,
   InMemoryAgentRepository,
-  InMemoryExecutionAuditLog
+  InMemoryExecutionAuditLog,
+  InMemoryAgentMemory
 } from '@stratix/impl-ai-agents';
 import { OpenAIProvider } from '@stratix/ext-ai-agents-openai';
 import { CustomerSupportAgent } from './CustomerSupportAgent.js';
