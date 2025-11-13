@@ -52,7 +52,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: pnpm -r --filter '!website' --workspace-concurrency=1 build
+        run: pnpm -r --filter '!website' --filter '!./examples/**' --sort --workspace-concurrency=1 build
 
       - name: Type check all packages
         run: pnpm -r --filter '!website' typecheck
@@ -84,7 +84,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: pnpm -r --filter '!website' --workspace-concurrency=1 build
+        run: pnpm -r --filter '!website' --filter '!./examples/**' --sort --workspace-concurrency=1 build
 
       - name: Run tests
         run: pnpm test
@@ -120,7 +120,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build all packages
-        run: pnpm -r --filter '!website' --workspace-concurrency=1 build
+        run: pnpm -r --filter '!website' --filter '!./examples/**' --sort --workspace-concurrency=1 build
 
       - name: Check build artifacts
         run: |

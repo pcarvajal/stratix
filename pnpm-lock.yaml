@@ -569,9 +569,6 @@ importers:
 
   packages/primitives:
     devDependencies:
-      '@stratix/impl-ai-agents':
-        specifier: workspace:*
-        version: link:../impl-ai-agents
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.24
