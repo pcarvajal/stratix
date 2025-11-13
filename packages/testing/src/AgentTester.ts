@@ -168,7 +168,7 @@ export class AgentTester {
     const timeout = this.options.timeout!;
 
     return Promise.race([
-      agent.execute(input),
+      agent.executeWithEvents(input),
       new Promise<never>((_, reject) => {
         setTimeout(() => {
           reject(new Error(`Test timeout after ${timeout}ms`));
