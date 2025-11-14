@@ -35,13 +35,20 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 - Mock providers for deterministic testing
 - Observable by default
 
-**2. Build Scalable Applications**
+**2. Architectural Evolution Built-In**
+- Bounded Contexts as portable plugins
+- Start with modular monolith
+- Extract microservices with ZERO domain code changes
+- Same code, different deployment
+- Strangler Fig Pattern out-of-the-box
+
+**3. Build Scalable Applications**
 - Hexagonal architecture with 5 layers
 - Plugin system for extensibility
 - Event-driven with CQRS support
 - Container-agnostic dependency injection
 
-**3. Maintainable Applications**
+**4. Maintainable Applications**
 - Domain-Driven Design patterns built-in
 - Result pattern eliminates exceptions
 - Phantom types prevent ID mixing
@@ -60,11 +67,45 @@ pnpm start
 
 **Choose your path:**
 - `ai-agent-starter` - Learn AI agents progressively (FREE to start)
+- `modular-monolith` - Bounded Contexts as Plugins (monolith → microservices)
+- `rest-api-complete` - Production-ready REST API with all extensions
 - `rest-api` - REST API with DDD/CQRS
 - `microservice` - Event-driven architecture
 - `monolith` - Modular monolith with bounded contexts
 - `worker` - Background job processing
 - `minimal` - Start from scratch
+
+## Monolith to Microservices (Zero Rewrite)
+
+Stratix's killer feature: **Bounded Contexts as portable plugins**.
+
+```typescript
+// Modular Monolith - All contexts in one app
+const monolith = await ApplicationBuilder.create()
+  .usePlugin(new ProductsContextPlugin())
+  .usePlugin(new OrdersContextPlugin())
+  .usePlugin(new InventoryContextPlugin())
+  .build();
+```
+
+```typescript
+// Extract Orders to microservice - SAME plugin, ZERO code changes
+const ordersService = await ApplicationBuilder.create()
+  .usePlugin(new PostgresPlugin({ database: 'orders' }))
+  .usePlugin(new RabbitMQEventBusPlugin())
+  .usePlugin(new OrdersContextPlugin())  // Same code!
+  .build();
+```
+
+**What changes:** Only infrastructure plugins and deployment.
+**What stays the same:** Domain code, business logic, repositories, commands, queries.
+
+Generate complete Bounded Context:
+```bash
+stratix generate context Products --props "name:string,price:number"
+```
+
+See [modular-monolith template](packages/create-stratix/templates/modular-monolith) and [migration example](examples/bc-migration).
 
 ## AI Agents in 60 Seconds
 
