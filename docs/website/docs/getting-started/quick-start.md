@@ -23,14 +23,20 @@ Perfect for learning how AI agents work in Stratix with minimal cost (total ~$0.
 
 ### Path 2: Traditional Application
 
-Build a REST API, microservice, or worker application:
+Build a REST API, microservice, or modular monolith:
 
 ```bash
 pnpm create stratix my-shop
 cd my-shop
 ```
 
-Choose from templates: REST API, Microservice, Worker, or Minimal.
+Choose from templates:
+- **modular-monolith** - Bounded Contexts as Plugins (monolith → microservices)
+- **rest-api-complete** - Production REST API with all Phase 1 extensions
+- **rest-api** - Basic REST API with DDD/CQRS
+- **microservice** - Event-driven architecture
+- **worker** - Background job processing
+- **minimal** - Start from scratch
 
 ---
 

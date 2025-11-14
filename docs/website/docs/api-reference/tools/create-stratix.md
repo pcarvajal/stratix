@@ -27,9 +27,11 @@ yarn create stratix
 
 ## Project Templates
 
-Choose from 6 production-ready templates:
+Choose from 8 production-ready templates:
 
-- **REST API** - Complete REST API with authentication, CQRS commands/queries, and repository pattern
+- **Modular Monolith** - Bounded Contexts as Plugins (monolith → microservices with zero rewrite)
+- **REST API Complete** - Production REST API with all Phase 1 extensions (Fastify, Zod, Auth, Errors)
+- **REST API** - Basic REST API with authentication and CQRS pattern
 - **Microservice** - Event-driven service with message queue integration (RabbitMQ)
 - **Monolith** - Modular monolith architecture with bounded contexts
 - **Worker** - Background job processor for async tasks
@@ -59,12 +61,80 @@ npm create stratix@latest my-app \
 
 **Available options:**
 
-- `--template <name>` - Template to use: `rest-api`, `microservice`, `worker`, `monolith`, `ai-agent-starter`, or `minimal`
+- `--template <name>` - Template to use: `modular-monolith`, `rest-api-complete`, `rest-api`, `microservice`, `worker`, `monolith`, `ai-agent-starter`, or `minimal`
 - `--pm <manager>` - Package manager: `npm`, `pnpm`, or `yarn`
 - `--no-git` - Skip git initialization
 - `--skip-install` - Skip dependency installation
 
 ## Template Details
+
+### modular-monolith
+
+**NEW** - Bounded Contexts as portable plugins. Start with monolith, extract microservices with ZERO code changes.
+
+```bash
+npm create stratix@latest my-app --template modular-monolith
+```
+
+**Includes**:
+- 3 complete Bounded Contexts (Products, Orders, Inventory)
+- Each context as self-contained plugin
+- Auto-registration of all CQRS components
+- Complete domain, application, infrastructure layers
+- Migration example to microservice
+
+**Structure**:
+```
+src/
+├── contexts/
+│   ├── products/ProductsContextPlugin.ts + domain + application + infrastructure
+│   ├── orders/OrdersContextPlugin.ts + domain + application + infrastructure
+│   └── inventory/InventoryContextPlugin.ts + domain + application + infrastructure
+└── index.ts (bootstrap with 3 plugins)
+```
+
+**Perfect For**:
+- Teams starting with monolith but planning for microservices
+- Applications needing clear domain boundaries
+- Projects requiring gradual migration path
+- Avoiding big-bang rewrites
+
+**Migration Path**:
+Extract any context to microservice by copying the plugin. See [BC Migration Guide](../../examples/bc-migration.md).
+
+### rest-api-complete
+
+**NEW** - Production-ready REST API with all Phase 1 extensions integrated.
+
+```bash
+npm create stratix@latest my-api --template rest-api-complete
+```
+
+**Includes**:
+- Fastify HTTP server (@stratix/ext-http-fastify)
+- Zod validation (@stratix/ext-validation-zod)
+- Object mappers (@stratix/ext-mappers)
+- Authentication (@stratix/ext-auth)
+- Centralized error handling (@stratix/ext-errors)
+- Product aggregate with Money value object
+- Complete CQRS setup (commands, queries, handlers)
+- Health check endpoints
+- Example API routes
+
+**Endpoints**:
+- `GET /health` - Health status
+- `GET /health/ready` - Readiness probe
+- `GET /health/live` - Liveness probe
+- `POST /api/products` - Create product
+- `GET /api/products` - List products
+- `GET /api/products/:id` - Get product by ID
+- `PUT /api/products/:id` - Update product
+- `DELETE /api/products/:id` - Delete product
+
+**Perfect For**:
+- Production REST APIs
+- Projects needing full validation and error handling
+- Teams wanting best practices out-of-the-box
 
 ### ai-agent-starter
 
@@ -340,13 +410,90 @@ src/
 └── infrastructure/   # Infrastructure layer (persistence, HTTP, external services)
 ```
 
+## Code Generators
+
+Stratix CLI includes powerful code generators to speed up development.
+
+### Generate Bounded Context
+
+Generate a complete Bounded Context with domain, application, and infrastructure layers:
+
+```bash
+stratix generate context Orders --props "customerId:string,total:number,status:string"
+```
+
+**Generates:**
+- `OrdersContextPlugin.ts` - Plugin with auto-registration
+- `domain/entities/Order.ts` - AggregateRoot
+- `domain/events/OrderCreated.ts` - Domain event
+- `domain/repositories/OrderRepository.ts` - Repository interface
+- `application/commands/CreateOrder.ts` + handler
+- `application/queries/GetOrderById.ts` + handler
+- `application/queries/ListOrders.ts` + handler
+- `infrastructure/persistence/InMemoryOrderRepository.ts`
+- `index.ts` - Barrel exports
+
+**Total:** ~13 files ready to use.
+
+### Generate Entity
+
+```bash
+stratix generate entity Product --props "name:string,price:number,stock:number"
+```
+
+**Options:**
+- `--aggregate` - Generate as AggregateRoot (default)
+- `--with-event <name>` - Generate domain event
+- `--with-tests` - Generate test file
+
+### Generate Value Object
+
+```bash
+stratix generate value-object Address --props "street:string,city:string,country:string"
+```
+
+### Generate Command
+
+```bash
+stratix generate command CreateOrder --input "customerId:string,items:OrderItem[]"
+```
+
+**Options:**
+- `--with-tests` - Generate test file
+
+### Generate Query
+
+```bash
+stratix generate query GetOrders --output "orders:Order[]"
+```
+
+### Generate Repository
+
+```bash
+stratix generate repository OrderRepository --entity Order --impl postgres
+```
+
+**Options:**
+- `--impl <type>` - Implementation: `inmemory`, `postgres`, `mongodb`
+- `--with-tests` - Generate test file
+
+### Generate Test
+
+```bash
+stratix generate test OrderHandler --type unit
+```
+
+**Options:**
+- `--type <type>` - Test type: `unit`, `integration`, `e2e`
+
 ## Learn More
 
 - [Stratix Documentation](https://stratix.dev/docs)
 - [GitHub Repository](https://github.com/pcarvajal/stratix)
 - [Examples](https://github.com/pcarvajal/stratix/tree/main/examples)
 - [Quick Start Guide](../../getting-started/quick-start.md)
-- [Project Structure](../../core-concepts/architecture.md)
+- [Bounded Contexts](../../core-concepts/bounded-contexts.md)
+- [BC Migration Guide](../../examples/bc-migration.md)
 
 ## License
 
