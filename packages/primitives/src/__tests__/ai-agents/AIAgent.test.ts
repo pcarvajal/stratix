@@ -2,10 +2,38 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { AIAgent } from '../../ai-agents/AIAgent.js';
 import { AgentResult } from '../../ai-agents/AgentResult.js';
 import { AgentContext } from '../../ai-agents/AgentContext.js';
-import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
 import { EntityId } from '../../core/EntityId.js';
 import { AgentVersionFactory, AgentCapabilities } from '../../ai-agents/types.js';
-import type { ModelConfig } from '../../ai-agents/types.js';
+import type { ModelConfig, AgentMemory, MemoryEntry, MemoryType } from '../../ai-agents/types.js';
+
+// Mock implementation of AgentMemory for testing
+class MockAgentMemory implements AgentMemory {
+  private storage = new Map<string, MemoryEntry>();
+
+  async store(key: string, value: unknown, type: MemoryType): Promise<void> {
+    this.storage.set(key, { value, type, timestamp: new Date() });
+  }
+
+  async retrieve(key: string): Promise<MemoryEntry | null> {
+    return this.storage.get(key) || null;
+  }
+
+  async retrieveByType(type: MemoryType): Promise<MemoryEntry[]> {
+    return Array.from(this.storage.values()).filter((entry) => entry.type === type);
+  }
+
+  async clear(type?: MemoryType): Promise<void> {
+    if (type) {
+      for (const [key, entry] of this.storage.entries()) {
+        if (entry.type === type) {
+          this.storage.delete(key);
+        }
+      }
+    } else {
+      this.storage.clear();
+    }
+  }
+}
 
 // Test implementation of AIAgent
 class TestAgent extends AIAgent<{ input: string }, { output: string }> {
@@ -107,11 +135,11 @@ describe('AIAgent', () => {
 
   describe('memory management', () => {
     let agent: TestAgent;
-    let memory: InMemoryAgentMemory;
+    let memory: MockAgentMemory;
 
     beforeEach(() => {
       agent = new TestAgent(EntityId.create<'AIAgent'>(), new Date(), new Date());
-      memory = new InMemoryAgentMemory();
+      memory = new MockAgentMemory();
     });
 
     it('should set memory', () => {
@@ -246,7 +274,7 @@ describe('AIAgent', () => {
     });
 
     it('should record memory stored event', async () => {
-      const memory = new InMemoryAgentMemory();
+      const memory = new MockAgentMemory();
       agent.setMemory(memory);
 
       const testAgent = agent as any;
