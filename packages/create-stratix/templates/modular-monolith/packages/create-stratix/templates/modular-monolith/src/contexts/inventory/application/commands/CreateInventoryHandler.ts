@@ -7,7 +7,9 @@ import type { InventoryRepository } from '../../domain/repositories/InventoryRep
 /**
  * Handler for CreateInventory command.
  */
-export class CreateInventoryHandler implements CommandHandler<CreateInventoryCommand, Result<CreateInventoryOutput>> {
+export class CreateInventoryHandler
+  implements CommandHandler<CreateInventoryCommand, Result<CreateInventoryOutput>>
+{
   constructor(private readonly inventoryRepository: InventoryRepository) {}
 
   async handle(command: CreateInventoryCommand): Promise<Result<CreateInventoryOutput>> {
@@ -18,7 +20,7 @@ export class CreateInventoryHandler implements CommandHandler<CreateInventoryCom
       const inventory = Inventory.create({
         productId: data.productId,
         quantity: data.quantity,
-        location: data.location
+        location: data.location,
       });
 
       // Save to repository

@@ -103,9 +103,7 @@ export class ProductsContextPlugin extends BaseContextPlugin {
    */
   async initialize(context: PluginContext): Promise<void> {
     // Resolve repositories from container (registered by base class)
-    this.productRepository = context.container.resolve<ProductRepository>(
-      'productRepository'
-    );
+    this.productRepository = context.container.resolve<ProductRepository>('productRepository');
 
     // Call super to auto-register all commands, queries, and event handlers
     await super.initialize(context);

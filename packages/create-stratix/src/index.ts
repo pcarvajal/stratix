@@ -15,13 +15,29 @@ const __dirname = dirname(__filename);
 
 interface ProjectOptions {
   name: string;
-  template: 'rest-api' | 'rest-api-complete' | 'microservice' | 'worker' | 'minimal' | 'ai-agent-starter' | 'monolith' | 'modular-monolith';
+  template:
+    | 'rest-api'
+    | 'rest-api-complete'
+    | 'microservice'
+    | 'worker'
+    | 'minimal'
+    | 'ai-agent-starter'
+    | 'monolith'
+    | 'modular-monolith';
   packageManager: 'npm' | 'pnpm' | 'yarn';
   git: boolean;
 }
 
 interface CommandOptions {
-  template?: 'rest-api' | 'rest-api-complete' | 'microservice' | 'worker' | 'minimal' | 'ai-agent-starter' | 'monolith' | 'modular-monolith';
+  template?:
+    | 'rest-api'
+    | 'rest-api-complete'
+    | 'microservice'
+    | 'worker'
+    | 'minimal'
+    | 'ai-agent-starter'
+    | 'monolith'
+    | 'modular-monolith';
   pm?: 'npm' | 'pnpm' | 'yarn';
   git?: boolean;
   skipInstall?: boolean;
@@ -36,7 +52,10 @@ export async function run(): Promise<void> {
     .description('Create a new Stratix application')
     .version('0.1.2')
     .argument('[project-name]', 'Project name')
-    .option('--template <template>', 'Template to use (rest-api|rest-api-complete|microservice|worker|monolith|modular-monolith|ai-agent-starter|minimal)')
+    .option(
+      '--template <template>',
+      'Template to use (rest-api|rest-api-complete|microservice|worker|monolith|modular-monolith|ai-agent-starter|minimal)'
+    )
     .option('--pm <manager>', 'Package manager (npm|pnpm|yarn)')
     .option('--no-git', 'Skip git initialization')
     .option('--skip-install', 'Skip dependency installation')
@@ -449,7 +468,7 @@ async function installDependencies(projectPath: string, packageManager: string):
 
     throw new Error(
       `${packageManager} is not installed.\n` +
-      `To install it, run: ${installCommands[packageManager] || `npm install -g ${packageManager}`}`
+        `To install it, run: ${installCommands[packageManager] || `npm install -g ${packageManager}`}`
     );
   }
 

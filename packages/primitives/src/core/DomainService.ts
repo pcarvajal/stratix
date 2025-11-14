@@ -108,9 +108,7 @@ export abstract class DomainService {
  * >;
  * ```
  */
-export type DomainServiceMethod<TArgs extends unknown[], TReturn> = (
-  ...args: TArgs
-) => TReturn;
+export type DomainServiceMethod<TArgs extends unknown[], TReturn> = (...args: TArgs) => TReturn;
 
 /**
  * Utility type for async domain service method signatures

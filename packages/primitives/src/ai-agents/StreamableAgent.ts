@@ -140,10 +140,7 @@ export interface StreamableAgent<TInput, TOutput> extends AIAgent<TInput, TOutpu
    * });
    * ```
    */
-  executeStreamWithCallbacks(
-    input: TInput,
-    options: StreamOptions
-  ): Promise<AgentResult<TOutput>>;
+  executeStreamWithCallbacks(input: TInput, options: StreamOptions): Promise<AgentResult<TOutput>>;
 }
 
 /**

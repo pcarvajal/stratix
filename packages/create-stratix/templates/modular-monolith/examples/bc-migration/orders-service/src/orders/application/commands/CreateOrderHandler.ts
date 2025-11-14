@@ -7,7 +7,9 @@ import type { OrderRepository } from '../../domain/repositories/OrderRepository.
 /**
  * Handler for CreateOrder command.
  */
-export class CreateOrderHandler implements CommandHandler<CreateOrderCommand, Result<CreateOrderOutput>> {
+export class CreateOrderHandler
+  implements CommandHandler<CreateOrderCommand, Result<CreateOrderOutput>>
+{
   constructor(private readonly orderRepository: OrderRepository) {}
 
   async handle(command: CreateOrderCommand): Promise<Result<CreateOrderOutput>> {
@@ -18,7 +20,7 @@ export class CreateOrderHandler implements CommandHandler<CreateOrderCommand, Re
       const order = Order.create({
         customerId: data.customerId,
         total: data.total,
-        status: data.status
+        status: data.status,
       });
 
       // Save to repository

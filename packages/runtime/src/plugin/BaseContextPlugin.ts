@@ -170,19 +170,16 @@ export abstract class BaseContextPlugin implements ContextPlugin {
    *
    * @param context - The plugin context
    */
+  // eslint-disable-next-line @typescript-eslint/require-await
   async initialize(context: PluginContext): Promise<void> {
     this.context = context;
 
     // 1. Register repositories first (other things depend on them)
     const repositories = this.getRepositories();
     for (const repo of repositories) {
-      context.container.register(
-        repo.token,
-        () => repo.instance,
-        {
-          lifetime: repo.singleton !== false ? ServiceLifetime.SINGLETON : ServiceLifetime.TRANSIENT,
-        }
-      );
+      context.container.register(repo.token, () => repo.instance, {
+        lifetime: repo.singleton !== false ? ServiceLifetime.SINGLETON : ServiceLifetime.TRANSIENT,
+      });
     }
 
     // 2. Get the buses from container
@@ -274,6 +271,7 @@ export abstract class BaseContextPlugin implements ContextPlugin {
    * }
    * ```
    */
+  // eslint-disable-next-line @typescript-eslint/require-await
   async healthCheck(): Promise<HealthCheckResult> {
     return {
       status: HealthStatus.UP,

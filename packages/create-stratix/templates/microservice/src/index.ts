@@ -55,10 +55,7 @@ async function bootstrap() {
   const taskCompletedHandler = new TaskCompletedEventHandler(logger);
   eventBus.subscribe(TaskCompletedEvent, taskCompletedHandler);
 
-  const app = await ApplicationBuilder.create()
-    .useContainer(container)
-    .useLogger(logger)
-    .build();
+  const app = await ApplicationBuilder.create().useContainer(container).useLogger(logger).build();
 
   await app.start();
 

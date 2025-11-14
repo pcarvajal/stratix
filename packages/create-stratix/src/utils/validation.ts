@@ -16,8 +16,8 @@ export class ValidationUtils {
       return [];
     }
 
-    const props = propsString.split(',').map(prop => {
-      const [name, type] = prop.split(':').map(s => s.trim());
+    const props = propsString.split(',').map((prop) => {
+      const [name, type] = prop.split(':').map((s) => s.trim());
 
       if (!name || !this.isValidIdentifier(name)) {
         throw new Error(`Invalid property name: ${name}`);
@@ -26,7 +26,11 @@ export class ValidationUtils {
       const validType = type || 'string';
       const allowedTypes = ['string', 'number', 'boolean', 'Date', 'any'];
 
-      if (!allowedTypes.includes(validType) && !validType.endsWith('[]') && !validType.includes('<')) {
+      if (
+        !allowedTypes.includes(validType) &&
+        !validType.endsWith('[]') &&
+        !validType.includes('<')
+      ) {
         console.warn(`Warning: Unusual type "${validType}" for property "${name}"`);
       }
 
@@ -68,7 +72,9 @@ export class ValidationUtils {
     }
 
     if (!name.endsWith('Repository')) {
-      console.warn(`Warning: Repository name should end with "Repository" (e.g., ProductRepository)`);
+      console.warn(
+        `Warning: Repository name should end with "Repository" (e.g., ProductRepository)`
+      );
     }
   }
 

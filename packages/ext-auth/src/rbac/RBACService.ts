@@ -4,7 +4,7 @@ export class RBACService {
   private roles: Map<string, Role> = new Map();
 
   constructor(roles: Role[] = []) {
-    roles.forEach(role => this.addRole(role));
+    roles.forEach((role) => this.addRole(role));
   }
 
   addRole(role: Role): void {
@@ -33,26 +33,26 @@ export class RBACService {
   }
 
   hasAnyRole(user: User, roleNames: string[]): boolean {
-    return roleNames.some(roleName => this.hasRole(user, roleName));
+    return roleNames.some((roleName) => this.hasRole(user, roleName));
   }
 
   hasAllRoles(user: User, roleNames: string[]): boolean {
-    return roleNames.every(roleName => this.hasRole(user, roleName));
+    return roleNames.every((roleName) => this.hasRole(user, roleName));
   }
 
   hasAnyPermission(user: User, permissions: string[]): boolean {
-    return permissions.some(permission => this.hasPermission(user, permission));
+    return permissions.some((permission) => this.hasPermission(user, permission));
   }
 
   hasAllPermissions(user: User, permissions: string[]): boolean {
-    return permissions.every(permission => this.hasPermission(user, permission));
+    return permissions.every((permission) => this.hasPermission(user, permission));
   }
 
   getUserPermissions(user: User): string[] {
     const rolePermissions = user.roles
-      .map(roleName => this.getRole(roleName))
+      .map((roleName) => this.getRole(roleName))
       .filter((role): role is Role => role !== undefined)
-      .flatMap(role => role.permissions);
+      .flatMap((role) => role.permissions);
 
     return Array.from(new Set([...user.permissions, ...rolePermissions]));
   }

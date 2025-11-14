@@ -6,7 +6,7 @@ export class NamingUtils {
 
     return str
       .split(/[-_\s]+/)
-      .filter(word => word.length > 0)
+      .filter((word) => word.length > 0)
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join('');
   }
@@ -35,7 +35,13 @@ export class NamingUtils {
     if (str.endsWith('y') && !this.isVowel(str.charAt(str.length - 2))) {
       return str.slice(0, -1) + 'ies';
     }
-    if (str.endsWith('s') || str.endsWith('x') || str.endsWith('z') || str.endsWith('ch') || str.endsWith('sh')) {
+    if (
+      str.endsWith('s') ||
+      str.endsWith('x') ||
+      str.endsWith('z') ||
+      str.endsWith('ch') ||
+      str.endsWith('sh')
+    ) {
       return str + 'es';
     }
     return str + 's';

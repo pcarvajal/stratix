@@ -79,8 +79,12 @@ describe('ValidationUtils', () => {
     });
 
     it('should throw on invalid property names', () => {
-      expect(() => ValidationUtils.validateProps('123invalid:string')).toThrow('Invalid property name');
-      expect(() => ValidationUtils.validateProps('invalid name:string')).toThrow('Invalid property name');
+      expect(() => ValidationUtils.validateProps('123invalid:string')).toThrow(
+        'Invalid property name'
+      );
+      expect(() => ValidationUtils.validateProps('invalid name:string')).toThrow(
+        'Invalid property name'
+      );
     });
   });
 
@@ -97,7 +101,9 @@ describe('ValidationUtils', () => {
 
     it('should reject non-PascalCase names', () => {
       expect(() => ValidationUtils.validateEntityName('product')).toThrow('must be in PascalCase');
-      expect(() => ValidationUtils.validateEntityName('product_item')).toThrow('must be in PascalCase');
+      expect(() => ValidationUtils.validateEntityName('product_item')).toThrow(
+        'must be in PascalCase'
+      );
     });
 
     it('should reject names that are too short', () => {
@@ -117,11 +123,15 @@ describe('ValidationUtils', () => {
     });
 
     it('should reject empty names', () => {
-      expect(() => ValidationUtils.validateRepositoryName('')).toThrow('Repository name is required');
+      expect(() => ValidationUtils.validateRepositoryName('')).toThrow(
+        'Repository name is required'
+      );
     });
 
     it('should reject non-PascalCase names', () => {
-      expect(() => ValidationUtils.validateRepositoryName('productRepository')).toThrow('must be in PascalCase');
+      expect(() => ValidationUtils.validateRepositoryName('productRepository')).toThrow(
+        'must be in PascalCase'
+      );
     });
   });
 
@@ -137,7 +147,9 @@ describe('ValidationUtils', () => {
     });
 
     it('should reject non-PascalCase names', () => {
-      expect(() => ValidationUtils.validateUseCaseName('createProduct')).toThrow('must be in PascalCase');
+      expect(() => ValidationUtils.validateUseCaseName('createProduct')).toThrow(
+        'must be in PascalCase'
+      );
     });
   });
 });

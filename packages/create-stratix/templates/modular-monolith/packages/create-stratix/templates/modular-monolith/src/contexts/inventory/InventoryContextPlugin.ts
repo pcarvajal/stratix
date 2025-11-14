@@ -103,9 +103,8 @@ export class InventoryContextPlugin extends BaseContextPlugin {
    */
   async initialize(context: PluginContext): Promise<void> {
     // Resolve repositories from container (registered by base class)
-    this.inventoryRepository = context.container.resolve<InventoryRepository>(
-      'inventoryRepository'
-    );
+    this.inventoryRepository =
+      context.container.resolve<InventoryRepository>('inventoryRepository');
 
     // Call super to auto-register all commands, queries, and event handlers
     await super.initialize(context);

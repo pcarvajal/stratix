@@ -1,10 +1,6 @@
 import path from 'path';
 import { BaseGenerator } from '../BaseGenerator.js';
-import {
-  TestGeneratorOptions,
-  GeneratedFile,
-  ProjectStructure,
-} from '../../types/generator.js';
+import { TestGeneratorOptions, GeneratedFile, ProjectStructure } from '../../types/generator.js';
 import { FileSystemUtils } from '../../utils/file-system.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -119,19 +115,29 @@ export class TestGenerator extends BaseGenerator {
     switch (targetInfo.type) {
       case 'entity':
       case 'value-object':
-        imports.push(`import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`);
+        imports.push(
+          `import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`
+        );
         break;
       case 'handler':
-        imports.push(`import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`);
+        imports.push(
+          `import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`
+        );
         break;
       case 'repository':
-        imports.push(`import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`);
+        imports.push(
+          `import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`
+        );
         break;
       case 'service':
-        imports.push(`import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`);
+        imports.push(
+          `import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`
+        );
         break;
       default:
-        imports.push(`import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`);
+        imports.push(
+          `import { ${targetInfo.name} } from '${this.getRelativeImportPath(targetInfo)}.js';`
+        );
     }
 
     return imports;

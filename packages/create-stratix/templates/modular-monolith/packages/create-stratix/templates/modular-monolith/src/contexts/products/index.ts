@@ -19,10 +19,7 @@ export {
   type GetProductByIdInput,
   type GetProductByIdOutput,
 } from './application/queries/GetProductById.js';
-export {
-  ListProductsQuery,
-  type ListProductsOutput,
-} from './application/queries/ListProducts.js';
+export { ListProductsQuery, type ListProductsOutput } from './application/queries/ListProducts.js';
 
 // Infrastructure
 export { InMemoryProductRepository } from './infrastructure/persistence/InMemoryProductRepository.js';

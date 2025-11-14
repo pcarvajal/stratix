@@ -19,12 +19,7 @@ export class Inventory extends AggregateRoot<'Inventory'> {
   private _quantity: number;
   private _location: string;
 
-  private constructor(
-    id: InventoryId,
-    props: InventoryProps,
-    createdAt: Date,
-    updatedAt: Date
-  ) {
+  private constructor(id: InventoryId, props: InventoryProps, createdAt: Date, updatedAt: Date) {
     super(id, createdAt, updatedAt);
     this._productId = props.productId;
     this._quantity = props.quantity;
@@ -43,7 +38,6 @@ export class Inventory extends AggregateRoot<'Inventory'> {
     return this._location;
   }
 
-
   /**
    * Creates a new Inventory aggregate.
    */
@@ -57,12 +51,7 @@ export class Inventory extends AggregateRoot<'Inventory'> {
 
     // Raise domain event
     inventory.addDomainEvent(
-      new InventoryCreatedEvent(
-        id,
-        props.productId,
-        props.quantity,
-        props.location
-      )
+      new InventoryCreatedEvent(id, props.productId, props.quantity, props.location)
     );
 
     return inventory;
@@ -71,12 +60,7 @@ export class Inventory extends AggregateRoot<'Inventory'> {
   /**
    * Reconstructs a Inventory from persistence.
    */
-  static from(
-    id: InventoryId,
-    props: InventoryProps,
-    createdAt: Date,
-    updatedAt: Date
-  ): Inventory {
+  static from(id: InventoryId, props: InventoryProps, createdAt: Date, updatedAt: Date): Inventory {
     return new Inventory(id, props, createdAt, updatedAt);
   }
 
@@ -84,16 +68,16 @@ export class Inventory extends AggregateRoot<'Inventory'> {
    * Validates Inventory properties.
    */
   private static validateProps(props: InventoryProps): void {
-      if (!props.productId || props.productId.trim() === '') {
+    if (!props.productId || props.productId.trim() === '') {
       throw new Error('productId cannot be empty');
     }
-        if (typeof props.quantity !== 'number' || isNaN(props.quantity)) {
+    if (typeof props.quantity !== 'number' || isNaN(props.quantity)) {
       throw new Error('quantity must be a valid number');
     }
-        if (!props.location || props.location.trim() === '') {
+    if (!props.location || props.location.trim() === '') {
       throw new Error('location cannot be empty');
     }
-    }
+  }
 
   /**
    * Updates the Inventory.

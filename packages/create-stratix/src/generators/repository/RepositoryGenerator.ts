@@ -119,10 +119,22 @@ export class RepositoryGenerator extends BaseGenerator {
     }
 
     if (structure.type === 'modular-monolith' && structure.contextsPath) {
-      return path.join(structure.contextsPath, 'infrastructure', 'persistence', implementation, fileName);
+      return path.join(
+        structure.contextsPath,
+        'infrastructure',
+        'persistence',
+        implementation,
+        fileName
+      );
     }
 
-    return this.getDestinationPath('src', 'infrastructure', 'persistence', implementation, fileName);
+    return this.getDestinationPath(
+      'src',
+      'infrastructure',
+      'persistence',
+      implementation,
+      fileName
+    );
   }
 
   private getTestPath(structure: ProjectStructure, implementation: string): string {
@@ -130,13 +142,33 @@ export class RepositoryGenerator extends BaseGenerator {
     const fileName = `${implClassName}.test.ts`;
 
     if (structure.type === 'ddd' && structure.infrastructurePath) {
-      return path.join(structure.infrastructurePath, 'persistence', implementation, '__tests__', fileName);
+      return path.join(
+        structure.infrastructurePath,
+        'persistence',
+        implementation,
+        '__tests__',
+        fileName
+      );
     }
 
     if (structure.type === 'modular-monolith' && structure.contextsPath) {
-      return path.join(structure.contextsPath, 'infrastructure', 'persistence', implementation, '__tests__', fileName);
+      return path.join(
+        structure.contextsPath,
+        'infrastructure',
+        'persistence',
+        implementation,
+        '__tests__',
+        fileName
+      );
     }
 
-    return this.getDestinationPath('src', 'infrastructure', 'persistence', implementation, '__tests__', fileName);
+    return this.getDestinationPath(
+      'src',
+      'infrastructure',
+      'persistence',
+      implementation,
+      '__tests__',
+      fileName
+    );
   }
 }

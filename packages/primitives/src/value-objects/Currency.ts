@@ -34,21 +34,51 @@ export class Currency extends ValueObject {
   private static _PEN?: Currency;
   private static _ARS?: Currency;
 
-  static get USD(): Currency { return this._USD ??= Currency.fromCode('USD')!; }
-  static get EUR(): Currency { return this._EUR ??= Currency.fromCode('EUR')!; }
-  static get GBP(): Currency { return this._GBP ??= Currency.fromCode('GBP')!; }
-  static get JPY(): Currency { return this._JPY ??= Currency.fromCode('JPY')!; }
-  static get CNY(): Currency { return this._CNY ??= Currency.fromCode('CNY')!; }
-  static get CAD(): Currency { return this._CAD ??= Currency.fromCode('CAD')!; }
-  static get AUD(): Currency { return this._AUD ??= Currency.fromCode('AUD')!; }
-  static get CHF(): Currency { return this._CHF ??= Currency.fromCode('CHF')!; }
-  static get INR(): Currency { return this._INR ??= Currency.fromCode('INR')!; }
-  static get BRL(): Currency { return this._BRL ??= Currency.fromCode('BRL')!; }
-  static get MXN(): Currency { return this._MXN ??= Currency.fromCode('MXN')!; }
-  static get CLP(): Currency { return this._CLP ??= Currency.fromCode('CLP')!; }
-  static get COP(): Currency { return this._COP ??= Currency.fromCode('COP')!; }
-  static get PEN(): Currency { return this._PEN ??= Currency.fromCode('PEN')!; }
-  static get ARS(): Currency { return this._ARS ??= Currency.fromCode('ARS')!; }
+  static get USD(): Currency {
+    return (this._USD ??= Currency.fromCode('USD')!);
+  }
+  static get EUR(): Currency {
+    return (this._EUR ??= Currency.fromCode('EUR')!);
+  }
+  static get GBP(): Currency {
+    return (this._GBP ??= Currency.fromCode('GBP')!);
+  }
+  static get JPY(): Currency {
+    return (this._JPY ??= Currency.fromCode('JPY')!);
+  }
+  static get CNY(): Currency {
+    return (this._CNY ??= Currency.fromCode('CNY')!);
+  }
+  static get CAD(): Currency {
+    return (this._CAD ??= Currency.fromCode('CAD')!);
+  }
+  static get AUD(): Currency {
+    return (this._AUD ??= Currency.fromCode('AUD')!);
+  }
+  static get CHF(): Currency {
+    return (this._CHF ??= Currency.fromCode('CHF')!);
+  }
+  static get INR(): Currency {
+    return (this._INR ??= Currency.fromCode('INR')!);
+  }
+  static get BRL(): Currency {
+    return (this._BRL ??= Currency.fromCode('BRL')!);
+  }
+  static get MXN(): Currency {
+    return (this._MXN ??= Currency.fromCode('MXN')!);
+  }
+  static get CLP(): Currency {
+    return (this._CLP ??= Currency.fromCode('CLP')!);
+  }
+  static get COP(): Currency {
+    return (this._COP ??= Currency.fromCode('COP')!);
+  }
+  static get PEN(): Currency {
+    return (this._PEN ??= Currency.fromCode('PEN')!);
+  }
+  static get ARS(): Currency {
+    return (this._ARS ??= Currency.fromCode('ARS')!);
+  }
 
   private constructor(
     readonly code: string,

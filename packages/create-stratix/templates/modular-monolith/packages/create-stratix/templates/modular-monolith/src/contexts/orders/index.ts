@@ -19,10 +19,7 @@ export {
   type GetOrderByIdInput,
   type GetOrderByIdOutput,
 } from './application/queries/GetOrderById.js';
-export {
-  ListOrdersQuery,
-  type ListOrdersOutput,
-} from './application/queries/ListOrders.js';
+export { ListOrdersQuery, type ListOrdersOutput } from './application/queries/ListOrders.js';
 
 // Infrastructure
 export { InMemoryOrderRepository } from './infrastructure/persistence/InMemoryOrderRepository.js';

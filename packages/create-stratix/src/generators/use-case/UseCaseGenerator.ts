@@ -1,10 +1,6 @@
 import path from 'path';
 import { BaseGenerator } from '../BaseGenerator.js';
-import {
-  UseCaseGeneratorOptions,
-  GeneratedFile,
-  ProjectStructure,
-} from '../../types/generator.js';
+import { UseCaseGeneratorOptions, GeneratedFile, ProjectStructure } from '../../types/generator.js';
 import { ValidationUtils } from '../../utils/validation.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';

@@ -1,4 +1,10 @@
-import { AIAgent, AgentVersionFactory, AgentResult, AgentCapability, EntityId } from '@stratix/primitives';
+import {
+  AIAgent,
+  AgentVersionFactory,
+  AgentResult,
+  AgentCapability,
+  EntityId,
+} from '@stratix/primitives';
 import type { AgentVersion } from '@stratix/primitives';
 import type { LLMProvider } from '@stratix/abstractions';
 
@@ -47,7 +53,7 @@ export class MockAgent extends AIAgent<MockInput, MockOutput> {
     provider: 'mock',
     model: 'mock-gpt-4',
     temperature: 0.7,
-    maxTokens: 500
+    maxTokens: 500,
   };
 
   constructor(private llmProvider: LLMProvider) {
@@ -63,10 +69,9 @@ export class MockAgent extends AIAgent<MockInput, MockOutput> {
   async execute(input: MockInput): Promise<AgentResult<MockOutput>> {
     // Validate input
     if (!input.message || input.message.trim().length === 0) {
-      return AgentResult.failure<MockOutput>(
-        new Error('Message cannot be empty'),
-        { model: this.model.model }
-      );
+      return AgentResult.failure<MockOutput>(new Error('Message cannot be empty'), {
+        model: this.model.model,
+      });
     }
 
     try {
@@ -76,13 +81,13 @@ export class MockAgent extends AIAgent<MockInput, MockOutput> {
         {
           role: 'system' as const,
           content: input.context || 'You are a helpful assistant.',
-          timestamp: now
+          timestamp: now,
         },
         {
           role: 'user' as const,
           content: input.message,
-          timestamp: now
-        }
+          timestamp: now,
+        },
       ];
 
       // Call mock LLM provider
@@ -90,7 +95,7 @@ export class MockAgent extends AIAgent<MockInput, MockOutput> {
         messages,
         model: this.model.model,
         temperature: this.model.temperature,
-        maxTokens: this.model.maxTokens
+        maxTokens: this.model.maxTokens,
       });
 
       // Return successful result with metadata
@@ -99,11 +104,10 @@ export class MockAgent extends AIAgent<MockInput, MockOutput> {
           response: chatResponse.content,
           tokensUsed: chatResponse.usage.totalTokens,
           cost: 0, // Mock provider has no cost
-          model: this.model.model
+          model: this.model.model,
         },
         { model: this.model.model }
       );
-
     } catch (error) {
       return AgentResult.failure<MockOutput>(
         error instanceof Error ? error : new Error('Unknown error'),
@@ -121,7 +125,7 @@ export class MockAgent extends AIAgent<MockInput, MockOutput> {
       await this.llmProvider.chat({
         messages: [{ role: 'user', content: 'test', timestamp: new Date() }],
         model: this.model.model,
-        maxTokens: 1
+        maxTokens: 1,
       });
       return true;
     } catch {

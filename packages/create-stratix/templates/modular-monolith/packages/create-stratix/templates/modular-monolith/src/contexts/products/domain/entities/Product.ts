@@ -14,12 +14,7 @@ export class Product extends AggregateRoot<'Product'> {
   private _price: number;
   private _stock: number;
 
-  private constructor(
-    id: ProductId,
-    props: ProductProps,
-    createdAt: Date,
-    updatedAt: Date
-  ) {
+  private constructor(id: ProductId, props: ProductProps, createdAt: Date, updatedAt: Date) {
     super(id, createdAt, updatedAt);
     this._name = props.name;
     this._price = props.price;
@@ -46,19 +41,12 @@ export class Product extends AggregateRoot<'Product'> {
 
     const product = new Product(id, props, now, now);
 
-    product.addDomainEvent(
-      new ProductCreatedEvent(id, props.name, props.price, props.stock)
-    );
+    product.addDomainEvent(new ProductCreatedEvent(id, props.name, props.price, props.stock));
 
     return product;
   }
 
-  static from(
-    id: ProductId,
-    props: ProductProps,
-    createdAt: Date,
-    updatedAt: Date
-  ): Product {
+  static from(id: ProductId, props: ProductProps, createdAt: Date, updatedAt: Date): Product {
     return new Product(id, props, createdAt, updatedAt);
   }
 

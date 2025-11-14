@@ -103,9 +103,7 @@ export class OrdersContextPlugin extends BaseContextPlugin {
    */
   async initialize(context: PluginContext): Promise<void> {
     // Resolve repositories from container (registered by base class)
-    this.orderRepository = context.container.resolve<OrderRepository>(
-      'orderRepository'
-    );
+    this.orderRepository = context.container.resolve<OrderRepository>('orderRepository');
 
     // Call super to auto-register all commands, queries, and event handlers
     await super.initialize(context);

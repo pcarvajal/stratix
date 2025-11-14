@@ -1,10 +1,6 @@
 import path from 'path';
 import { BaseGenerator } from '../BaseGenerator.js';
-import {
-  ContextGeneratorOptions,
-  GeneratedFile,
-  ProjectStructure,
-} from '../../types/generator.js';
+import { ContextGeneratorOptions, GeneratedFile, ProjectStructure } from '../../types/generator.js';
 import { ValidationUtils } from '../../utils/validation.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -129,7 +125,12 @@ export class ContextGenerator extends BaseGenerator {
 
     // 3. Infrastructure Layer
     files.push({
-      path: path.join(contextPath, 'infrastructure', 'persistence', `InMemory${entityName}Repository.ts`),
+      path: path.join(
+        contextPath,
+        'infrastructure',
+        'persistence',
+        `InMemory${entityName}Repository.ts`
+      ),
       content: await this.renderTemplate('repository-inmemory.ts.ejs', templateData),
       action: 'create',
     });
@@ -155,12 +156,14 @@ export class ContextGenerator extends BaseGenerator {
     return path.join(__dirname, 'templates', templateName);
   }
 
-  private parseProps(propsString: string): Array<{ name: string; type: string; isPrimitive: boolean }> {
+  private parseProps(
+    propsString: string
+  ): Array<{ name: string; type: string; isPrimitive: boolean }> {
     if (!propsString) return [];
 
     const primitiveTypes = ['string', 'number', 'boolean', 'Date'];
 
-    return ValidationUtils.validateProps(propsString).map(prop => ({
+    return ValidationUtils.validateProps(propsString).map((prop) => ({
       ...prop,
       isPrimitive: primitiveTypes.includes(prop.type) || prop.type.endsWith('[]'),
     }));

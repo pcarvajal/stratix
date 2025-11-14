@@ -7,7 +7,9 @@ import type { ProductRepository } from '../../domain/repositories/ProductReposit
 /**
  * Handler for CreateProduct command.
  */
-export class CreateProductHandler implements CommandHandler<CreateProductCommand, Result<CreateProductOutput>> {
+export class CreateProductHandler
+  implements CommandHandler<CreateProductCommand, Result<CreateProductOutput>>
+{
   constructor(private readonly productRepository: ProductRepository) {}
 
   async handle(command: CreateProductCommand): Promise<Result<CreateProductOutput>> {
@@ -18,7 +20,7 @@ export class CreateProductHandler implements CommandHandler<CreateProductCommand
       const product = Product.create({
         name: data.name,
         price: data.price,
-        stock: data.stock
+        stock: data.stock,
       });
 
       // Save to repository

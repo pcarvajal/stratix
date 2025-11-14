@@ -19,12 +19,7 @@ export class Order extends AggregateRoot<'Order'> {
   private _total: number;
   private _status: string;
 
-  private constructor(
-    id: OrderId,
-    props: OrderProps,
-    createdAt: Date,
-    updatedAt: Date
-  ) {
+  private constructor(id: OrderId, props: OrderProps, createdAt: Date, updatedAt: Date) {
     super(id, createdAt, updatedAt);
     this._customerId = props.customerId;
     this._total = props.total;
@@ -43,7 +38,6 @@ export class Order extends AggregateRoot<'Order'> {
     return this._status;
   }
 
-
   /**
    * Creates a new Order aggregate.
    */
@@ -56,14 +50,7 @@ export class Order extends AggregateRoot<'Order'> {
     const order = new Order(id, props, now, now);
 
     // Raise domain event
-    order.addDomainEvent(
-      new OrderCreatedEvent(
-        id,
-        props.customerId,
-        props.total,
-        props.status
-      )
-    );
+    order.addDomainEvent(new OrderCreatedEvent(id, props.customerId, props.total, props.status));
 
     return order;
   }
@@ -71,12 +58,7 @@ export class Order extends AggregateRoot<'Order'> {
   /**
    * Reconstructs a Order from persistence.
    */
-  static from(
-    id: OrderId,
-    props: OrderProps,
-    createdAt: Date,
-    updatedAt: Date
-  ): Order {
+  static from(id: OrderId, props: OrderProps, createdAt: Date, updatedAt: Date): Order {
     return new Order(id, props, createdAt, updatedAt);
   }
 
@@ -84,16 +66,16 @@ export class Order extends AggregateRoot<'Order'> {
    * Validates Order properties.
    */
   private static validateProps(props: OrderProps): void {
-      if (!props.customerId || props.customerId.trim() === '') {
+    if (!props.customerId || props.customerId.trim() === '') {
       throw new Error('customerId cannot be empty');
     }
-        if (typeof props.total !== 'number' || isNaN(props.total)) {
+    if (typeof props.total !== 'number' || isNaN(props.total)) {
       throw new Error('total must be a valid number');
     }
-        if (!props.status || props.status.trim() === '') {
+    if (!props.status || props.status.trim() === '') {
       throw new Error('status cannot be empty');
     }
-    }
+  }
 
   /**
    * Updates the Order.

@@ -31,7 +31,7 @@ export class Mapper<TSource, TTarget> {
   }
 
   mapArray(sources: TSource[]): TTarget[] {
-    return sources.map(source => this.map(source));
+    return sources.map((source) => this.map(source));
   }
 
   static create<TSource, TTarget>(): Mapper<TSource, TTarget> {

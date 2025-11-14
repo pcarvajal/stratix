@@ -57,9 +57,7 @@ export class Product extends AggregateRoot<'Product'> {
     const product = new Product(id, props, now, now);
 
     // Add domain event
-    product.addDomainEvent(
-      new ProductCreated(id, props.name, props.price, props.stock)
-    );
+    product.addDomainEvent(new ProductCreated(id, props.name, props.price, props.stock));
 
     return product;
   }
@@ -125,12 +123,7 @@ export class Product extends AggregateRoot<'Product'> {
   }
 
   // Reconstruct from persistence
-  static from(
-    id: ProductId,
-    props: ProductProps,
-    createdAt: Date,
-    updatedAt: Date
-  ): Product {
+  static from(id: ProductId, props: ProductProps, createdAt: Date, updatedAt: Date): Product {
     return new Product(id, props, createdAt, updatedAt);
   }
 }

@@ -27,7 +27,7 @@ export class MigrationRunner {
       `SELECT version, name, executed_at as executedAt FROM ${this.tableName} ORDER BY version`
     )) as Array<{ version: string; name: string; executedAt: string | Date }>;
 
-    return result.map(row => ({
+    return result.map((row) => ({
       version: row.version,
       name: row.name,
       executedAt: new Date(row.executedAt),
@@ -36,10 +36,10 @@ export class MigrationRunner {
 
   async getPendingMigrations(): Promise<Migration[]> {
     const executed = await this.getExecutedMigrations();
-    const executedVersions = new Set(executed.map(m => m.version));
+    const executedVersions = new Set(executed.map((m) => m.version));
 
     return this.migrations
-      .filter(m => !executedVersions.has(m.version))
+      .filter((m) => !executedVersions.has(m.version))
       .sort((a, b) => a.version.localeCompare(b.version));
   }
 
@@ -79,7 +79,7 @@ export class MigrationRunner {
     const results: MigrationResult[] = [];
 
     for (const record of toRollback) {
-      const migration = this.migrations.find(m => m.version === record.version);
+      const migration = this.migrations.find((m) => m.version === record.version);
 
       if (!migration) {
         results.push({
@@ -114,16 +114,15 @@ export class MigrationRunner {
   }
 
   private async recordMigration(migration: Migration): Promise<void> {
-    await this.context.execute(
-      `INSERT INTO ${this.tableName} (version, name) VALUES (?, ?)`,
-      [migration.version, migration.name]
-    );
+    await this.context.execute(`INSERT INTO ${this.tableName} (version, name) VALUES (?, ?)`, [
+      migration.version,
+      migration.name,
+    ]);
   }
 
   private async removeMigration(migration: Migration): Promise<void> {
-    await this.context.execute(
-      `DELETE FROM ${this.tableName} WHERE version = ?`,
-      [migration.version]
-    );
+    await this.context.execute(`DELETE FROM ${this.tableName} WHERE version = ?`, [
+      migration.version,
+    ]);
   }
 }

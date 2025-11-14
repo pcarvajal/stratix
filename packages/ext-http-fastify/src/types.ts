@@ -10,7 +10,8 @@ export interface RouteConfig<TBody = unknown, TQuery = unknown, TParams = unknow
   schema?: RouteSchema<TBody, TQuery, TParams>;
 }
 
-export interface RouteSchema<TBody = unknown, TQuery = unknown, TParams = unknown> { // eslint-disable-line @typescript-eslint/no-unused-vars
+export interface RouteSchema<TBody = unknown, TQuery = unknown, TParams = unknown> {
+  // eslint-disable-line @typescript-eslint/no-unused-vars
   body?: unknown;
   querystring?: unknown;
   params?: unknown;
@@ -41,11 +42,13 @@ export interface FastifyHTTPPluginOptions {
   port?: number;
   host?: string;
   prefix?: string;
-  cors?: boolean | {
-    origin?: string | string[] | boolean;
-    methods?: string[];
-    credentials?: boolean;
-  };
+  cors?:
+    | boolean
+    | {
+        origin?: string | string[] | boolean;
+        methods?: string[];
+        credentials?: boolean;
+      };
   logger?: boolean;
   trustProxy?: boolean;
 }

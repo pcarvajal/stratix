@@ -27,7 +27,7 @@ export class GetUserHandler implements QueryHandler<GetUser, Result<GetUserOutpu
       // Find user by matching ID string
       // In a real application, you might want to add a more robust ID parsing
       const allUsers = await this.userRepository.findAll();
-      const user = allUsers.find(u => u.id.toString() === query.data.userId);
+      const user = allUsers.find((u) => u.id.toString() === query.data.userId);
 
       if (!user) {
         return Failure.create(new Error('User not found'));

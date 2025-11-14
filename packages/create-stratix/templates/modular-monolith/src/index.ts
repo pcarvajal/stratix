@@ -1,7 +1,11 @@
 import { ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/impl-di-awilix';
 import { ConsoleLogger } from '@stratix/impl-logger-console';
-import { InMemoryCommandBus, InMemoryQueryBus, InMemoryEventBus } from '@stratix/impl-cqrs-inmemory';
+import {
+  InMemoryCommandBus,
+  InMemoryQueryBus,
+  InMemoryEventBus,
+} from '@stratix/impl-cqrs-inmemory';
 import { LogLevel, ServiceLifetime } from '@stratix/abstractions';
 
 // Import Context Plugins

@@ -8,9 +8,7 @@ import { TestGenerator } from '../generators/test/TestGenerator.js';
 import { ContextGenerator } from '../generators/context/ContextGenerator.js';
 
 export function createGenerateCommand(): Command {
-  const generate = new Command('generate')
-    .alias('g')
-    .description('Generate code artifacts');
+  const generate = new Command('generate').alias('g').description('Generate code artifacts');
 
   // Subcommand: entity
   generate
@@ -64,7 +62,10 @@ export function createGenerateCommand(): Command {
   generate
     .command('value-object <name>')
     .description('Generate a domain value object')
-    .option('--props <props>', 'Value object properties (e.g., "value:string" or "amount:number,currency:string")')
+    .option(
+      '--props <props>',
+      'Value object properties (e.g., "value:string" or "amount:number,currency:string")'
+    )
     .option('--with-validation', 'Add validation logic in create method', false)
     .option('--with-tests', 'Generate test file', false)
     .option('--dry-run', 'Show what would be generated without writing files', false)
@@ -107,7 +108,10 @@ export function createGenerateCommand(): Command {
   generate
     .command('command <name>')
     .description('Generate a CQRS command with handler')
-    .option('--input <props>', 'Command input properties (e.g., "productId:string,quantity:number")')
+    .option(
+      '--input <props>',
+      'Command input properties (e.g., "productId:string,quantity:number")'
+    )
     .option('--output <props>', 'Command output properties (e.g., "orderId:string")')
     .option('--with-tests', 'Generate test file', false)
     .option('--dry-run', 'Show what would be generated without writing files', false)
@@ -196,7 +200,11 @@ export function createGenerateCommand(): Command {
     .command('repository <name>')
     .description('Generate a repository interface and implementation(s)')
     .option('--entity <entityName>', 'Entity name (required)', '')
-    .option('--impl <implementations>', 'Implementations (comma-separated: inmemory,postgres,mongodb)', 'inmemory')
+    .option(
+      '--impl <implementations>',
+      'Implementations (comma-separated: inmemory,postgres,mongodb)',
+      'inmemory'
+    )
     .option('--with-tests', 'Generate test files', false)
     .option('--dry-run', 'Show what would be generated without writing files', false)
     .option('--force', 'Overwrite existing files', false)
@@ -207,7 +215,9 @@ export function createGenerateCommand(): Command {
 
         if (!options.entity) {
           console.error(chalk.red('Error: --entity option is required'));
-          console.log(chalk.dim('Example: stratix g repository ProductRepository --entity Product'));
+          console.log(
+            chalk.dim('Example: stratix g repository ProductRepository --entity Product')
+          );
           process.exit(1);
         }
 
@@ -335,20 +345,36 @@ export function createGenerateCommand(): Command {
     console.log('  $ stratix g entity Order --props "total:number,items:OrderItem[]"');
     console.log('');
     console.log('  $ stratix generate value-object Email --props "value:string" --with-validation');
-    console.log('  $ stratix g value-object Money --props "amount:number,currency:string" --with-tests');
-    console.log('  $ stratix g value-object Price --props "value:number" --with-validation --with-tests');
+    console.log(
+      '  $ stratix g value-object Money --props "amount:number,currency:string" --with-tests'
+    );
+    console.log(
+      '  $ stratix g value-object Price --props "value:number" --with-validation --with-tests'
+    );
     console.log('');
-    console.log('  $ stratix generate command CreateProduct --input "name:string,price:number" --with-tests');
-    console.log('  $ stratix g command PlaceOrder --input "productId:string,quantity:number" --output "orderId:string"');
-    console.log('  $ stratix g query GetProductById --input "id:string" --output "product:Product" --with-tests');
+    console.log(
+      '  $ stratix generate command CreateProduct --input "name:string,price:number" --with-tests'
+    );
+    console.log(
+      '  $ stratix g command PlaceOrder --input "productId:string,quantity:number" --output "orderId:string"'
+    );
+    console.log(
+      '  $ stratix g query GetProductById --input "id:string" --output "product:Product" --with-tests'
+    );
     console.log('  $ stratix g query ListProducts --output "products:Product[]"');
     console.log('');
     console.log('  $ stratix generate repository ProductRepository --entity Product --with-tests');
-    console.log('  $ stratix g repository ProductRepository --entity Product --impl postgres,inmemory');
-    console.log('  $ stratix g repository OrderRepository --entity Order --impl mongodb --with-tests');
+    console.log(
+      '  $ stratix g repository ProductRepository --entity Product --impl postgres,inmemory'
+    );
+    console.log(
+      '  $ stratix g repository OrderRepository --entity Order --impl mongodb --with-tests'
+    );
     console.log('');
     console.log('  $ stratix generate test src/domain/entities/Product.ts');
-    console.log('  $ stratix g test src/application/commands/CreateProductHandler.ts --type integration');
+    console.log(
+      '  $ stratix g test src/application/commands/CreateProductHandler.ts --type integration'
+    );
     console.log('  $ stratix g test src/infrastructure/http/ProductController.ts --type e2e');
     console.log('');
     console.log('  $ stratix generate context Products --props "name:string,price:number"');

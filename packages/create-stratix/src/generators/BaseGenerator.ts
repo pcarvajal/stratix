@@ -2,11 +2,7 @@ import ejs from 'ejs';
 import path from 'path';
 import chalk from 'chalk';
 import ora, { Ora } from 'ora';
-import {
-  GeneratorOptions,
-  GeneratedFile,
-  ProjectStructure,
-} from '../types/generator.js';
+import { GeneratorOptions, GeneratedFile, ProjectStructure } from '../types/generator.js';
 import { FileSystemUtils } from '../utils/file-system.js';
 import { NamingUtils } from '../utils/naming.js';
 
@@ -47,22 +43,16 @@ export abstract class BaseGenerator {
 
   protected abstract validate(): void;
 
-  protected abstract generateFiles(
-    structure: ProjectStructure
-  ): Promise<GeneratedFile[]>;
+  protected abstract generateFiles(structure: ProjectStructure): Promise<GeneratedFile[]>;
 
   protected async detectProjectStructure(): Promise<ProjectStructure> {
     const projectRoot = await this.fs.findProjectRoot();
 
-    const hasDomainFolder = await this.fs.pathExists(
-      path.join(projectRoot, 'src/domain')
-    );
+    const hasDomainFolder = await this.fs.pathExists(path.join(projectRoot, 'src/domain'));
     const hasApplicationFolder = await this.fs.pathExists(
       path.join(projectRoot, 'src/application')
     );
-    const hasContextsFolder = await this.fs.pathExists(
-      path.join(projectRoot, 'src/contexts')
-    );
+    const hasContextsFolder = await this.fs.pathExists(path.join(projectRoot, 'src/contexts'));
 
     if (hasContextsFolder) {
       return {
@@ -88,10 +78,7 @@ export abstract class BaseGenerator {
     };
   }
 
-  protected async renderTemplate(
-    templateName: string,
-    data: Record<string, any>
-  ): Promise<string> {
+  protected async renderTemplate(templateName: string, data: Record<string, any>): Promise<string> {
     const templatePath = this.getTemplatePath(templateName);
     const template = await this.fs.readFile(templatePath);
     return ejs.render(template, data);
@@ -120,18 +107,18 @@ export abstract class BaseGenerator {
         file.action === 'create'
           ? chalk.green('✓')
           : file.action === 'update'
-          ? chalk.yellow('↻')
-          : file.action === 'dry-run'
-          ? chalk.blue('○')
-          : chalk.gray('○');
+            ? chalk.yellow('↻')
+            : file.action === 'dry-run'
+              ? chalk.blue('○')
+              : chalk.gray('○');
 
       const relativePath = path.relative(process.cwd(), file.path);
       console.log(`  ${icon} ${relativePath}`);
     }
 
-    const created = files.filter(f => f.action === 'create').length;
-    const skipped = files.filter(f => f.action === 'skip').length;
-    const dryRun = files.filter(f => f.action === 'dry-run').length;
+    const created = files.filter((f) => f.action === 'create').length;
+    const skipped = files.filter((f) => f.action === 'skip').length;
+    const dryRun = files.filter((f) => f.action === 'dry-run').length;
 
     if (this.options.dryRun) {
       console.log(chalk.dim(`\n${dryRun} files would be created (dry-run mode)\n`));
