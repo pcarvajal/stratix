@@ -8,19 +8,20 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { execa } from 'execa';
 import validateProjectName from 'validate-npm-package-name';
+import { createGenerateCommand } from './commands/generate.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 interface ProjectOptions {
   name: string;
-  template: 'rest-api' | 'microservice' | 'worker' | 'minimal' | 'ai-agent-starter' | 'monolith';
+  template: 'rest-api' | 'rest-api-complete' | 'microservice' | 'worker' | 'minimal' | 'ai-agent-starter' | 'monolith' | 'modular-monolith';
   packageManager: 'npm' | 'pnpm' | 'yarn';
   git: boolean;
 }
 
 interface CommandOptions {
-  template?: 'rest-api' | 'microservice' | 'worker' | 'minimal' | 'ai-agent-starter' | 'monolith';
+  template?: 'rest-api' | 'rest-api-complete' | 'microservice' | 'worker' | 'minimal' | 'ai-agent-starter' | 'monolith' | 'modular-monolith';
   pm?: 'npm' | 'pnpm' | 'yarn';
   git?: boolean;
   skipInstall?: boolean;
@@ -33,14 +34,18 @@ export async function run(): Promise<void> {
   program
     .name('create-stratix')
     .description('Create a new Stratix application')
+    .version('0.1.2')
     .argument('[project-name]', 'Project name')
-    .option('--template <template>', 'Template to use (rest-api|microservice|worker|monolith|ai-agent-starter|minimal)')
+    .option('--template <template>', 'Template to use (rest-api|rest-api-complete|microservice|worker|monolith|modular-monolith|ai-agent-starter|minimal)')
     .option('--pm <manager>', 'Package manager (npm|pnpm|yarn)')
     .option('--no-git', 'Skip git initialization')
     .option('--skip-install', 'Skip dependency installation')
     .action(async (projectName?: string, options?: CommandOptions) => {
       await createProject(projectName, options);
     });
+
+  // Add generate command
+  program.addCommand(createGenerateCommand());
 
   await program.parseAsync(process.argv);
 }
@@ -90,12 +95,20 @@ async function createProject(projectName?: string, cmdOptions?: CommandOptions):
       message: 'Which template would you like to use?',
       choices: [
         {
+          name: 'REST API Complete - Production-ready REST API with all Phase 1 extensions',
+          value: 'rest-api-complete',
+        },
+        {
           name: 'REST API - Complete REST API with authentication',
           value: 'rest-api',
         },
         {
           name: 'Microservice - Service with message queue',
           value: 'microservice',
+        },
+        {
+          name: 'Modular Monolith - Bounded Contexts as Plugins (monolith to microservices)',
+          value: 'modular-monolith',
         },
         {
           name: 'Monolith - Modular monolith with bounded contexts',
