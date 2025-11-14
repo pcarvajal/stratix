@@ -43,8 +43,9 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 - Strangler Fig Pattern out-of-the-box
 
 **3. Build Scalable Applications**
-- Hexagonal architecture with 5 layers
-- Plugin system for extensibility
+- Hexagonal architecture (Domain, Application, Infrastructure)
+- 5-layer framework for extensibility (Primitives → Abstractions → Runtime → Implementations → Extensions)
+- Plugin system for swapping implementations
 - Event-driven with CQRS support
 - Container-agnostic dependency injection
 
