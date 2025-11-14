@@ -6,8 +6,8 @@
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm -r --filter '!website' --workspace-concurrency=1 build",
-    "build:fast": "pnpm -r --filter '!website' build",
+    "build": "pnpm -r --filter '!website' --filter '!./examples/**' --sort --workspace-concurrency=1 build",
+    "build:fast": "pnpm -r --filter '!website' --filter '!./examples/**' --sort build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r --filter '!website' typecheck",
     "lint": "pnpm -r lint",

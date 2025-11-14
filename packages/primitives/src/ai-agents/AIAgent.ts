@@ -3,6 +3,14 @@ import type { AgentId, AgentVersion, AgentCapability, ModelConfig } from './type
 import type { AgentResult } from './AgentResult.js';
 import type { AgentContext } from './AgentContext.js';
 import type { AgentMemory } from './AgentMemory.js';
+import type {
+  AgentExecutionStarted,
+  AgentExecutionCompleted,
+  AgentExecutionFailed,
+  AgentContextUpdated,
+  AgentMemoryStored,
+  AgentToolUsed,
+} from './events.js';
 
 /**
  * Base class for AI Agents in the Stratix framework.
@@ -19,7 +27,7 @@ import type { AgentMemory } from './AgentMemory.js';
  *   readonly name = 'Customer Support Agent';
  *   readonly description = 'Handles customer support tickets';
  *   readonly version = AgentVersionFactory.create('1.0.0');
- *   readonly capabilities = [AgentCapability.CUSTOMER_SUPPORT];
+ *   readonly capabilities = [AgentCapabilities.CUSTOMER_SUPPORT, 'ticket_routing'];
  *   readonly model = {
  *     provider: 'anthropic',
  *     model: 'claude-3-sonnet',
@@ -73,10 +81,70 @@ export abstract class AIAgent<TInput, TOutput> extends AggregateRoot<'AIAgent'> 
    * Main execution method for the agent.
    * Must be implemented by concrete agent classes.
    *
+   * This method is called internally by executeWithEvents() and should contain
+   * the core agent logic. Domain events are automatically recorded by the wrapper.
+   *
+   * @param input - The input data for the agent
+   * @returns A promise resolving to the agent result
+   * @protected
+   */
+  protected abstract execute(input: TInput): Promise<AgentResult<TOutput>>;
+
+  /**
+   * Executes the agent with automatic domain event recording.
+   * This is the public method that should be called by orchestrators and clients.
+   *
+   * Records the following events:
+   * - AgentExecutionStarted: When execution begins
+   * - AgentExecutionCompleted: When execution succeeds
+   * - AgentExecutionFailed: When execution fails
+   *
    * @param input - The input data for the agent
    * @returns A promise resolving to the agent result
    */
-  abstract execute(input: TInput): Promise<AgentResult<TOutput>>;
+  async executeWithEvents(input: TInput): Promise<AgentResult<TOutput>> {
+    const startTime = Date.now();
+    const contextId = this.currentContext?.sessionId;
+
+    // Record execution started event
+    this.recordExecutionStarted(input, contextId);
+
+    try {
+      // Call optional beforeExecute hook
+      if (this.beforeExecute) {
+        await this.beforeExecute(input);
+      }
+
+      // Execute the agent
+      const result = await this.execute(input);
+
+      // Calculate metrics
+      const durationMs = Date.now() - startTime;
+
+      // Record execution completed event
+      this.recordExecutionCompleted(result, contextId, durationMs);
+
+      // Call optional afterExecute hook
+      if (this.afterExecute) {
+        await this.afterExecute(result);
+      }
+
+      return result;
+    } catch (error) {
+      const durationMs = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+
+      // Record execution failed event
+      this.recordExecutionFailed(errorMessage, contextId, durationMs);
+
+      // Call optional onError hook
+      if (this.onError && error instanceof Error) {
+        await this.onError(error);
+      }
+
+      throw error;
+    }
+  }
 
   /**
    * Optional hook called before execution
@@ -106,6 +174,7 @@ export abstract class AIAgent<TInput, TOutput> extends AggregateRoot<'AIAgent'> 
    */
   setContext(context: AgentContext): void {
     this.currentContext = context;
+    this.recordContextUpdated(context.sessionId, context.getMessages().length);
   }
 
   /**
@@ -133,6 +202,7 @@ export abstract class AIAgent<TInput, TOutput> extends AggregateRoot<'AIAgent'> 
       throw new Error('Memory not configured for this agent');
     }
     await this.memory.store(key, value, type);
+    this.recordMemoryStored(key, type);
   }
 
   /**
@@ -209,5 +279,124 @@ export abstract class AIAgent<TInput, TOutput> extends AggregateRoot<'AIAgent'> 
       capabilities: this.capabilities,
       model: this.model,
     };
+  }
+
+  /**
+   * Records an execution started event
+   * @private
+   */
+  private recordExecutionStarted(input: TInput, contextId?: string): void {
+    const event: AgentExecutionStarted = {
+      occurredAt: new Date(),
+      agentId: this.id.value,
+      agentName: this.name,
+      eventType: 'AgentExecutionStarted',
+      input,
+      contextId,
+    };
+    this.record(event);
+  }
+
+  /**
+   * Records an execution completed event
+   * @private
+   */
+  private recordExecutionCompleted(
+    result: AgentResult<TOutput>,
+    contextId: string | undefined,
+    durationMs: number
+  ): void {
+    const event: AgentExecutionCompleted = {
+      occurredAt: new Date(),
+      agentId: this.id.value,
+      agentName: this.name,
+      eventType: 'AgentExecutionCompleted',
+      output: result.data,
+      contextId,
+      durationMs,
+      tokensUsed: result.metadata?.totalTokens,
+      cost: result.metadata?.cost,
+    };
+    this.record(event);
+  }
+
+  /**
+   * Records an execution failed event
+   * @private
+   */
+  private recordExecutionFailed(
+    error: string,
+    contextId: string | undefined,
+    durationMs: number
+  ): void {
+    const event: AgentExecutionFailed = {
+      occurredAt: new Date(),
+      agentId: this.id.value,
+      agentName: this.name,
+      eventType: 'AgentExecutionFailed',
+      error,
+      contextId,
+      durationMs,
+    };
+    this.record(event);
+  }
+
+  /**
+   * Records a tool used event
+   * Should be called by subclasses when they use tools
+   *
+   * @param toolName - Name of the tool used
+   * @param toolArguments - Arguments passed to the tool
+   * @param toolResult - Result from the tool execution
+   * @protected
+   */
+  protected recordToolUsage(
+    toolName: string,
+    toolArguments: Record<string, unknown>,
+    toolResult?: unknown
+  ): void {
+    const event: AgentToolUsed = {
+      occurredAt: new Date(),
+      agentId: this.id.value,
+      agentName: this.name,
+      eventType: 'AgentToolUsed',
+      toolName,
+      toolArguments,
+      toolResult,
+      contextId: this.currentContext?.sessionId,
+    };
+    this.record(event);
+  }
+
+  /**
+   * Records a context updated event
+   * @private
+   */
+  private recordContextUpdated(contextId: string, messagesCount: number): void {
+    const event: AgentContextUpdated = {
+      occurredAt: new Date(),
+      agentId: this.id.value,
+      agentName: this.name,
+      eventType: 'AgentContextUpdated',
+      contextId,
+      messagesCount,
+    };
+    this.record(event);
+  }
+
+  /**
+   * Records a memory stored event
+   * @private
+   */
+  private recordMemoryStored(key: string, type: 'short' | 'long'): void {
+    const event: AgentMemoryStored = {
+      occurredAt: new Date(),
+      agentId: this.id.value,
+      agentName: this.name,
+      eventType: 'AgentMemoryStored',
+      memoryKey: key,
+      memoryType: type,
+    };
+    this.record(event);
   }
 }

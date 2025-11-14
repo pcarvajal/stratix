@@ -2,7 +2,7 @@ import {
   AIAgent,
   AgentResult,
   AgentVersionFactory,
-  AgentCapability,
+  AgentCapabilities,
   type AgentId,
   type ModelConfig
 } from '@stratix/primitives';
@@ -28,8 +28,8 @@ export class DataAnalysisAgent extends AIAgent<AnalysisRequest, AnalysisReport> 
   readonly description = 'Analyzes datasets and provides statistical insights';
   readonly version = AgentVersionFactory.create('1.0.0');
   readonly capabilities = [
-    AgentCapability.DATA_ANALYSIS,
-    AgentCapability.KNOWLEDGE_RETRIEVAL
+    AgentCapabilities.DATA_ANALYSIS,
+    AgentCapabilities.KNOWLEDGE_RETRIEVAL
   ];
   readonly model: ModelConfig;
 

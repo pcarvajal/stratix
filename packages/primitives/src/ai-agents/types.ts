@@ -45,20 +45,38 @@ export class AgentVersionFactory {
 }
 
 /**
- * Capabilities that an agent can have
+ * Capability identifier for an agent.
+ * Can be any string, allowing for custom capabilities.
+ *
+ * @example
+ * ```typescript
+ * // Using built-in capabilities
+ * capabilities: [AgentCapabilities.CUSTOMER_SUPPORT, AgentCapabilities.DATA_ANALYSIS]
+ *
+ * // Using custom capabilities
+ * capabilities: ['legal_advice', 'medical_diagnosis', 'translation']
+ *
+ * // Mixing both
+ * capabilities: [AgentCapabilities.CODE_GENERATION, 'custom_capability']
+ * ```
  */
-// TODO: Check Agent Capability enum
-export enum AgentCapability {
-  CUSTOMER_SUPPORT = 'customer_support',
-  DATA_ANALYSIS = 'data_analysis',
-  KNOWLEDGE_RETRIEVAL = 'knowledge_retrieval',
-  SENTIMENT_ANALYSIS = 'sentiment_analysis',
-  SQL_GENERATION = 'sql_generation',
-  VISUALIZATION = 'visualization',
-  CONTENT_CREATION = 'content_creation',
-  CODE_GENERATION = 'code_generation',
-  DECISION_SUPPORT = 'decision_support',
-}
+export type AgentCapability = string;
+
+/**
+ * Common built-in agent capabilities.
+ * These are provided as constants for convenience, but agents can use any string as a capability.
+ */
+export const AgentCapabilities = {
+  CUSTOMER_SUPPORT: 'customer_support',
+  DATA_ANALYSIS: 'data_analysis',
+  KNOWLEDGE_RETRIEVAL: 'knowledge_retrieval',
+  SENTIMENT_ANALYSIS: 'sentiment_analysis',
+  SQL_GENERATION: 'sql_generation',
+  VISUALIZATION: 'visualization',
+  CONTENT_CREATION: 'content_creation',
+  CODE_GENERATION: 'code_generation',
+  DECISION_SUPPORT: 'decision_support',
+} as const;
 
 /**
  * Configuration for the LLM model used by an agent

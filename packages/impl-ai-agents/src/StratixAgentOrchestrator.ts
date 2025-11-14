@@ -250,20 +250,8 @@ export class StratixAgentOrchestrator implements AgentOrchestrator {
     agent: AIAgent<TInput, TOutput>,
     input: TInput
   ): Promise<AgentResult<TOutput>> {
-    // Before execution hook
-    if (agent['beforeExecute']) {
-      await agent['beforeExecute'](input);
-    }
-
-    // Execute agent
-    const result = await agent.execute(input);
-
-    // After execution hook
-    if (agent['afterExecute']) {
-      await agent['afterExecute'](result);
-    }
-
-    return result;
+    // Use executeWithEvents which handles hooks and domain events
+    return await agent.executeWithEvents(input);
   }
 
   private async executeWithRetries<TInput, TOutput>(
@@ -291,11 +279,7 @@ export class StratixAgentOrchestrator implements AgentOrchestrator {
         }
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
-
-        // Call error hook
-        if (agent['onError']) {
-          await agent['onError'](lastError);
-        }
+        // Error hook is already called by executeWithEvents
       }
 
       attempts++;

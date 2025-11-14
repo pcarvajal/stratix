@@ -3,15 +3,37 @@ export { AIAgent } from './AIAgent.js';
 export { AgentResult } from './AgentResult.js';
 export { AgentContext } from './AgentContext.js';
 export { ExecutionTrace } from './ExecutionTrace.js';
+export { AgentTool } from './AgentTool.js';
+export type { ToolDefinition } from './AgentTool.js';
 
 // Memory
 export type { AgentMemory } from './AgentMemory.js';
-export { InMemoryAgentMemory } from './AgentMemory.js';
+
+// Streaming
+export type {
+  StreamableAgent,
+  StreamChunk,
+  StreamOptions,
+} from './StreamableAgent.js';
+export { StreamingHelper } from './StreamableAgent.js';
+
+// Domain Events
+export type {
+  AIAgentDomainEvent,
+  AgentExecutionStarted,
+  AgentExecutionCompleted,
+  AgentExecutionFailed,
+  AgentToolUsed,
+  AgentContextUpdated,
+  AgentMemoryStored,
+  AIAgentEvent,
+} from './events.js';
 
 // Types
 export type {
   AgentId,
   AgentVersion,
+  AgentCapability,
   ModelConfig,
   AgentMessage,
   AgentCost,
@@ -22,4 +44,4 @@ export type {
   LLMCall,
 } from './types.js';
 
-export { AgentCapability, AgentVersionFactory } from './types.js';
+export { AgentCapabilities, AgentVersionFactory } from './types.js';

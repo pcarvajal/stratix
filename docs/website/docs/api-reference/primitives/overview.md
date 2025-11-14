@@ -337,14 +337,14 @@ Stratix treats AI agents as first-class domain entities with their own base clas
 Base class for building AI agents as aggregate roots.
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentCapabilities } from '@stratix/primitives';
 import type { AgentVersion, AgentCapability, ModelConfig } from '@stratix/primitives';
 
 class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse> {
   readonly name = 'Customer Support Agent';
   readonly description = 'Handles customer support tickets';
   readonly version: AgentVersion = { major: 1, minor: 0, patch: 0 };
-  readonly capabilities: AgentCapability[] = ['CUSTOMER_SUPPORT'];
+  readonly capabilities: AgentCapability[] = [AgentCapabilities.CUSTOMER_SUPPORT, 'ticket_routing'];
   readonly model: ModelConfig = {
     provider: 'anthropic',
     model: 'claude-3-sonnet',
@@ -420,22 +420,33 @@ const context: AgentContext = {
 
 ### AgentMemory
 
-Interface for agent memory persistence.
+Interface for agent memory persistence. The interface is in `@stratix/primitives` as it's a domain concept.
+
+**Note:** The `InMemoryAgentMemory` implementation has been moved to `@stratix/impl-ai-agents`.
 
 ```typescript
 import type { AgentMemory } from '@stratix/primitives';
+import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
 
+// Using the built-in implementation
+const memory = new InMemoryAgentMemory();
+
+// Or create a custom implementation
 class RedisAgentMemory implements AgentMemory {
-  async store(key: string, value: unknown): Promise<void> {
+  async store(key: string, value: unknown, type: 'short' | 'long'): Promise<void> {
     // Store in Redis
   }
 
-  async retrieve(key: string): Promise<unknown | undefined> {
+  async retrieve(key: string): Promise<unknown> {
     // Retrieve from Redis
   }
 
-  async delete(key: string): Promise<void> {
-    // Delete from Redis
+  async search(query: string, limit: number): Promise<unknown[]> {
+    // Search in Redis
+  }
+
+  async clear(type: 'short' | 'long' | 'all'): Promise<void> {
+    // Clear Redis
   }
 }
 ```

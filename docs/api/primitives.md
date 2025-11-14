@@ -295,27 +295,28 @@ console.log(`Total tokens: ${tokens.totalTokens}`);
 
 ### AgentMemory
 
-Interface for agent memory implementations.
+Interface for agent memory implementations. The interface remains in `@stratix/primitives` as it's a domain concept used by `AIAgent`.
+
+**Note:** The `InMemoryAgentMemory` implementation has been moved to `@stratix/impl-ai-agents` following the layered architecture pattern where implementations are separated from domain primitives.
+
+**Interface** (in `@stratix/primitives`):
 
 ```typescript
-interface AgentMemory {
-  store(key: string, value: unknown): Promise<void>;
-  retrieve(key: string): Promise<unknown | undefined>;
-  delete(key: string): Promise<void>;
-  clear(): Promise<void>;
-}
+import type { AgentMemory } from '@stratix/primitives';
 ```
 
-**InMemoryAgentMemory**
-
-Simple in-memory implementation of AgentMemory.
+**Built-in Implementation** (in `@stratix/impl-ai-agents`):
 
 ```typescript
+import { InMemoryAgentMemory } from '@stratix/impl-ai-agents';
+
 const memory = new InMemoryAgentMemory();
 
-await memory.store('context', { lastQuery: 'sales data' });
+await memory.store('context', { lastQuery: 'sales data' }, 'short');
 const context = await memory.retrieve('context');
 ```
+
+For production use, implement the `AgentMemory` interface with persistent storage (Redis, PostgreSQL, etc.).
 
 ---
 
@@ -641,15 +642,41 @@ interface AgentExecutionMetadata {
 
 ### AgentCapability
 
-Enumeration of agent capabilities.
+Type for agent capability identifiers. Can be any string, allowing for custom capabilities.
 
 ```typescript
-enum AgentCapability {
-  TEXT_GENERATION = 'text_generation',
-  FUNCTION_CALLING = 'function_calling',
-  STREAMING = 'streaming',
-  EMBEDDINGS = 'embeddings'
-}
+type AgentCapability = string;
+```
+
+**Built-in Capabilities:**
+
+The framework provides common capabilities as constants for convenience:
+
+```typescript
+const AgentCapabilities = {
+  CUSTOMER_SUPPORT: 'customer_support',
+  DATA_ANALYSIS: 'data_analysis',
+  KNOWLEDGE_RETRIEVAL: 'knowledge_retrieval',
+  SENTIMENT_ANALYSIS: 'sentiment_analysis',
+  SQL_GENERATION: 'sql_generation',
+  VISUALIZATION: 'visualization',
+  CONTENT_CREATION: 'content_creation',
+  CODE_GENERATION: 'code_generation',
+  DECISION_SUPPORT: 'decision_support',
+} as const;
+```
+
+**Usage:**
+
+```typescript
+// Using built-in capabilities
+capabilities: [AgentCapabilities.CUSTOMER_SUPPORT, AgentCapabilities.DATA_ANALYSIS]
+
+// Using custom capabilities
+capabilities: ['legal_advice', 'medical_diagnosis', 'translation']
+
+// Mixing both
+capabilities: [AgentCapabilities.CODE_GENERATION, 'custom_capability']
 ```
 
 ---

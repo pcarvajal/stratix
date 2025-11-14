@@ -1,7 +1,7 @@
 import {
   AIAgent,
   AgentResult,
-  AgentCapability,
+  AgentCapabilities,
   AgentVersionFactory,
   EntityId
 } from '@stratix/primitives';
@@ -46,7 +46,7 @@ export class EchoAgent extends AIAgent<EchoInput, EchoOutput> {
   readonly name = 'Echo Agent';
   readonly description = 'A simple agent that echoes messages back with a greeting';
   readonly version = AgentVersionFactory.create('1.0.0');
-  readonly capabilities = [AgentCapability.CUSTOMER_SUPPORT];
+  readonly capabilities = [AgentCapabilities.CUSTOMER_SUPPORT];
   readonly model: ModelConfig = {
     provider: 'none',
     model: 'echo-v1',
