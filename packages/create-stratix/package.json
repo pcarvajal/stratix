@@ -12,7 +12,8 @@
     "templates"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && pnpm copy-templates",
+    "copy-templates": "mkdir -p dist/generators/entity/templates dist/generators/value-object/templates dist/generators/use-case/templates dist/generators/repository/templates dist/generators/test/templates dist/generators/context/templates && cp src/generators/entity/templates/*.ejs dist/generators/entity/templates/ && cp src/generators/value-object/templates/*.ejs dist/generators/value-object/templates/ && cp src/generators/use-case/templates/*.ejs dist/generators/use-case/templates/ && cp src/generators/repository/templates/*.ejs dist/generators/repository/templates/ && cp src/generators/test/templates/*.ejs dist/generators/test/templates/ && cp src/generators/context/templates/*.ejs dist/generators/context/templates/",
     "test": "vitest run || exit 0",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
@@ -33,6 +34,7 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^12.0.0",
+    "ejs": "^3.1.10",
     "execa": "^8.0.1",
     "fs-extra": "^11.2.0",
     "inquirer": "^9.2.12",
@@ -40,6 +42,7 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.0.0",

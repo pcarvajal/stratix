@@ -1,0 +1,16 @@
+import { DomainEvent } from '@stratix/primitives';
+import type { <%- entityName %>Id } from '../entities/<%- entityName %>.js';
+
+/**
+ * Domain event fired when a <%- entityName %> is created.
+ */
+export class <%- entityName %>CreatedEvent extends DomainEvent {
+  constructor(
+    public readonly <%- entityNameCamel %>Id: <%- entityName %>Id,
+<% props.forEach((prop, index) => { -%>
+    public readonly <%- prop.name %>: <%- prop.type %><%= index < props.length - 1 ? ',' : '' %>
+<% }); -%>
+  ) {
+    super();
+  }
+}

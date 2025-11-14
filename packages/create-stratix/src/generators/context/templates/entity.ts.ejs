@@ -1,0 +1,105 @@
+import { AggregateRoot, EntityId } from '@stratix/primitives';
+import { <%- entityName %>CreatedEvent } from '../events/<%- entityName %>Created.js';
+
+export type <%- entityName %>Id = EntityId<'<%- entityName %>'>;
+
+export interface <%- entityName %>Props {
+<% props.forEach(prop => { -%>
+  <%- prop.name %>: <%- prop.type %>;
+<% }); -%>
+}
+
+/**
+ * <%- entityName %> aggregate root.
+ *
+ * Represents the main entity in the <%- contextName %> bounded context.
+ */
+export class <%- entityName %> extends AggregateRoot<'<%- entityName %>'> {
+<% props.forEach(prop => { -%>
+  private _<%- prop.name %>: <%- prop.type %>;
+<% }); -%>
+
+  private constructor(
+    id: <%- entityName %>Id,
+    props: <%- entityName %>Props,
+    createdAt: Date,
+    updatedAt: Date
+  ) {
+    super(id, createdAt, updatedAt);
+<% props.forEach(prop => { -%>
+    this._<%- prop.name %> = props.<%- prop.name %>;
+<% }); -%>
+  }
+
+<% props.forEach(prop => { -%>
+  get <%- prop.name %>(): <%- prop.type %> {
+    return this._<%- prop.name %>;
+  }
+
+<% }); -%>
+
+  /**
+   * Creates a new <%- entityName %> aggregate.
+   */
+  static create(props: <%- entityName %>Props): <%- entityName %> {
+    this.validateProps(props);
+
+    const id = EntityId.create<'<%- entityName %>'>();
+    const now = new Date();
+
+    const <%- entityNameCamel %> = new <%- entityName %>(id, props, now, now);
+
+    // Raise domain event
+    <%- entityNameCamel %>.addDomainEvent(
+      new <%- entityName %>CreatedEvent(
+        id,
+<% props.forEach((prop, index) => { -%>
+        props.<%- prop.name %><%= index < props.length - 1 ? ',' : '' %>
+<% }); -%>
+      )
+    );
+
+    return <%- entityNameCamel %>;
+  }
+
+  /**
+   * Reconstructs a <%- entityName %> from persistence.
+   */
+  static from(
+    id: <%- entityName %>Id,
+    props: <%- entityName %>Props,
+    createdAt: Date,
+    updatedAt: Date
+  ): <%- entityName %> {
+    return new <%- entityName %>(id, props, createdAt, updatedAt);
+  }
+
+  /**
+   * Validates <%- entityName %> properties.
+   */
+  private static validateProps(props: <%- entityName %>Props): void {
+<% props.forEach(prop => { -%>
+  <% if (prop.type === 'string') { -%>
+    if (!props.<%- prop.name %> || props.<%- prop.name %>.trim() === '') {
+      throw new Error('<%- prop.name %> cannot be empty');
+    }
+  <% } else if (prop.type === 'number') { -%>
+    if (typeof props.<%- prop.name %> !== 'number' || isNaN(props.<%- prop.name %>)) {
+      throw new Error('<%- prop.name %> must be a valid number');
+    }
+  <% } -%>
+<% }); -%>
+  }
+
+  /**
+   * Updates the <%- entityName %>.
+   */
+  update(props: Partial<<%- entityName %>Props>): void {
+<% props.forEach(prop => { -%>
+    if (props.<%- prop.name %> !== undefined) {
+      this._<%- prop.name %> = props.<%- prop.name %>;
+    }
+<% }); -%>
+    this.touch();
+  }
+}

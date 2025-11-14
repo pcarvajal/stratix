@@ -1,0 +1,14 @@
+import type { Query } from '@stratix/abstractions';
+import type { Get<%- entityName %>ByIdOutput } from './Get<%- entityName %>ById.js';
+
+export interface List<%- entityNamePlural %>Output {
+  <%- entityNamePluralCamel %>: Get<%- entityName %>ByIdOutput[];
+  total: number;
+}
+
+/**
+ * Query to list all <%- entityNamePluralCamel %>.
+ */
+export class List<%- entityNamePlural %>Query implements Query {
+  constructor() {}
+}
