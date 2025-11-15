@@ -1,5 +1,5 @@
-// Context Plugin
-export { ProductsContextPlugin } from './ProductsContextPlugin.js';
+// Context Module
+export { ProductsContextModule } from './ProductsContextModule.js';
 
 // Domain
 export { Product, type ProductId, type ProductProps } from './domain/entities/Product.js';

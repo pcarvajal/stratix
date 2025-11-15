@@ -95,9 +95,9 @@ export interface RepositoryDefinition {
 }
 
 /**
- * Context Plugin interface for Bounded Contexts.
+ * Context Module interface for Bounded Contexts.
  *
- * A ContextPlugin represents a complete Bounded Context in DDD terms.
+ * A ContextModule represents a complete Bounded Context in DDD terms.
  * It encapsulates all domain logic, commands, queries, events, and repositories
  * for a specific subdomain.
  *
@@ -106,9 +106,13 @@ export interface RepositoryDefinition {
  * - Portable between monolith and microservices architectures
  * - Hot-swappable without changing domain code
  *
+ * Note: ContextModule is different from Plugin:
+ * - Plugin: Infrastructure extensions (Postgres, Redis, RabbitMQ)
+ * - ContextModule: Domain/business logic modules (Orders, Products, Inventory)
+ *
  * @example
  * ```typescript
- * class ProductsContextPlugin extends BaseContextPlugin {
+ * class ProductsModule extends BaseContextModule {
  *   readonly metadata = {
  *     name: 'products-context',
  *     version: '1.0.0',
@@ -160,7 +164,7 @@ export interface RepositoryDefinition {
  * }
  * ```
  */
-export interface ContextPlugin extends Plugin {
+export interface ContextModule extends Plugin {
   /**
    * The name of the Bounded Context.
    * Should be a PascalCase noun (e.g., 'Products', 'Orders', 'Inventory').

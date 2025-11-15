@@ -1,6 +1,6 @@
 # Monolith to Microservices Migration
 
-Complete guide for migrating from modular monolith to microservices using Bounded Contexts as Plugins.
+Complete guide for migrating from modular monolith to microservices using Bounded Contexts as Modules.
 
 ## Overview
 
@@ -19,9 +19,9 @@ Three Bounded Contexts in one application:
 ```typescript
 // src/index.ts
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextPlugin())
-  .usePlugin(new OrdersContextPlugin())
-  .usePlugin(new InventoryContextPlugin())
+  .usePlugin(new ProductsContextModule())
+  .usePlugin(new OrdersContextModule())
+  .usePlugin(new InventoryContextModule())
   .build();
 ```
 
@@ -36,7 +36,7 @@ Orders context running as independent service:
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextPlugin())  // SAME CODE
+  .usePlugin(new OrdersContextModule())  // SAME CODE
   .build();
 ```
 
@@ -78,7 +78,7 @@ Orders Microservice is running!
 Bounded Context: Orders (extracted from monolith)
 
 Code Changes Required: ZERO
-  - OrdersContextPlugin: Identical
+  - OrdersContextModule: Identical
   - Domain layer: Unchanged
   - Application layer: Unchanged
   - Infrastructure layer: Unchanged
@@ -92,7 +92,7 @@ Entire `orders/` context directory:
 - `domain/` - Entities, value objects, repositories
 - `application/` - Commands, queries, handlers
 - `infrastructure/` - Repository implementations
-- `OrdersContextPlugin.ts` - Plugin definition
+- `OrdersContextModule.ts` - Module definition
 
 **Modifications:** ZERO
 
@@ -106,7 +106,7 @@ New microservice files:
 
 ### Files Modified
 
-**NONE** in the OrdersContextPlugin or any domain/application code.
+**NONE** in the OrdersContextModule or any domain/application code.
 
 ## Migration Steps (Real Project)
 
@@ -148,7 +148,7 @@ Copy the **entire context** without modifications.
 import { ApplicationBuilder } from '@stratix/runtime';
 import { PostgresPlugin } from '@stratix/ext-postgres';
 import { RabbitMQEventBusPlugin } from '@stratix/ext-rabbitmq';
-import { OrdersContextPlugin } from './orders/index.js';
+import { OrdersContextModule } from './orders/index.js';
 
 async function bootstrap() {
   const app = await ApplicationBuilder.create()
@@ -162,8 +162,8 @@ async function bootstrap() {
     .usePlugin(new RabbitMQEventBusPlugin({
       url: process.env.RABBITMQ_URL || 'amqp://localhost',
     }))
-    // Same plugin
-    .usePlugin(new OrdersContextPlugin())
+    // Same module
+    .usePlugin(new OrdersContextModule())
     .build();
 
   await app.start();
@@ -191,9 +191,9 @@ const app = await ApplicationBuilder.create()
   .usePlugin(new RabbitMQEventBusPlugin({
     url: process.env.RABBITMQ_URL,
   }))
-  .usePlugin(new ProductsContextPlugin())
-  // .usePlugin(new OrdersContextPlugin())  <- Removed
-  .usePlugin(new InventoryContextPlugin())
+  .usePlugin(new ProductsContextModule())
+  // .usePlugin(new OrdersContextModule())  <- Removed
+  .usePlugin(new InventoryContextModule())
   .build();
 ```
 
@@ -236,10 +236,10 @@ export class PostgresOrderRepository implements OrderRepository {
 }
 ```
 
-Update plugin:
+Update module:
 
 ```typescript
-// OrdersContextPlugin.ts
+// OrdersContextModule.ts
 getRepositories(): RepositoryDefinition[] {
   return [
     {
@@ -291,7 +291,7 @@ Add HTTP endpoints:
 
 ### Health Checks
 
-Built into ContextPlugin:
+Built into ContextModule:
 
 ```typescript
 const health = await app.healthCheck('orders');
@@ -385,7 +385,7 @@ class OrderMicroservice extends Order {
 
 ```typescript
 // CORRECT
-import { OrdersContextPlugin } from './orders/index.js';
+import { OrdersContextModule } from './orders/index.js';
 ```
 
 ### Don't: Shared Database
@@ -419,7 +419,7 @@ eventBus.publish(new OrderCreatedEvent(order.id));
 
 ## Learn More
 
-- [Bounded Contexts as Plugins](../core-concepts/bounded-contexts.md)
+- [Bounded Contexts as Modules](../core-concepts/bounded-contexts.md)
 - [Modular Monolith Pattern](https://www.kamilgrzybek.com/blog/posts/modular-monolith-primer)
 - [Strangler Fig Pattern](https://martinfowler.com/bliki/StranglerFigApplication.html)
 - [Bounded Contexts](https://martinfowler.com/bliki/BoundedContext.html)
@@ -429,3 +429,4 @@ eventBus.publish(new OrderCreatedEvent(order.id));
 - Modular monolith: `packages/create-stratix/templates/modular-monolith`
 - Orders microservice: `examples/bc-migration/orders-service`
 - Side-by-side comparison in the repository
+- Bounded Contexts for domain/business logic modules

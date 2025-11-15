@@ -34,8 +34,8 @@ export type {
   QueryDefinition,
   EventHandlerDefinition,
   RepositoryDefinition,
-  ContextPlugin,
-} from './plugin/ContextPlugin.js';
+  ContextModule,
+} from './plugin/ContextModule.js';
 
 // AI Agents
 export * from './ai-agents/index.js';

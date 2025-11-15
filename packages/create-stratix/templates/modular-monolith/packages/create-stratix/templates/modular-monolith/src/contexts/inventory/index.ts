@@ -1,5 +1,5 @@
-// Context Plugin
-export { InventoryContextPlugin } from './InventoryContextPlugin.js';
+// Context Module
+export { InventoryContextModule } from './InventoryContextModule.js';
 
 // Domain
 export { Inventory, type InventoryId, type InventoryProps } from './domain/entities/Inventory.js';

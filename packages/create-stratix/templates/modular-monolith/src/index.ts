@@ -8,16 +8,16 @@ import {
 } from '@stratix/impl-cqrs-inmemory';
 import { LogLevel, ServiceLifetime } from '@stratix/abstractions';
 
-// Import Context Plugins
-import { ProductsContextPlugin } from './contexts/products/index.js';
-import { OrdersContextPlugin } from './contexts/orders/index.js';
-import { InventoryContextPlugin } from './contexts/inventory/index.js';
+// Import Context Modules
+import { ProductsContextModule } from './contexts/products/index.js';
+import { OrdersContextModule } from './contexts/orders/index.js';
+import { InventoryContextModule } from './contexts/inventory/index.js';
 
 async function bootstrap() {
   const logger = new ConsoleLogger({ level: LogLevel.INFO });
   const container = new AwilixContainer();
 
-  logger.info('Bootstrapping Modular Monolith with Bounded Context Plugins...');
+  logger.info('Bootstrapping Modular Monolith with Bounded Context Modules...');
 
   // Initialize CQRS buses
   const commandBus = new InMemoryCommandBus();
@@ -30,15 +30,15 @@ async function bootstrap() {
   container.register('queryBus', () => queryBus, { lifetime: ServiceLifetime.SINGLETON });
   container.register('eventBus', () => eventBus, { lifetime: ServiceLifetime.SINGLETON });
 
-  // Build application with Context Plugins
+  // Build application with Context Modules
   const app = await ApplicationBuilder.create()
     .useContainer(container)
     .useLogger(logger)
 
-    // Bounded Contexts as Plugins - Each BC is a self-contained module
-    .usePlugin(new ProductsContextPlugin())
-    .usePlugin(new OrdersContextPlugin())
-    .usePlugin(new InventoryContextPlugin())
+    // Bounded Contexts as Modules - Each BC is a self-contained module
+    .usePlugin(new ProductsContextModule())
+    .usePlugin(new OrdersContextModule())
+    .usePlugin(new InventoryContextModule())
 
     .build();
 
@@ -46,17 +46,17 @@ async function bootstrap() {
 
   logger.info('Modular Monolith is running!');
   logger.info('');
-  logger.info('Bounded Contexts loaded as plugins:');
+  logger.info('Bounded Contexts loaded as modules:');
   logger.info('  - Products: Manages product catalog');
   logger.info('  - Orders: Manages customer orders');
   logger.info('  - Inventory: Manages stock levels');
   logger.info('');
   logger.info('Architecture: Modular Monolith');
-  logger.info('Pattern: Bounded Contexts as Plugins');
+  logger.info('Pattern: Bounded Contexts as Modules');
   logger.info('');
   logger.info('To migrate to microservices:');
   logger.info('  1. Extract one BC to separate service');
-  logger.info('  2. Change infrastructure plugins (EventBus, Database)');
+  logger.info('  2. Change infrastructure modules (EventBus, Database)');
   logger.info('  3. ZERO changes needed in domain code');
   logger.info('');
   logger.info('Try commands:');

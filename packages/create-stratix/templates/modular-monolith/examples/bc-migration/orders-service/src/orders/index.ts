@@ -1,5 +1,5 @@
-// Context Plugin
-export { OrdersContextPlugin } from './OrdersContextPlugin.js';
+// Context Module
+export { OrdersContextModule } from './OrdersContextModule.js';
 
 // Domain
 export { Order, type OrderId, type OrderProps } from './domain/entities/Order.js';

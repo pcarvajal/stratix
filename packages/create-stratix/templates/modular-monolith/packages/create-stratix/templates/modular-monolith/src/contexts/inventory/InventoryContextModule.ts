@@ -1,4 +1,4 @@
-import { BaseContextPlugin } from '@stratix/runtime';
+import { BaseContextModule } from '@stratix/runtime';
 import type {
   PluginMetadata,
   CommandDefinition,
@@ -17,21 +17,21 @@ import { InMemoryInventoryRepository } from './infrastructure/persistence/InMemo
 import type { InventoryRepository } from './domain/repositories/InventoryRepository.js';
 
 /**
- * Inventory Bounded Context Plugin.
+ * Inventory Bounded Context Module.
  *
- * This plugin encapsulates the entire Inventory bounded context including:
+ * This module encapsulates the entire Inventory bounded context including:
  * - Domain entities, value objects, and events
  * - Application commands and queries with handlers
  * - Infrastructure repositories
  *
- * The plugin can be deployed as:
- * - Part of a monolith (alongside other context plugins)
+ * The module can be deployed as:
+ * - Part of a monolith (alongside other context modules)
  * - Standalone microservice (only this context)
  *
  * To switch from monolith to microservice, only change infrastructure
- * plugins in main.ts - NO changes needed to this context code.
+ * modules in main.ts - NO changes needed to this context code.
  */
-export class InventoryContextPlugin extends BaseContextPlugin {
+export class InventoryContextModule extends BaseContextModule {
   readonly metadata: PluginMetadata = {
     name: 'inventory-context',
     version: '1.0.0',
@@ -96,7 +96,7 @@ export class InventoryContextPlugin extends BaseContextPlugin {
   }
 
   /**
-   * Initialize the Inventory context plugin.
+   * Initialize the Inventory context module.
    *
    * Repositories are registered first by the base class, so we can
    * resolve them here before registering commands/queries.

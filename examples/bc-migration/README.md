@@ -26,9 +26,9 @@ Located at: `packages/create-stratix/templates/modular-monolith`
 ```typescript
 // src/index.ts
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextPlugin())
-  .usePlugin(new OrdersContextPlugin())     // <- This context
-  .usePlugin(new InventoryContextPlugin())
+  .usePlugin(new ProductsContextModule())
+  .usePlugin(new OrdersContextModule())     // <- This context
+  .usePlugin(new InventoryContextModule())
   .build();
 ```
 
@@ -45,7 +45,7 @@ const app = await ApplicationBuilder.create()
   // .usePlugin(new PostgresPlugin({ database: 'orders' }))
   // .usePlugin(new RabbitMQEventBusPlugin({ url: '...' }))
 
-  .usePlugin(new OrdersContextPlugin())     // SAME context plugin
+  .usePlugin(new OrdersContextModule())     // SAME context plugin
   .build();
 ```
 
@@ -64,7 +64,7 @@ Only Orders context, separate deployment.
 - `README.md` (documentation)
 
 ### Files Modified
-**NONE** in the OrdersContextPlugin or any of its layers.
+**NONE** in the OrdersContextModule or any of its layers.
 
 ## Running the Example
 
@@ -81,7 +81,7 @@ pnpm dev
 
 Output shows all 3 contexts running:
 ```
-Bounded Contexts loaded as plugins:
+Bounded Contexts loaded as modules:
   - Products: Manages product catalog
   - Orders: Manages customer orders
   - Inventory: Manages stock levels
@@ -101,7 +101,7 @@ Orders Microservice is running!
 Bounded Context: Orders (extracted from monolith)
 
 Code Changes Required: ZERO
-  - OrdersContextPlugin: Identical to monolith version
+  - OrdersContextModule: Identical to monolith version
   - Domain layer: Unchanged
   - Application layer: Unchanged
   - Infrastructure layer: Unchanged
@@ -140,13 +140,13 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { PostgresPlugin } from '@stratix/ext-postgres';
 import { RabbitMQEventBusPlugin } from '@stratix/ext-rabbitmq';
 
-// SAME OrdersContextPlugin
-import { OrdersContextPlugin } from './orders/index.js';
+// SAME OrdersContextModule
+import { OrdersContextModule } from './orders/index.js';
 
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextPlugin())  // NO changes
+  .usePlugin(new OrdersContextModule())  // NO changes
   .build();
 ```
 
@@ -160,9 +160,9 @@ Remove Orders context from monolith:
 
 ```typescript
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextPlugin())
-  // .usePlugin(new OrdersContextPlugin())  <- Removed
-  .usePlugin(new InventoryContextPlugin())
+  .usePlugin(new ProductsContextModule())
+  // .usePlugin(new OrdersContextModule())  <- Removed
+  .usePlugin(new InventoryContextModule())
   .build();
 ```
 
@@ -213,7 +213,7 @@ class OrderMicroservice extends Order {
 ### Do: Move as-is
 ```typescript
 // CORRECT: Same code, different deployment
-import { OrdersContextPlugin } from './orders/index.js';
+import { OrdersContextModule } from './orders/index.js';
 ```
 
 ### Don't: Shared Database

@@ -1,5 +1,5 @@
 import {
-  ContextPlugin,
+  ContextModule,
   CommandDefinition,
   QueryDefinition,
   EventHandlerDefinition,
@@ -12,7 +12,7 @@ import {
 } from '@stratix/abstractions';
 
 /**
- * Base implementation for Context Plugins.
+ * Base implementation for Context Modules.
  *
  * Provides automatic registration of commands, queries, event handlers,
  * and repositories during the initialize phase.
@@ -24,9 +24,13 @@ import {
  *
  * The base class handles all the wiring automatically.
  *
+ * Note: ContextModule is different from Plugin:
+ * - Plugin: Infrastructure extensions (Postgres, Redis, RabbitMQ)
+ * - ContextModule: Domain/business logic modules (Orders, Products, Inventory)
+ *
  * @example
  * ```typescript
- * export class ProductsContextPlugin extends BaseContextPlugin {
+ * export class ProductsContextModule extends BaseContextModule {
  *   readonly metadata: PluginMetadata = {
  *     name: 'products-context',
  *     version: '1.0.0',
@@ -98,7 +102,7 @@ import {
  * }
  * ```
  */
-export abstract class BaseContextPlugin implements ContextPlugin {
+export abstract class BaseContextModule implements ContextModule {
   /**
    * Plugin metadata (name, version, dependencies).
    * Must be implemented by subclasses.
@@ -157,7 +161,7 @@ export abstract class BaseContextPlugin implements ContextPlugin {
   }
 
   /**
-   * Initializes the context plugin.
+   * Initializes the context module.
    *
    * This method:
    * 1. Registers all repositories in the DI container
@@ -215,7 +219,7 @@ export abstract class BaseContextPlugin implements ContextPlugin {
   }
 
   /**
-   * Starts the context plugin.
+   * Starts the context module.
    * Override if your context needs to start external resources.
    *
    * @example
@@ -233,7 +237,7 @@ export abstract class BaseContextPlugin implements ContextPlugin {
   }
 
   /**
-   * Stops the context plugin.
+   * Stops the context module.
    * Override if your context needs to clean up resources.
    *
    * @example
@@ -250,7 +254,7 @@ export abstract class BaseContextPlugin implements ContextPlugin {
   }
 
   /**
-   * Health check for the context plugin.
+   * Health check for the context module.
    * Default implementation returns healthy.
    * Override to provide custom health checks.
    *

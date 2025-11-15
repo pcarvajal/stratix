@@ -293,7 +293,7 @@ export function createGenerateCommand(): Command {
   // Subcommand: context
   generate
     .command('context <name>')
-    .description('Generate a complete Bounded Context with ContextPlugin')
+    .description('Generate a complete Bounded Context with ContextModule')
     .option('--props <props>', 'Entity properties (e.g., "name:string,price:number")')
     .option('--with-tests', 'Generate test files', false)
     .option('--dry-run', 'Show what would be generated without writing files', false)
@@ -320,11 +320,11 @@ export function createGenerateCommand(): Command {
           console.log(chalk.dim('  - Domain layer (entity, repository, events)'));
           console.log(chalk.dim('  - Application layer (commands, queries, handlers)'));
           console.log(chalk.dim('  - Infrastructure layer (in-memory repository)'));
-          console.log(chalk.dim(`  - ${name}ContextPlugin (auto-wiring all components)\n`));
+          console.log(chalk.dim(`  - ${name}ContextModule (auto-wiring all components)\n`));
           console.log(chalk.dim('Next steps:'));
           console.log(chalk.dim('  1. Review the generated files'));
-          console.log(chalk.dim('  2. Register the context plugin in your application:'));
-          console.log(chalk.dim(`     app.usePlugin(new ${name}ContextPlugin())`));
+          console.log(chalk.dim('  2. Register the context module in your application:'));
+          console.log(chalk.dim(`     app.usePlugin(new ${name}ContextModule())`));
           console.log(chalk.dim('  3. Customize business logic in the domain layer'));
           console.log(chalk.dim('  4. Add more commands/queries as needed\n'));
         }

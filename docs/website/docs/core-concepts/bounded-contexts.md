@@ -1,4 +1,4 @@
-# Bounded Contexts as Plugins
+# Bounded Contexts as Modules
 
 Stratix's killer feature: evolve from modular monolith to microservices without rewriting domain code.
 
@@ -12,15 +12,15 @@ Traditional migration from monolith to microservices requires:
 
 ## The Stratix Solution
 
-**Bounded Contexts are portable plugins**. The same code runs in both monolith and microservices.
+**Bounded Contexts are portable modules**. The same code runs in both monolith and microservices.
 
 ### Modular Monolith
 
 ```typescript
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextPlugin())
-  .usePlugin(new OrdersContextPlugin())
-  .usePlugin(new InventoryContextPlugin())
+  .usePlugin(new ProductsContextModule())
+  .usePlugin(new OrdersContextModule())
+  .usePlugin(new InventoryContextModule())
   .build();
 ```
 
@@ -33,11 +33,11 @@ All three contexts in one application.
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextPlugin())  // SAME CODE
+  .usePlugin(new OrdersContextModule())  // SAME CODE
   .build();
 ```
 
-**Zero changes** to OrdersContextPlugin, domain logic, repositories, or handlers.
+**Zero changes** to OrdersContextModule, domain logic, repositories, or handlers.
 
 ## Creating a Bounded Context
 
@@ -62,15 +62,15 @@ This generates a complete Bounded Context with:
 ### Infrastructure Layer
 - `InMemoryOrderRepository` implementation
 
-### Plugin
-- `OrdersContextPlugin` with auto-registration
+### Module
+- `OrdersContextModule` with auto-registration
 
-## The BaseContextPlugin
+## The BaseContextModule
 
-All Bounded Contexts extend `BaseContextPlugin`:
+All Bounded Contexts extend `BaseContextModule`:
 
 ```typescript
-export class OrdersContextPlugin extends BaseContextPlugin {
+export class OrdersContextModule extends BaseContextModule {
   readonly metadata = {
     name: 'orders-context',
     version: '1.0.0',
@@ -116,7 +116,7 @@ export class OrdersContextPlugin extends BaseContextPlugin {
 
 ### Auto-Registration
 
-`BaseContextPlugin` automatically:
+`BaseContextModule` automatically:
 1. Registers repositories in DI container
 2. Registers commands with command bus
 3. Registers queries with query bus
@@ -162,12 +162,12 @@ cp -r ../my-app/src/contexts/orders ./src/
 
 ```typescript
 // orders-service/src/index.ts
-import { OrdersContextPlugin } from './orders/index.js';
+import { OrdersContextModule } from './orders/index.js';
 
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextPlugin())  // Same plugin
+  .usePlugin(new OrdersContextModule())  // Same module
   .build();
 
 await app.start();
@@ -179,9 +179,9 @@ Remove the extracted context:
 
 ```typescript
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextPlugin())
-  // .usePlugin(new OrdersContextPlugin())  <- Removed
-  .usePlugin(new InventoryContextPlugin())
+  .usePlugin(new ProductsContextModule())
+  // .usePlugin(new OrdersContextModule())  <- Removed
+  .usePlugin(new InventoryContextModule())
   .build();
 ```
 
@@ -266,7 +266,7 @@ class OrderMicroservice extends Order {
 ### Do: Move As-Is
 ```typescript
 // CORRECT
-import { OrdersContextPlugin } from './orders/index.js';
+import { OrdersContextModule } from './orders/index.js';
 ```
 
 ### Don't: Shared Database

@@ -4,15 +4,15 @@ import { ConsoleLogger } from '@stratix/impl-logger-console';
 import { InMemoryCommandBus, InMemoryQueryBus, InMemoryEventBus } from '@stratix/impl-cqrs-inmemory';
 import { LogLevel, ServiceLifetime } from '@stratix/abstractions';
 
-// SAME OrdersContextPlugin - ZERO changes from monolith
-import { OrdersContextPlugin } from './orders/index.js';
+// SAME OrdersContextModule - ZERO changes from monolith
+import { OrdersContextModule } from './orders/index.js';
 
 /**
  * Orders Microservice
  *
  * This service was extracted from the modular monolith.
  *
- * IMPORTANT: The OrdersContextPlugin code is IDENTICAL to the monolith version.
+ * IMPORTANT: The OrdersContextModule code is IDENTICAL to the monolith version.
  * ZERO changes were needed in domain, application, or infrastructure layers.
  *
  * Only differences:
@@ -53,8 +53,8 @@ async function bootstrap() {
     // .usePlugin(new PostgresPlugin({ database: 'orders' }))
     // .usePlugin(new RabbitMQEventBusPlugin({ url: 'amqp://localhost' }))
 
-    // SAME OrdersContextPlugin - NO changes
-    .usePlugin(new OrdersContextPlugin())
+    // SAME OrdersContextModule - NO changes
+    .usePlugin(new OrdersContextModule())
 
     .build();
 
@@ -66,7 +66,7 @@ async function bootstrap() {
   logger.info('Bounded Context: Orders (extracted from monolith)');
   logger.info('');
   logger.info('Code Changes Required: ZERO');
-  logger.info('  - OrdersContextPlugin: Identical to monolith version');
+  logger.info('  - OrdersContextModule: Identical to monolith version');
   logger.info('  - Domain layer: Unchanged');
   logger.info('  - Application layer: Unchanged');
   logger.info('  - Infrastructure layer: Unchanged');

@@ -5,7 +5,7 @@ export { Application } from './builder/Application.js';
 export { DefaultPluginContext } from './builder/DefaultPluginContext.js';
 
 // Plugin
-export { BaseContextPlugin } from './plugin/BaseContextPlugin.js';
+export { BaseContextModule } from './plugin/BaseContextModule.js';
 
 // Registry
 export { PluginRegistry } from './registry/PluginRegistry.js';

@@ -29,7 +29,7 @@ yarn create stratix
 
 Choose from 8 production-ready templates:
 
-- **Modular Monolith** - Bounded Contexts as Plugins (monolith → microservices with zero rewrite)
+- **Modular Monolith** - Bounded Contexts as Modules (monolith → microservices with zero rewrite)
 - **REST API Complete** - Production REST API with all Phase 1 extensions (Fastify, Zod, Auth, Errors)
 - **REST API** - Basic REST API with authentication and CQRS pattern
 - **Microservice** - Event-driven service with message queue integration (RabbitMQ)
@@ -78,7 +78,7 @@ npm create stratix@latest my-app --template modular-monolith
 
 **Includes**:
 - 3 complete Bounded Contexts (Products, Orders, Inventory)
-- Each context as self-contained plugin
+- Each context as self-contained module
 - Auto-registration of all CQRS components
 - Complete domain, application, infrastructure layers
 - Migration example to microservice
@@ -87,10 +87,10 @@ npm create stratix@latest my-app --template modular-monolith
 ```
 src/
 ├── contexts/
-│   ├── products/ProductsContextPlugin.ts + domain + application + infrastructure
-│   ├── orders/OrdersContextPlugin.ts + domain + application + infrastructure
-│   └── inventory/InventoryContextPlugin.ts + domain + application + infrastructure
-└── index.ts (bootstrap with 3 plugins)
+│   ├── products/ProductsContextModule.ts + domain + application + infrastructure
+│   ├── orders/OrdersContextModule.ts + domain + application + infrastructure
+│   └── inventory/InventoryContextModule.ts + domain + application + infrastructure
+└── index.ts (bootstrap with 3 modules)
 ```
 
 **Perfect For**:
@@ -423,7 +423,7 @@ stratix generate context Orders --props "customerId:string,total:number,status:s
 ```
 
 **Generates:**
-- `OrdersContextPlugin.ts` - Plugin with auto-registration
+- `OrdersContextModule.ts` - Module with auto-registration
 - `domain/entities/Order.ts` - AggregateRoot
 - `domain/events/OrderCreated.ts` - Domain event
 - `domain/repositories/OrderRepository.ts` - Repository interface

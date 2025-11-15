@@ -9,13 +9,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * Generator for complete Bounded Context with ContextPlugin.
+ * Generator for complete Bounded Context with ContextModule.
  *
  * Generates:
  * - Domain layer (entity, value object, repository interface, events)
  * - Application layer (commands, queries, handlers)
  * - Infrastructure layer (in-memory repository)
- * - ContextPlugin class that wires everything together
+ * - ContextModule class that wires everything together
  *
  * @example
  * ```bash
@@ -135,10 +135,10 @@ export class ContextGenerator extends BaseGenerator {
       action: 'create',
     });
 
-    // 4. Context Plugin
+    // 4. Context Module
     files.push({
-      path: path.join(contextPath, `${contextName}ContextPlugin.ts`),
-      content: await this.renderTemplate('context-plugin.ts.ejs', templateData),
+      path: path.join(contextPath, `${contextName}ContextModule.ts`),
+      content: await this.renderTemplate('context-module.ts.ejs', templateData),
       action: 'create',
     });
 
