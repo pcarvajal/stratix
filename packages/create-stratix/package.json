@@ -1,6 +1,6 @@
 {
   "name": "create-stratix",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Create Stratix apps with zero configuration",
   "type": "module",
   "bin": {
