@@ -27,11 +27,13 @@ yarn create stratix
 
 ## Project Templates
 
-Choose from 6 production-ready templates:
+Choose from 8 production-ready templates:
 
 - **REST API** - Complete REST API with authentication, CQRS commands/queries, and repository pattern
+- **REST API Complete** - Full-featured REST API with all Phase 1 production extensions (Fastify, Zod, Auth, Migrations)
 - **Microservice** - Event-driven service with message queue integration (RabbitMQ)
 - **Monolith** - Modular monolith architecture with bounded contexts
+- **Modular Monolith** - Advanced modular monolith with context modules (monolith-to-microservices ready)
 - **Worker** - Background job processor for async tasks
 - **AI Agent Starter** - Learn AI agents step-by-step with progressive examples (no API key needed for Level 1)
 - **Minimal** - Bare minimum setup with core Stratix packages
@@ -41,7 +43,7 @@ Choose from 6 production-ready templates:
 The CLI will guide you through:
 
 1. **Project name** - Must be a valid npm package name
-2. **Template selection** - Choose from the 6 templates above
+2. **Template selection** - Choose from the 8 templates above
 3. **Package manager** - npm, pnpm (recommended), or yarn
 4. **Git initialization** - Automatically create initial commit
 
@@ -59,7 +61,7 @@ npm create stratix@latest my-app \
 
 **Available options:**
 
-- `--template <name>` - Template to use: `rest-api`, `microservice`, `worker`, `monolith`, `ai-agent-starter`, or `minimal`
+- `--template <name>` - Template to use: `rest-api`, `rest-api-complete`, `microservice`, `worker`, `monolith`, `modular-monolith`, `ai-agent-starter`, or `minimal`
 - `--pm <manager>` - Package manager: `npm`, `pnpm`, or `yarn`
 - `--no-git` - Skip git initialization
 - `--skip-install` - Skip dependency installation
