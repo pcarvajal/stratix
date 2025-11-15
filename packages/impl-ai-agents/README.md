@@ -58,7 +58,10 @@ const orchestrator = new StratixAgentOrchestrator(
 orchestrator.registerAgent(agent);
 
 // Create execution context
-const context = new AgentContext({ sessionId: 'session-1' });
+const context = new AgentContext({
+  sessionId: 'session-1',
+  environment: 'production'
+});
 context.setBudget(1.0); // Max $1
 
 // Execute agent

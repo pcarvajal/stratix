@@ -99,7 +99,7 @@ class UserService {
 
 ```typescript
 import type { Command, CommandHandler } from '@stratix/abstractions';
-import type { Result } from '@stratix/primitives';
+import { Success, type Result } from '@stratix/primitives';
 
 interface CreateUserCommand extends Command {
   email: string;
@@ -109,6 +109,7 @@ interface CreateUserCommand extends Command {
 class CreateUserHandler implements CommandHandler<CreateUserCommand, string> {
   async handle(command: CreateUserCommand): Promise<Result<string>> {
     // Handle command logic
+    const userId = 'user-123';
     return Success.create(userId);
   }
 }
@@ -145,12 +146,16 @@ await eventBus.publish({
 ### Plugin Interface
 
 ```typescript
-import type { Plugin, PluginContext } from '@stratix/abstractions';
+import type { Plugin, PluginContext, HealthCheckResult } from '@stratix/abstractions';
+import { HealthStatus } from '@stratix/abstractions';
 
 export class DatabasePlugin implements Plugin {
-  name = 'database';
-  version = '1.0.0';
-  dependencies = ['logger'];
+  readonly metadata = {
+    name: 'database',
+    version: '1.0.0',
+    description: 'Database plugin',
+    dependencies: ['logger']
+  };
 
   async initialize(context: PluginContext): Promise<void> {
     // Register services
@@ -166,7 +171,7 @@ export class DatabasePlugin implements Plugin {
   }
 
   async healthCheck(): Promise<HealthCheckResult> {
-    return { status: HealthStatus.Healthy };
+    return { status: HealthStatus.UP };
   }
 }
 ```
