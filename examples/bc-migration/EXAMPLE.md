@@ -367,9 +367,9 @@ const app = await ApplicationBuilder.create()
   .useLogger(logger)
 
   // 3 contextos en una aplicación
-  .usePlugin(new ProductsContextModule())
-  .usePlugin(new OrdersContextModule())      // <- Mismo código
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  .useContext(new OrdersContextModule())      // <- Mismo código
+  .useContext(new InventoryContextModule())
 
   .build();
 
@@ -394,7 +394,7 @@ const app = await ApplicationBuilder.create()
   .usePlugin(new RabbitMQEventBusPlugin({ url: 'amqp://localhost' }))
 
   // MISMO OrdersContextModule - ZERO cambios
-  .usePlugin(new OrdersContextModule())
+  .useContext(new OrdersContextModule())
 
   .build();
 

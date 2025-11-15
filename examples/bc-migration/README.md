@@ -26,9 +26,9 @@ Located at: `packages/create-stratix/templates/modular-monolith`
 ```typescript
 // src/index.ts
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextModule())
-  .usePlugin(new OrdersContextModule())     // <- This context
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  .useContext(new OrdersContextModule())     // <- This context
+  .useContext(new InventoryContextModule())
   .build();
 ```
 
@@ -45,7 +45,7 @@ const app = await ApplicationBuilder.create()
   // .usePlugin(new PostgresPlugin({ database: 'orders' }))
   // .usePlugin(new RabbitMQEventBusPlugin({ url: '...' }))
 
-  .usePlugin(new OrdersContextModule())     // SAME context plugin
+  .useContext(new OrdersContextModule())     // SAME context plugin
   .build();
 ```
 
@@ -146,7 +146,7 @@ import { OrdersContextModule } from './orders/index.js';
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextModule())  // NO changes
+  .useContext(new OrdersContextModule())  // NO changes
   .build();
 ```
 
@@ -160,9 +160,9 @@ Remove Orders context from monolith:
 
 ```typescript
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextModule())
-  // .usePlugin(new OrdersContextModule())  <- Removed
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  // .useContext(new OrdersContextModule())  <- Removed
+  .useContext(new InventoryContextModule())
   .build();
 ```
 

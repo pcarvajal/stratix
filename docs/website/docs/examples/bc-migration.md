@@ -19,9 +19,9 @@ Three Bounded Contexts in one application:
 ```typescript
 // src/index.ts
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextModule())
-  .usePlugin(new OrdersContextModule())
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  .useContext(new OrdersContextModule())
+  .useContext(new InventoryContextModule())
   .build();
 ```
 
@@ -36,7 +36,7 @@ Orders context running as independent service:
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextModule())  // SAME CODE
+  .useContext(new OrdersContextModule())  // SAME CODE
   .build();
 ```
 
@@ -163,7 +163,7 @@ async function bootstrap() {
       url: process.env.RABBITMQ_URL || 'amqp://localhost',
     }))
     // Same module
-    .usePlugin(new OrdersContextModule())
+    .useContext(new OrdersContextModule())
     .build();
 
   await app.start();
@@ -191,9 +191,9 @@ const app = await ApplicationBuilder.create()
   .usePlugin(new RabbitMQEventBusPlugin({
     url: process.env.RABBITMQ_URL,
   }))
-  .usePlugin(new ProductsContextModule())
-  // .usePlugin(new OrdersContextModule())  <- Removed
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  // .useContext(new OrdersContextModule())  <- Removed
+  .useContext(new InventoryContextModule())
   .build();
 ```
 

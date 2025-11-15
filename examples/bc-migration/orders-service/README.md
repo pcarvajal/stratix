@@ -29,7 +29,7 @@ import { RabbitMQEventBusPlugin } from '@stratix/ext-rabbitmq';
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin({ url: 'amqp://localhost' }))
-  .usePlugin(new OrdersContextModule())  // SAME plugin
+  .useContext(new OrdersContextModule())  // SAME plugin
   .build();
 ```
 

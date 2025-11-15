@@ -54,7 +54,7 @@ async function bootstrap() {
     // .usePlugin(new RabbitMQEventBusPlugin({ url: 'amqp://localhost' }))
 
     // SAME OrdersContextModule - NO changes
-    .usePlugin(new OrdersContextModule())
+    .useContext(new OrdersContextModule())
 
     .build();
 

@@ -324,7 +324,7 @@ export function createGenerateCommand(): Command {
           console.log(chalk.dim('Next steps:'));
           console.log(chalk.dim('  1. Review the generated files'));
           console.log(chalk.dim('  2. Register the context module in your application:'));
-          console.log(chalk.dim(`     app.usePlugin(new ${name}ContextModule())`));
+          console.log(chalk.dim(`     app.useContext(new ${name}ContextModule())`));
           console.log(chalk.dim('  3. Customize business logic in the domain layer'));
           console.log(chalk.dim('  4. Add more commands/queries as needed\n'));
         }

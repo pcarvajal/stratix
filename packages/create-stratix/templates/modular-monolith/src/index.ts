@@ -36,9 +36,9 @@ async function bootstrap() {
     .useLogger(logger)
 
     // Bounded Contexts as Modules - Each BC is a self-contained module
-    .usePlugin(new ProductsContextModule())
-    .usePlugin(new OrdersContextModule())
-    .usePlugin(new InventoryContextModule())
+    .useContext(new ProductsContextModule())
+    .useContext(new OrdersContextModule())
+    .useContext(new InventoryContextModule())
 
     .build();
 

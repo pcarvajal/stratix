@@ -18,9 +18,9 @@ Traditional migration from monolith to microservices requires:
 
 ```typescript
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextModule())
-  .usePlugin(new OrdersContextModule())
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  .useContext(new OrdersContextModule())
+  .useContext(new InventoryContextModule())
   .build();
 ```
 
@@ -33,7 +33,7 @@ All three contexts in one application.
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextModule())  // SAME CODE
+  .useContext(new OrdersContextModule())  // SAME CODE
   .build();
 ```
 
@@ -167,7 +167,7 @@ import { OrdersContextModule } from './orders/index.js';
 const app = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextModule())  // Same module
+  .useContext(new OrdersContextModule())  // Same module
   .build();
 
 await app.start();
@@ -179,9 +179,9 @@ Remove the extracted context:
 
 ```typescript
 const app = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextModule())
-  // .usePlugin(new OrdersContextModule())  <- Removed
-  .usePlugin(new InventoryContextModule())
+  .useContext(new ProductsContextModule())
+  // .useContext(new OrdersContextModule())  <- Removed
+  .useContext(new InventoryContextModule())
   .build();
 ```
 
