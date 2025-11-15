@@ -36,7 +36,7 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 - Observable by default
 
 **2. Architectural Evolution Built-In**
-- Bounded Contexts as portable plugins
+- Bounded Contexts as portable modules
 - Start with modular monolith
 - Extract microservices with ZERO domain code changes
 - Same code, different deployment
@@ -53,7 +53,7 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 - Domain-Driven Design patterns built-in
 - Result pattern eliminates exceptions
 - Phantom types prevent ID mixing
-- 11 built-in value objects (Money, Email, UUID, etc.)
+- 10 built-in value objects (Money, Email, UUID, etc.)
 - Comprehensive test utilities
 
 ## Quick Start
@@ -78,23 +78,23 @@ pnpm start
 
 ## Monolith to Microservices (Zero Rewrite)
 
-Stratix's killer feature: **Bounded Contexts as portable plugins**.
+Stratix's killer feature: **Bounded Contexts as portable modules**.
 
 ```typescript
 // Modular Monolith - All contexts in one app
 const monolith = await ApplicationBuilder.create()
-  .usePlugin(new ProductsContextPlugin())
-  .usePlugin(new OrdersContextPlugin())
-  .usePlugin(new InventoryContextPlugin())
+  .useContext(new ProductsContextModule())
+  .useContext(new OrdersContextModule())
+  .useContext(new InventoryContextModule())
   .build();
 ```
 
 ```typescript
-// Extract Orders to microservice - SAME plugin, ZERO code changes
+// Extract Orders to microservice - SAME module, ZERO code changes
 const ordersService = await ApplicationBuilder.create()
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQEventBusPlugin())
-  .usePlugin(new OrdersContextPlugin())  // Same code!
+  .useContext(new OrdersContextModule())  // Same code!
   .build();
 ```
 
@@ -111,63 +111,128 @@ See [modular-monolith template](packages/create-stratix/templates/modular-monoli
 ## AI Agents in 60 Seconds
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
+import {
+  AIAgent,
+  AgentResult,
+  AgentCapabilities,
+  AgentVersionFactory,
+  EntityId,
+  type ModelConfig,
+  type AgentMessage,
+} from '@stratix/primitives';
+import type { LLMProvider } from '@stratix/abstractions';
 import { OpenAIProvider } from '@stratix/ext-ai-agents-openai';
-import { StratixAgentOrchestrator } from '@stratix/impl-ai-agents';
 
 // Define your agent
 class CustomerSupportAgent extends AIAgent<Ticket, Response> {
   readonly name = 'Customer Support';
+  readonly description = 'Handles customer support tickets';
+  readonly version = AgentVersionFactory.create('1.0.0');
+  readonly capabilities = [AgentCapabilities.CUSTOMER_SUPPORT];
+  readonly model: ModelConfig = {
+    provider: 'openai',
+    model: 'gpt-4o',
+    temperature: 0.7,
+    maxTokens: 2000,
+  };
+
+  constructor(private llmProvider: LLMProvider) {
+    const id = EntityId.create<'AIAgent'>();
+    const now = new Date();
+    super(id, now, now);
+  }
 
   async execute(ticket: Ticket): Promise<AgentResult<Response>> {
-    const prompt = `Ticket: ${ticket.description}`;
+    try {
+      const messages: AgentMessage[] = [
+        {
+          role: 'system',
+          content: 'You are a helpful support agent.',
+          timestamp: new Date(),
+        },
+        {
+          role: 'user',
+          content: `Ticket: ${ticket.description}`,
+          timestamp: new Date(),
+        },
+      ];
 
-    const llmResponse = await this.llmProvider.chat({
-      messages: [
-        { role: 'system', content: 'You are a helpful support agent.' },
-        { role: 'user', content: prompt }
-      ]
-    });
+      const llmResponse = await this.llmProvider.chat({
+        model: this.model.model,
+        messages,
+        temperature: this.model.temperature,
+        maxTokens: this.model.maxTokens,
+      });
 
-    return AgentResult.success({
-      response: llmResponse.content,
-      sentiment: this.analyzeSentiment(llmResponse)
-    });
+      return AgentResult.success(
+        { response: llmResponse.content },
+        {
+          model: this.model.model,
+          totalTokens: llmResponse.usage.totalTokens,
+          cost: this.calculateCost(llmResponse.usage),
+        }
+      );
+    } catch (error) {
+      return AgentResult.failure(error as Error);
+    }
+  }
+
+  private calculateCost(usage: { promptTokens: number; completionTokens: number }): number {
+    const inputCostPer1M = 5.0;
+    const outputCostPer1M = 20.0;
+    return (usage.promptTokens / 1_000_000) * inputCostPer1M +
+           (usage.completionTokens / 1_000_000) * outputCostPer1M;
   }
 }
 
-// Set up provider and orchestration
-const provider = new OpenAIProvider({
-  apiKey: process.env.OPENAI_API_KEY
+// Set up and use
+const provider = new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY });
+const agent = new CustomerSupportAgent(provider);
+
+const result = await agent.execute({
+  ticketId: 'T-123',
+  description: 'Cannot log in to my account',
 });
 
+if (result.isSuccess()) {
+  console.log(result.data.response);
+  console.log('Cost:', result.metadata.cost);
+}
+```
+
+**That's it.** Type-safe, production-ready agents with automatic cost tracking.
+
+## Production Features
+
+### Orchestrator with Budget Control
+```typescript
+import { StratixAgentOrchestrator } from '@stratix/impl-ai-agents';
+import { AgentContext } from '@stratix/primitives';
+
+// Set up orchestrator with production features
 const orchestrator = new StratixAgentOrchestrator(
   repository,
   auditLog,
-  provider,
+  llmProvider,
   {
     auditEnabled: true,
     budgetEnforcement: true,
     autoRetry: true,
-    maxRetries: 3
+    maxRetries: 3,
   }
 );
 
+// Register agent
+orchestrator.registerAgent(agent);
+
 // Execute with budget control
-const context = new AgentContext({ sessionId: 'session-1' });
-context.setBudget(1.0); // Max $1
+const context = new AgentContext({
+  sessionId: 'session-123',
+  environment: 'production',
+});
+context.setBudget(5.0); // Max $5
 
-const result = await orchestrator.executeAgent(agent.id, ticket, context);
-```
-
-**That's it.** Budget enforcement, audit logging, cost tracking—all automatic.
-
-## Production Features
-
-### Cost Control
-```typescript
-context.setBudget(5.0);
-const result = await orchestrator.executeAgent(agentId, input, context);
+const result = await orchestrator.executeAgent(agent.id, input, context);
 
 console.log('Spent:', context.getTotalCost());
 console.log('Remaining:', context.getRemainingBudget());
@@ -177,14 +242,14 @@ console.log('Remaining:', context.getRemainingBudget());
 ```typescript
 // Sequential pipeline
 const blogPost = await orchestrator.executeSequential(
-  [researchAgent, writingAgent, reviewAgent],
+  [researchAgent.id, writingAgent.id, reviewAgent.id],
   { topic: 'AI in Healthcare' },
   context
 );
 
 // Parallel execution
 const analyses = await orchestrator.executeParallel(
-  [sqlAgent, apiAgent, fileAgent],
+  [sqlAgent.id, apiAgent.id, fileAgent.id],
   { query: 'Q4 revenue' },
   context
 );
