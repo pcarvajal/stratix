@@ -18,7 +18,9 @@ export class RegisterUser implements Command {
   constructor(public readonly data: RegisterUserInput) {}
 }
 
-export class RegisterUserHandler implements CommandHandler<RegisterUser, Result<RegisterUserOutput>> {
+export class RegisterUserHandler
+  implements CommandHandler<RegisterUser, Result<RegisterUserOutput>>
+{
   constructor(
     private readonly userRepository: UserRepository,
     private readonly eventBus: EventBus

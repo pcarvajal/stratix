@@ -8,11 +8,7 @@ import type {
 } from '@stratix/abstractions';
 import Fastify, { type FastifyInstance, type FastifyRequest, type FastifyReply } from 'fastify';
 import cors from '@fastify/cors';
-import type {
-  FastifyHTTPPluginOptions,
-  RouteConfig,
-  HttpRequest,
-} from './types.js';
+import type { FastifyHTTPPluginOptions, RouteConfig, HttpRequest } from './types.js';
 import { isHttpError } from './errors.js';
 
 export class FastifyHTTPPlugin implements Plugin {
@@ -38,9 +34,9 @@ export class FastifyHTTPPlugin implements Plugin {
     });
 
     if (this.options.cors) {
-      await this.server.register(cors, typeof this.options.cors === 'boolean'
-        ? {}
-        : this.options.cors
+      await this.server.register(
+        cors,
+        typeof this.options.cors === 'boolean' ? {} : this.options.cors
       );
     }
 
@@ -74,7 +70,7 @@ export class FastifyHTTPPlugin implements Plugin {
     if (!this.server) {
       return {
         status: 'down' as HealthStatus,
-        message: 'Server not initialized'
+        message: 'Server not initialized',
       };
     }
 
@@ -87,7 +83,7 @@ export class FastifyHTTPPlugin implements Plugin {
     } catch (error) {
       return {
         status: 'down' as HealthStatus,
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
@@ -148,9 +144,7 @@ export class FastifyHTTPPlugin implements Plugin {
   private registerRoute(config: RouteConfig): void {
     if (!this.server) return;
 
-    const path = this.options.prefix
-      ? `${this.options.prefix}${config.path}`
-      : config.path;
+    const path = this.options.prefix ? `${this.options.prefix}${config.path}` : config.path;
 
     this.server.route({
       method: config.method,

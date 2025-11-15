@@ -9,7 +9,10 @@ export function validate<T>(schema: Schema<T>, data: unknown): ValidationResult<
   return validator.safeParse(data);
 }
 
-export async function validateAsync<T>(schema: Schema<T>, data: unknown): Promise<ValidationResult<T>> {
+export async function validateAsync<T>(
+  schema: Schema<T>,
+  data: unknown
+): Promise<ValidationResult<T>> {
   const validator = new ZodValidator(schema);
   return validator.safeParseAsync(data);
 }
@@ -41,17 +44,22 @@ export function validateWithResult<T>(schema: Schema<T>, data: unknown): Result<
     return Success.create(result.data!);
   }
 
-  const errorMessage = result.errors?.map(err => `${err.field}: ${err.message}`).join(', ') || 'Validation failed';
+  const errorMessage =
+    result.errors?.map((err) => `${err.field}: ${err.message}`).join(', ') || 'Validation failed';
   return Failure.create(new Error(errorMessage));
 }
 
-export async function validateWithResultAsync<T>(schema: Schema<T>, data: unknown): Promise<Result<T>> {
+export async function validateWithResultAsync<T>(
+  schema: Schema<T>,
+  data: unknown
+): Promise<Result<T>> {
   const result = await validateAsync(schema, data);
 
   if (result.success) {
     return Success.create(result.data!);
   }
 
-  const errorMessage = result.errors?.map(err => `${err.field}: ${err.message}`).join(', ') || 'Validation failed';
+  const errorMessage =
+    result.errors?.map((err) => `${err.field}: ${err.message}`).join(', ') || 'Validation failed';
   return Failure.create(new Error(errorMessage));
 }

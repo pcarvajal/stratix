@@ -1,0 +1,30 @@
+<% if (isCommand) { %>import { Command } from '@stratix/abstractions';
+<% } else { %>import { Query } from '@stratix/abstractions';
+<% } %>
+<% if (hasInput) { %>
+export interface <%= useCaseName %>Input {
+<% inputProps.forEach(prop => { %>
+  <%= prop.name %>: <%= prop.type %>;
+<% }); %>
+}
+<% } %>
+<% if (hasOutput) { %>
+export interface <%= useCaseName %>Output {
+<% outputProps.forEach(prop => { %>
+  <%= prop.name %>: <%= prop.type %>;
+<% }); %>
+}
+<% } %>
+<% if (isCommand) { %>
+export class <%= useCaseName %> implements Command<<% if (hasInput) { %><%= useCaseName %>Input<% } else { %>void<% } %>> {
+  constructor(
+    <% if (hasInput) { %>public readonly data: <%= useCaseName %>Input<% } %>
+  ) {}
+}
+<% } else { %>
+export class <%= useCaseName %> implements Query<<% if (hasInput) { %><%= useCaseName %>Input<% } else { %>void<% } %><% if (hasOutput) { %>, <%= useCaseName %>Output<% } %>> {
+  constructor(
+    <% if (hasInput) { %>public readonly data: <%= useCaseName %>Input<% } %>
+  ) {}
+}
+<% } %>

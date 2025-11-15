@@ -36,11 +36,17 @@ export class HttpErrorImpl extends Error implements HttpError {
     return new HttpErrorImpl(message, 422, 'UNPROCESSABLE_ENTITY', details);
   }
 
-  static internalServerError(message: string = 'Internal server error', details?: unknown): HttpErrorImpl {
+  static internalServerError(
+    message: string = 'Internal server error',
+    details?: unknown
+  ): HttpErrorImpl {
     return new HttpErrorImpl(message, 500, 'INTERNAL_SERVER_ERROR', details);
   }
 
-  static serviceUnavailable(message: string = 'Service unavailable', details?: unknown): HttpErrorImpl {
+  static serviceUnavailable(
+    message: string = 'Service unavailable',
+    details?: unknown
+  ): HttpErrorImpl {
     return new HttpErrorImpl(message, 503, 'SERVICE_UNAVAILABLE', details);
   }
 
@@ -60,10 +66,11 @@ export class HttpErrorImpl extends Error implements HttpError {
 }
 
 export function isHttpError(error: unknown): error is HttpError {
-  return error instanceof HttpErrorImpl || (
-    typeof error === 'object' &&
-    error !== null &&
-    'statusCode' in error &&
-    typeof (error as Record<string, unknown>).statusCode === 'number'
+  return (
+    error instanceof HttpErrorImpl ||
+    (typeof error === 'object' &&
+      error !== null &&
+      'statusCode' in error &&
+      typeof (error as Record<string, unknown>).statusCode === 'number')
   );
 }

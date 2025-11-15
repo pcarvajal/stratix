@@ -1,4 +1,10 @@
-import { AIAgent, AgentVersionFactory, AgentResult, AgentCapability, EntityId } from '@stratix/primitives';
+import {
+  AIAgent,
+  AgentVersionFactory,
+  AgentResult,
+  AgentCapability,
+  EntityId,
+} from '@stratix/primitives';
 import type { AgentVersion } from '@stratix/primitives';
 
 /**
@@ -44,7 +50,7 @@ export class EchoAgent extends AIAgent<EchoInput, EchoOutput> {
     provider: 'none',
     model: 'echo-v1',
     temperature: 0,
-    maxTokens: 1000
+    maxTokens: 1000,
   };
 
   constructor() {
@@ -63,10 +69,9 @@ export class EchoAgent extends AIAgent<EchoInput, EchoOutput> {
   async execute(input: EchoInput): Promise<AgentResult<EchoOutput>> {
     // Validate input
     if (!input.message || input.message.trim().length === 0) {
-      return AgentResult.failure<EchoOutput>(
-        new Error('Message cannot be empty'),
-        { model: this.model.model }
-      );
+      return AgentResult.failure<EchoOutput>(new Error('Message cannot be empty'), {
+        model: this.model.model,
+      });
     }
 
     // Build response
@@ -78,7 +83,7 @@ export class EchoAgent extends AIAgent<EchoInput, EchoOutput> {
       {
         response,
         timestamp: new Date(),
-        processedBy: this.name
+        processedBy: this.name,
       },
       { model: this.model.model }
     );

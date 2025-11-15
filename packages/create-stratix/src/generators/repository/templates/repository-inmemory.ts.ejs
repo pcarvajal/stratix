@@ -1,0 +1,28 @@
+import { <%= repoName %> } from '../../domain/repositories/<%= repoName %>.js';
+import { <%= entityName %>, <%= entityName %>Id } from '../../domain/entities/<%= entityName %>.js';
+
+export class <%= implClassName %> implements <%= repoName %> {
+  private <%= entityNameCamel %>s: Map<string, <%= entityName %>> = new Map();
+
+  async findById(id: <%= entityName %>Id): Promise<<%= entityName %> | null> {
+    const <%= entityNameCamel %> = this.<%= entityNameCamel %>s.get(id.value);
+    return <%= entityNameCamel %> || null;
+  }
+
+  async save(<%= entityNameCamel %>: <%= entityName %>): Promise<void> {
+    this.<%= entityNameCamel %>s.set(<%= entityNameCamel %>.id.value, <%= entityNameCamel %>);
+  }
+
+  async delete(id: <%= entityName %>Id): Promise<void> {
+    this.<%= entityNameCamel %>s.delete(id.value);
+  }
+
+  async findAll(): Promise<<%= entityName %>[]> {
+    return Array.from(this.<%= entityNameCamel %>s.values());
+  }
+
+  // Helper method for testing
+  clear(): void {
+    this.<%= entityNameCamel %>s.clear();
+  }
+}

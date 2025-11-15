@@ -20,12 +20,12 @@ export async function runMockExample() {
       'Based on current data, the weather is sunny and warm with temperatures around 75 degrees F!',
       'Quantum computing uses quantum mechanics principles like superposition and entanglement to process information in ways classical computers cannot.',
       'The capital of France is Paris, a beautiful city known for the Eiffel Tower, Louvre Museum, and rich cultural history.',
-      'Artificial Intelligence is transforming industries by enabling machines to learn from data and make intelligent decisions.'
+      'Artificial Intelligence is transforming industries by enabling machines to learn from data and make intelligent decisions.',
     ],
     costPer1kTokens: 0.001,
     tokensPerRequest: 100,
     modelName: 'mock-gpt-4',
-    latencyMs: 50 // Simulate 50ms latency
+    latencyMs: 50, // Simulate 50ms latency
   });
 
   // 2. Create Mock Agent
@@ -39,20 +39,20 @@ export async function runMockExample() {
   const testCases: MockInput[] = [
     {
       message: 'What is the weather today?',
-      context: 'You are a weather assistant.'
+      context: 'You are a weather assistant.',
     },
     {
       message: 'Explain quantum computing in simple terms.',
-      context: 'You are an educational assistant.'
+      context: 'You are an educational assistant.',
     },
     {
       message: 'What is the capital of France?',
-      context: 'You are a geography expert.'
+      context: 'You are a geography expert.',
     },
     {
       message: 'Tell me about AI and machine learning.',
-      context: 'You are a technology expert.'
-    }
+      context: 'You are a technology expert.',
+    },
   ];
 
   console.log('--- Running Test Cases ---\n');
@@ -103,7 +103,7 @@ export async function runMockExample() {
 
   const failingProvider = new MockLLMProvider({
     responses: ['This should not appear'],
-    failureRate: 1.0 // Always fail
+    failureRate: 1.0, // Always fail
   });
 
   const failingAgent = new MockAgent(failingProvider);

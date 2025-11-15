@@ -3,7 +3,7 @@ import { AgentContext } from '@stratix/primitives';
 import {
   StratixAgentOrchestrator,
   InMemoryAgentRepository,
-  InMemoryExecutionAuditLog
+  InMemoryExecutionAuditLog,
 } from '@stratix/impl-ai-agents';
 import { OpenAIProvider } from '@stratix/ext-ai-agents-openai';
 import { EchoAgent, type EchoInput, type EchoOutput } from './EchoAgent.js';
@@ -27,21 +27,16 @@ export async function runEchoExample() {
 
   // Create a dummy LLM provider (not used by Echo Agent)
   const llmProvider = new OpenAIProvider({
-    apiKey: 'not-needed-for-echo-agent'
+    apiKey: 'not-needed-for-echo-agent',
   });
 
   // 2. Create orchestrator
-  const orchestrator = new StratixAgentOrchestrator(
-    repository,
-    auditLog,
-    llmProvider,
-    {
-      auditEnabled: true,
-      budgetEnforcement: false,
-      autoRetry: false,
-      maxRetries: 0
-    }
-  );
+  const orchestrator = new StratixAgentOrchestrator(repository, auditLog, llmProvider, {
+    auditEnabled: true,
+    budgetEnforcement: false,
+    autoRetry: false,
+    maxRetries: 0,
+  });
 
   // 3. Create and register Echo Agent
   const echoAgent = new EchoAgent();
@@ -54,7 +49,7 @@ export async function runEchoExample() {
   const context = new AgentContext({
     sessionId: 'echo-example-session',
     environment: 'development',
-    metadata: { level: 1, example: 'echo' }
+    metadata: { level: 1, example: 'echo' },
   });
 
   // 5. Test cases
@@ -62,7 +57,7 @@ export async function runEchoExample() {
     { message: 'Hello, Stratix!' },
     { message: 'How are you?', name: 'Alice' },
     { message: 'Testing the Echo Agent', name: 'Bob' },
-    { message: 'This is amazing!' }
+    { message: 'This is amazing!' },
   ];
 
   console.log('--- Running Test Cases ---\n');
@@ -75,11 +70,7 @@ export async function runEchoExample() {
     console.log(`  Input: "${input.message}"${input.name ? ` (from ${input.name})` : ''}`);
 
     const startTime = Date.now();
-    const result = await orchestrator.executeAgent(
-      echoAgent.getAgentId(),
-      input,
-      context
-    );
+    const result = await orchestrator.executeAgent(echoAgent.getAgentId(), input, context);
     const duration = Date.now() - startTime;
 
     if (result.isSuccess()) {
@@ -96,7 +87,7 @@ export async function runEchoExample() {
   // 6. Show statistics
   console.log('--- Execution Statistics ---\n');
   const stats = await auditLog.getStatistics({
-    agentId: echoAgent.getAgentId()
+    agentId: echoAgent.getAgentId(),
   });
 
   console.log(`Total Executions: ${stats.totalExecutions}`);
@@ -111,7 +102,9 @@ export async function runEchoExample() {
 
   for (const execution of history) {
     const status = execution.success ? '✓' : '✗';
-    console.log(`${status} [${execution.startTime.toISOString()}] Duration: ${execution.duration}ms`);
+    console.log(
+      `${status} [${execution.startTime.toISOString()}] Duration: ${execution.duration}ms`
+    );
   }
 
   console.log('\n=== Level 1 Complete! ===\n');

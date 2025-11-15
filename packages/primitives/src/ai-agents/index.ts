@@ -10,11 +10,7 @@ export type { ToolDefinition } from './AgentTool.js';
 export type { AgentMemory } from './AgentMemory.js';
 
 // Streaming
-export type {
-  StreamableAgent,
-  StreamChunk,
-  StreamOptions,
-} from './StreamableAgent.js';
+export type { StreamableAgent, StreamChunk, StreamOptions } from './StreamableAgent.js';
 export { StreamingHelper } from './StreamableAgent.js';
 
 // Domain Events

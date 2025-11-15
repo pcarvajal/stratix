@@ -26,7 +26,7 @@ const examples: Example[] = [
     description: 'Learn agent fundamentals without LLM',
     free: true,
     duration: '5 min',
-    run: runEchoExample
+    run: runEchoExample,
   },
   {
     id: 'mock',
@@ -34,7 +34,7 @@ const examples: Example[] = [
     description: 'Learn testing with mock LLM provider',
     free: true,
     duration: '10 min',
-    run: runMockExample
+    run: runMockExample,
   },
   {
     id: 'basic',
@@ -49,7 +49,7 @@ const examples: Example[] = [
       console.log('- Making your first LLM API call');
       console.log('- Understanding costs and tokens');
       console.log('- Basic prompt engineering\n');
-    }
+    },
   },
   {
     id: 'tools',
@@ -64,7 +64,7 @@ const examples: Example[] = [
       console.log('- Tool calling patterns');
       console.log('- Function calling with LLMs');
       console.log('- Complex workflows\n');
-    }
+    },
   },
   {
     id: 'memory',
@@ -79,7 +79,7 @@ const examples: Example[] = [
       console.log('- Long-term memory (persistent)');
       console.log('- Context management');
       console.log('- Memory stores\n');
-    }
+    },
   },
   {
     id: 'production',
@@ -94,8 +94,8 @@ const examples: Example[] = [
       console.log('- Budget enforcement');
       console.log('- Monitoring and observability');
       console.log('- Production best practices\n');
-    }
-  }
+    },
+  },
 ];
 
 /**
@@ -113,9 +113,7 @@ function showWelcome() {
  * Show example info
  */
 function formatExample(example: Example): string {
-  const badge = example.free
-    ? chalk.green('[FREE]')
-    : chalk.yellow('[API KEY REQUIRED]');
+  const badge = example.free ? chalk.green('[FREE]') : chalk.yellow('[API KEY REQUIRED]');
 
   return `${example.name} ${badge} (${example.duration})`;
 }
@@ -141,17 +139,17 @@ async function showMenu(): Promise<void> {
       name: 'exampleId',
       message: 'Which example would you like to run?',
       choices: [
-        ...examples.map(ex => ({
+        ...examples.map((ex) => ({
           name: formatExample(ex),
-          value: ex.id
+          value: ex.id,
         })),
         new inquirer.Separator(),
         {
           name: chalk.gray('Exit'),
-          value: 'exit'
-        }
-      ]
-    }
+          value: 'exit',
+        },
+      ],
+    },
   ]);
 
   if (exampleId === 'exit') {
@@ -159,7 +157,7 @@ async function showMenu(): Promise<void> {
     return;
   }
 
-  const example = examples.find(ex => ex.id === exampleId);
+  const example = examples.find((ex) => ex.id === exampleId);
   if (!example) {
     console.error(chalk.red('Example not found'));
     return;
@@ -183,14 +181,14 @@ async function showMenu(): Promise<void> {
       choices: [
         {
           name: 'Run another example',
-          value: 'continue'
+          value: 'continue',
         },
         {
           name: 'Exit',
-          value: 'exit'
-        }
-      ]
-    }
+          value: 'exit',
+        },
+      ],
+    },
   ]);
 
   if (continueChoice === 'continue') {
@@ -217,7 +215,7 @@ async function main() {
 }
 
 // Run the menu
-main().catch(error => {
+main().catch((error) => {
   console.error('Fatal error:', error);
   process.exit(1);
 });

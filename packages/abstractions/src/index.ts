@@ -29,6 +29,13 @@ export type { HealthCheckResult, HealthCheck } from './infrastructure/HealthChec
 export type { PluginMetadata } from './plugin/PluginMetadata.js';
 export type { PluginContext } from './plugin/PluginContext.js';
 export type { Plugin } from './plugin/Plugin.js';
+export type {
+  CommandDefinition,
+  QueryDefinition,
+  EventHandlerDefinition,
+  RepositoryDefinition,
+  ContextModule,
+} from './plugin/ContextModule.js';
 
 // AI Agents
 export * from './ai-agents/index.js';

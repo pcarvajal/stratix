@@ -1,0 +1,21 @@
+import type { Query } from '@stratix/abstractions';
+
+export interface Get<%- entityName %>ByIdInput {
+  id: string;
+}
+
+export interface Get<%- entityName %>ByIdOutput {
+  id: string;
+<% props.forEach(prop => { -%>
+  <%- prop.name %>: <%- prop.type %>;
+<% }); -%>
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/**
+ * Query to get a <%- entityName %> by ID.
+ */
+export class Get<%- entityName %>ByIdQuery implements Query {
+  constructor(public readonly data: Get<%- entityName %>ByIdInput) {}
+}

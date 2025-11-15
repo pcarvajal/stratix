@@ -59,10 +59,7 @@ async function bootstrap() {
   logger.info('Orders context subscribed to UserRegisteredIntegrationEvent');
 
   // Build Stratix application
-  const app = await ApplicationBuilder.create()
-    .useContainer(container)
-    .useLogger(logger)
-    .build();
+  const app = await ApplicationBuilder.create().useContainer(container).useLogger(logger).build();
 
   await app.start();
 

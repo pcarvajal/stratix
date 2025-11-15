@@ -1,4 +1,4 @@
-import type { Container, Logger, Plugin } from '@stratix/abstractions';
+import type { Container, Logger, Plugin, ContextModule } from '@stratix/abstractions';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
 import { LifecycleManager } from '../lifecycle/LifecycleManager.js';
 import { DefaultPluginContext } from './DefaultPluginContext.js';
@@ -36,8 +36,10 @@ export interface ApplicationBuilderOptions {
  * const app = await ApplicationBuilder.create()
  *   .useContainer(container)
  *   .useLogger(logger)
- *   .usePlugin(new DatabasePlugin())
- *   .usePlugin(new ApiPlugin())
+ *   .usePlugin(new PostgresPlugin())
+ *   .usePlugin(new RabbitMQPlugin())
+ *   .useContext(new OrdersContextModule())
+ *   .useContext(new ProductsContextModule())
  *   .build();
  *
  * await app.start();
@@ -135,6 +137,54 @@ export class ApplicationBuilder {
   usePlugins(plugins: Plugin[]): this {
     for (const plugin of plugins) {
       this.registry.register(plugin);
+    }
+    return this;
+  }
+
+  /**
+   * Registers a Bounded Context module.
+   *
+   * Context modules are domain/business logic modules that encapsulate
+   * a complete bounded context (domain, application, infrastructure).
+   *
+   * @param contextModule - The context module to register
+   * @param config - Optional configuration for the module
+   * @returns This builder for chaining
+   *
+   * @example
+   * ```typescript
+   * builder.useContext(new OrdersContextModule());
+   * builder.useContext(new ProductsContextModule());
+   * ```
+   */
+  useContext(contextModule: ContextModule, config?: unknown): this {
+    this.registry.register(contextModule);
+
+    if (config) {
+      this.pluginConfigs.set(contextModule.metadata.name, config);
+    }
+
+    return this;
+  }
+
+  /**
+   * Registers multiple Bounded Context modules.
+   *
+   * @param contextModules - The context modules to register
+   * @returns This builder for chaining
+   *
+   * @example
+   * ```typescript
+   * builder.useContexts([
+   *   new OrdersContextModule(),
+   *   new ProductsContextModule(),
+   *   new InventoryContextModule()
+   * ]);
+   * ```
+   */
+  useContexts(contextModules: ContextModule[]): this {
+    for (const contextModule of contextModules) {
+      this.registry.register(contextModule);
     }
     return this;
   }

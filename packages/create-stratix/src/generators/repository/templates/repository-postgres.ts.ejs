@@ -1,0 +1,84 @@
+import { <%= repoName %> } from '../../domain/repositories/<%= repoName %>.js';
+import { <%= entityName %>, <%= entityName %>Id } from '../../domain/entities/<%= entityName %>.js';
+import type { Pool } from 'pg';
+
+export class <%= implClassName %> implements <%= repoName %> {
+  constructor(private readonly pool: Pool) {}
+
+  async findById(id: <%= entityName %>Id): Promise<<%= entityName %> | null> {
+    const query = `
+      SELECT * FROM <%= entityNameCamel %>s
+      WHERE id = $1
+    `;
+
+    const result = await this.pool.query(query, [id.value]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    return this.mapToDomain(result.rows[0]);
+  }
+
+  async save(<%= entityNameCamel %>: <%= entityName %>): Promise<void> {
+    const exists = await this.findById(<%= entityNameCamel %>.id);
+
+    if (exists) {
+      await this.update(<%= entityNameCamel %>);
+    } else {
+      await this.insert(<%= entityNameCamel %>);
+    }
+  }
+
+  async delete(id: <%= entityName %>Id): Promise<void> {
+    const query = `
+      DELETE FROM <%= entityNameCamel %>s
+      WHERE id = $1
+    `;
+
+    await this.pool.query(query, [id.value]);
+  }
+
+  async findAll(): Promise<<%= entityName %>[]> {
+    const query = `
+      SELECT * FROM <%= entityNameCamel %>s
+      ORDER BY created_at DESC
+    `;
+
+    const result = await this.pool.query(query);
+
+    return result.rows.map((row) => this.mapToDomain(row));
+  }
+
+  private async insert(<%= entityNameCamel %>: <%= entityName %>): Promise<void> {
+    const query = `
+      INSERT INTO <%= entityNameCamel %>s (id, created_at, updated_at)
+      VALUES ($1, $2, $3)
+    `;
+
+    await this.pool.query(query, [
+      <%= entityNameCamel %>.id.value,
+      <%= entityNameCamel %>.createdAt,
+      <%= entityNameCamel %>.updatedAt,
+    ]);
+  }
+
+  private async update(<%= entityNameCamel %>: <%= entityName %>): Promise<void> {
+    const query = `
+      UPDATE <%= entityNameCamel %>s
+      SET updated_at = $2
+      WHERE id = $1
+    `;
+
+    await this.pool.query(query, [
+      <%= entityNameCamel %>.id.value,
+      <%= entityNameCamel %>.updatedAt,
+    ]);
+  }
+
+  private mapToDomain(row: any): <%= entityName %> {
+    // TODO: Implement proper mapping from database row to domain entity
+    // This is a placeholder implementation
+    throw new Error('Not implemented: mapToDomain');
+  }
+}

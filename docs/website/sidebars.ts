@@ -29,6 +29,7 @@ const sidebars: SidebarsConfig = {
       label: 'Core Concepts',
       items: [
         'core-concepts/architecture',
+        'core-concepts/bounded-contexts',
         'core-concepts/ai-agents',
         'core-concepts/entities',
         'core-concepts/value-objects',
@@ -40,6 +41,7 @@ const sidebars: SidebarsConfig = {
       label: 'Examples',
       items: [
         'examples/overview',
+        'examples/bc-migration',
       ],
     },
     {

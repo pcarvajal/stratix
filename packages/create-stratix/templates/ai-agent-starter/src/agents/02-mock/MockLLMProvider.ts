@@ -1,4 +1,11 @@
-import type { LLMProvider, ChatParams, ChatResponse, ChatChunk, EmbeddingParams, EmbeddingResponse } from '@stratix/abstractions';
+import type {
+  LLMProvider,
+  ChatParams,
+  ChatResponse,
+  ChatChunk,
+  EmbeddingParams,
+  EmbeddingResponse,
+} from '@stratix/abstractions';
 
 /**
  * Configuration for the Mock LLM Provider
@@ -69,7 +76,7 @@ export class MockLLMProvider implements LLMProvider {
       tokensPerRequest: config.tokensPerRequest ?? 100,
       modelName: config.modelName || 'mock-gpt-4',
       latencyMs: config.latencyMs ?? 0,
-      failureRate: config.failureRate ?? 0
+      failureRate: config.failureRate ?? 0,
     };
     this.models = [this.config.modelName];
   }
@@ -102,9 +109,9 @@ export class MockLLMProvider implements LLMProvider {
       usage: {
         promptTokens,
         completionTokens,
-        totalTokens
+        totalTokens,
       },
-      finishReason: 'stop'
+      finishReason: 'stop',
     };
   }
 
@@ -119,7 +126,7 @@ export class MockLLMProvider implements LLMProvider {
     for (let i = 0; i < words.length; i++) {
       yield {
         content: words[i] + (i < words.length - 1 ? ' ' : ''),
-        isComplete: i === words.length - 1
+        isComplete: i === words.length - 1,
       };
 
       // Small delay between chunks
@@ -136,17 +143,15 @@ export class MockLLMProvider implements LLMProvider {
     const inputs = Array.isArray(params.input) ? params.input : [params.input];
 
     // Generate fake embeddings (random vectors)
-    const embeddings = inputs.map(() =>
-      Array.from({ length: 1536 }, () => Math.random() * 2 - 1)
-    );
+    const embeddings = inputs.map(() => Array.from({ length: 1536 }, () => Math.random() * 2 - 1));
 
     return {
       embeddings,
       usage: {
         promptTokens: inputs.length * 10,
         completionTokens: 0,
-        totalTokens: inputs.length * 10
-      }
+        totalTokens: inputs.length * 10,
+      },
     };
   }
 
@@ -162,7 +167,7 @@ export class MockLLMProvider implements LLMProvider {
     }
 
     // Otherwise, generate a generic response based on the input
-    const userMessage = params.messages.find(m => m.role === 'user');
+    const userMessage = params.messages.find((m) => m.role === 'user');
     if (userMessage) {
       return `Mock response to: "${userMessage.content}"`;
     }
@@ -174,7 +179,7 @@ export class MockLLMProvider implements LLMProvider {
    * Sleep utility for simulating latency
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
