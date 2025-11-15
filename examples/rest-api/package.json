@@ -17,7 +17,7 @@
     "@stratix/impl-logger-console": "workspace:*",
     "@stratix/impl-cqrs-inmemory": "workspace:*",
     "@stratix/ext-postgres": "workspace:*",
-    "fastify": "^5.1.0",
+    "fastify": "^5.6.2",
     "pg": "^8.13.1"
   },
   "devDependencies": {
