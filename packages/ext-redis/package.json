@@ -32,7 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "@stratix/abstractions": "workspace:*",
-    "redis": "^4.7.0"
+    "redis": "^5.9.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2",
