@@ -40,7 +40,7 @@
   "dependencies": {
     "@stratix/primitives": "workspace:*",
     "@stratix/abstractions": "workspace:*",
-    "@anthropic-ai/sdk": "^0.35.0"
+    "@anthropic-ai/sdk": "^0.69.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

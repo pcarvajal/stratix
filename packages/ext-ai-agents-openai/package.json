@@ -41,7 +41,7 @@
   "dependencies": {
     "@stratix/primitives": "workspace:*",
     "@stratix/abstractions": "workspace:*",
-    "openai": "^4.75.0"
+    "openai": "^6.9.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
