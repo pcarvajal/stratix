@@ -15,7 +15,7 @@
     "@stratix/impl-ai-agents": "workspace:*",
     "@stratix/ext-ai-agents-openai": "workspace:*",
     "@stratix/ext-ai-agents-anthropic": "workspace:*",
-    "zod": "^3.22.4",
+    "zod": "^4.1.12",
     "csv-parse": "^5.5.3"
   },
   "devDependencies": {
