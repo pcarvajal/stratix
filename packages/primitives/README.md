@@ -23,7 +23,7 @@ pnpm add @stratix/primitives
 ### AI Agent Building Blocks
 
 - **AIAgent** - Base class for AI agents as domain entities
-- **StratixTool** - Base class for agent tools
+- **AgentTool** - Base class for agent tools
 - **LLMProvider** - Interface for LLM provider implementations
 - **MemoryStore** - Interface for agent memory persistence
 
@@ -90,14 +90,42 @@ if (result.isSuccess) {
 ## AI Agent Base Class
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
+import {
+  AIAgent,
+  AgentResult,
+  AgentCapabilities,
+  AgentVersionFactory,
+  EntityId,
+  type ModelConfig,
+} from '@stratix/primitives';
+import type { LLMProvider } from '@stratix/abstractions';
 
 class MyAgent extends AIAgent<InputType, OutputType> {
   readonly name = 'My Agent';
+  readonly description = 'Description of what this agent does';
+  readonly version = AgentVersionFactory.create('1.0.0');
+  readonly capabilities = [AgentCapabilities.TEXT_GENERATION];
+  readonly model: ModelConfig = {
+    provider: 'openai',
+    model: 'gpt-4',
+    temperature: 0.7,
+    maxTokens: 1000,
+  };
 
-  async execute(input: InputType): Promise<AgentResult<OutputType>> {
+  constructor(private llmProvider: LLMProvider) {
+    const id = EntityId.create<'AIAgent'>();
+    const now = new Date();
+    super(id, now, now);
+  }
+
+  protected async execute(input: InputType): Promise<AgentResult<OutputType>> {
     // Implementation
-    return AgentResult.success(output);
+    const output: OutputType = /* ... */;
+    return AgentResult.success(output, {
+      model: this.model.model,
+      totalTokens: 100,
+      cost: 0.001,
+    });
   }
 }
 ```
@@ -109,11 +137,21 @@ class MyAgent extends AIAgent<InputType, OutputType> {
 ```typescript
 import { Money, Currency } from '@stratix/primitives';
 
-const price = Money.create(99.99, Currency.USD);
+// Using factory methods (recommended)
+const price = Money.USD(99.99);
 const discounted = price.multiply(0.8); // $79.99
-const total = price.add(discounted); // $179.99
 
-console.log(price.format()); // "$99.99"
+const totalResult = price.add(discounted);
+if (totalResult.isSuccess) {
+  console.log(totalResult.value.format()); // "$179.98"
+}
+
+// Or using create with Result pattern
+const priceResult = Money.create(99.99, Currency.USD);
+if (priceResult.isSuccess) {
+  console.log(priceResult.value.format()); // "$99.99"
+}
+
 console.log(Currency.EUR.symbol); // "€"
 ```
 
@@ -134,9 +172,12 @@ console.log(url.protocol); // "https"
 ```typescript
 import { PhoneNumber } from '@stratix/primitives';
 
-const phone = PhoneNumber.create('+1', '4155552671');
-console.log(phone.format()); // "+1 415-555-2671"
-console.log(phone.countryCode); // "+1"
+const phoneResult = PhoneNumber.create('+14155552671');
+if (phoneResult.isSuccess) {
+  const phone = phoneResult.value;
+  console.log(phone.format()); // "+1 (415) 555-2671"
+  console.log(phone.countryCode); // "+1"
+}
 ```
 
 ### Date Ranges and Percentages
@@ -144,14 +185,19 @@ console.log(phone.countryCode); // "+1"
 ```typescript
 import { DateRange, Percentage } from '@stratix/primitives';
 
-const range = DateRange.create(
+const rangeResult = DateRange.create(
   new Date('2024-01-01'),
   new Date('2024-12-31')
 );
-console.log(range.durationInDays()); // 366
+if (rangeResult.isSuccess) {
+  console.log(rangeResult.value.durationInDays()); // 365
+}
 
-const discount = Percentage.create(15);
-const finalPrice = price.multiply(discount.asDecimalComplement()); // 85% of price
+const discountResult = Percentage.fromPercentage(15);
+if (discountResult.isSuccess) {
+  const discount = discountResult.value;
+  const finalPrice = price.multiply(1 - discount.asDecimal()); // 85% of price
+}
 ```
 
 ### UUID Generation

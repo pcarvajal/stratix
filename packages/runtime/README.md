@@ -109,7 +109,7 @@ await app.start();
 
 // Check overall application health
 const health = await app.healthCheck();
-console.log(health.status);  // UP, DEGRADED, or DOWN
+console.log(health.status);  // HealthStatus.UP, HealthStatus.DEGRADED, or HealthStatus.DOWN
 console.log(health.details); // Individual plugin health status
 ```
 
