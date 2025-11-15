@@ -13,12 +13,12 @@
   ],
   "scripts": {
     "build": "tsc && pnpm copy-templates",
-    "copy-templates": "mkdir -p dist/generators/entity/templates dist/generators/value-object/templates dist/generators/use-case/templates dist/generators/repository/templates dist/generators/test/templates dist/generators/context/templates && cp src/generators/entity/templates/*.ejs dist/generators/entity/templates/ && cp src/generators/value-object/templates/*.ejs dist/generators/value-object/templates/ && cp src/generators/use-case/templates/*.ejs dist/generators/use-case/templates/ && cp src/generators/repository/templates/*.ejs dist/generators/repository/templates/ && cp src/generators/test/templates/*.ejs dist/generators/test/templates/ && cp src/generators/context/templates/*.ejs dist/generators/context/templates/",
+    "copy-templates": "node scripts/copy-templates.js",
     "test": "vitest run || exit 0",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ignore-pattern '**/*.test.ts' --ignore-pattern '**/__tests__/**'",
-    "clean": "rm -rf dist"
+    "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\""
   },
   "keywords": [
     "stratix",
