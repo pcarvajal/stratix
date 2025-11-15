@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",
-    "typescript": "^5.7.2",
-    "vitest": "^1.6.1"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.9"
   },
   "repository": {
     "type": "git",
