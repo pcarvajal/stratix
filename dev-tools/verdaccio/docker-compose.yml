@@ -1,0 +1,12 @@
+services:
+  verdaccio:
+    image: verdaccio/verdaccio:5
+    container_name: stratix-verdaccio
+    ports:
+      - "4873:4873"
+    volumes:
+      - ./storage:/verdaccio/storage
+      - ./config.yaml:/verdaccio/conf/config.yaml
+    environment:
+      - VERDACCIO_PORT=4873
+    restart: unless-stopped

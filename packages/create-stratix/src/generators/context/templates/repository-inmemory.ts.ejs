@@ -1,0 +1,38 @@
+import type { <%- entityName %>Repository } from '../../domain/repositories/<%- entityName %>Repository.js';
+import { <%- entityName %>, type <%- entityName %>Id } from '../../domain/entities/<%- entityName %>.js';
+
+/**
+ * In-memory implementation of <%- entityName %>Repository.
+ *
+ * For production, replace with PostgresPlugin or MongoDBPlugin repository.
+ */
+export class InMemory<%- entityName %>Repository implements <%- entityName %>Repository {
+  private <%- entityNamePluralCamel %>: Map<string, <%- entityName %>> = new Map();
+
+  async save(<%- entityNameCamel %>: <%- entityName %>): Promise<void> {
+    this.<%- entityNamePluralCamel %>.set(<%- entityNameCamel %>.id.value, <%- entityNameCamel %>);
+  }
+
+  async findById(id: <%- entityName %>Id): Promise<<%- entityName %> | null> {
+    return this.<%- entityNamePluralCamel %>.get(id.value) || null;
+  }
+
+  async findAll(): Promise<<%- entityName %>[]> {
+    return Array.from(this.<%- entityNamePluralCamel %>.values());
+  }
+
+  async delete(id: <%- entityName %>Id): Promise<void> {
+    this.<%- entityNamePluralCamel %>.delete(id.value);
+  }
+
+  async exists(id: <%- entityName %>Id): Promise<boolean> {
+    return this.<%- entityNamePluralCamel %>.has(id.value);
+  }
+
+  /**
+   * Clears all <%- entityNamePluralCamel %> (useful for testing).
+   */
+  async clear(): Promise<void> {
+    this.<%- entityNamePluralCamel %>.clear();
+  }
+}

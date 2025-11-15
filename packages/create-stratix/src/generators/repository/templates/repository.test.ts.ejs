@@ -1,0 +1,112 @@
+import { describe, it, expect, beforeEach<% if (implementation === 'inmemory') { %>, afterEach<% } %> } from 'vitest';
+import { <%= implClassName %> } from '../<%= implClassName %>.js';
+import { <%= entityName %>, <%= entityName %>Id } from '../../../domain/entities/<%= entityName %>.js';
+<% if (implementation === 'postgres') { %>
+import type { Pool } from 'pg';
+<% } else if (implementation === 'mongodb') { %>
+import type { Db } from 'mongodb';
+<% } %>
+
+describe('<%= implClassName %>', () => {
+  let repository: <%= implClassName %>;
+  <% if (implementation === 'postgres') { %>
+  let mockPool: Pool;
+  <% } else if (implementation === 'mongodb') { %>
+  let mockDb: Db;
+  <% } %>
+
+  beforeEach(() => {
+    <% if (implementation === 'inmemory') { %>
+    repository = new <%= implClassName %>();
+    <% } else if (implementation === 'postgres') { %>
+    // TODO: Setup mock Pool or test database
+    mockPool = {
+      query: async () => ({ rows: [], rowCount: 0 }),
+    } as any;
+    repository = new <%= implClassName %>(mockPool);
+    <% } else if (implementation === 'mongodb') { %>
+    // TODO: Setup mock Db or test database
+    mockDb = {
+      collection: () => ({
+        findOne: async () => null,
+        updateOne: async () => ({ modifiedCount: 1 }),
+        deleteOne: async () => ({ deletedCount: 1 }),
+        find: () => ({
+          sort: () => ({
+            toArray: async () => [],
+          }),
+        }),
+      }),
+    } as any;
+    repository = new <%= implClassName %>(mockDb);
+    <% } %>
+  });
+
+  <% if (implementation === 'inmemory') { %>
+  afterEach(() => {
+    repository.clear();
+  });
+  <% } %>
+
+  describe('save and findById', () => {
+    it('should save and retrieve a <%= entityNameCamel %>', async () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+        // TODO: Add entity properties
+      });
+
+      await repository.save(<%= entityNameCamel %>);
+
+      const found = await repository.findById(<%= entityNameCamel %>.id);
+
+      expect(found).toBeDefined();
+      expect(found?.id.equals(<%= entityNameCamel %>.id)).toBe(true);
+    });
+
+    it('should return null for non-existent <%= entityNameCamel %>', async () => {
+      const id = <%= entityName %>Id.create();
+
+      const found = await repository.findById(id);
+
+      expect(found).toBeNull();
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete a <%= entityNameCamel %>', async () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+        // TODO: Add entity properties
+      });
+
+      await repository.save(<%= entityNameCamel %>);
+      await repository.delete(<%= entityNameCamel %>.id);
+
+      const found = await repository.findById(<%= entityNameCamel %>.id);
+
+      expect(found).toBeNull();
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return all <%= entityNameCamel %>s', async () => {
+      const <%= entityNameCamel %>1 = <%= entityName %>.create({
+        // TODO: Add entity properties
+      });
+      const <%= entityNameCamel %>2 = <%= entityName %>.create({
+        // TODO: Add entity properties
+      });
+
+      await repository.save(<%= entityNameCamel %>1);
+      await repository.save(<%= entityNameCamel %>2);
+
+      const all = await repository.findAll();
+
+      expect(all).toHaveLength(2);
+    });
+
+    it('should return empty array when no <%= entityNameCamel %>s exist', async () => {
+      const all = await repository.findAll();
+
+      expect(all).toHaveLength(0);
+    });
+  });
+});

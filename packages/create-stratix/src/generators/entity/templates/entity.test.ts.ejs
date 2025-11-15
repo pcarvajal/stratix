@@ -1,0 +1,83 @@
+import { describe, it, expect } from 'vitest';
+import { <%= entityName %> } from '../<%= entityName %>.js';
+import { EntityId } from '@stratix/primitives';
+<% if (hasEvent) { %>
+import { <%= eventName %> } from '../../events/<%= eventName %>.js';
+<% } %>
+
+describe('<%= entityName %>', () => {
+  describe('create', () => {
+    it('should create a <%= entityNameCamel %> with valid properties', () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+<% props.forEach((prop, index) => { %>
+        <%= prop.name %>: <% if (prop.type === 'string') { %>'test-<%= prop.name %>'<% } else if (prop.type === 'number') { %>100<% } else if (prop.type === 'boolean') { %>true<% } else if (prop.type === 'Date') { %>new Date()<% } else { %>null<% } %><%= index < props.length - 1 ? ',' : '' %>
+<% }); %>
+      });
+
+<% props.forEach(prop => { %>
+      expect(<%= entityNameCamel %>.<%= prop.name %>).toBe<% if (prop.type === 'string') { %>('test-<%= prop.name %>')<% } else if (prop.type === 'number') { %>(100)<% } else if (prop.type === 'boolean') { %>(true)<% } else if (prop.type === 'Date') { %>Defined()<% } else { %>(null)<% } %>;
+<% }); %>
+      expect(<%= entityNameCamel %>.id).toBeDefined();
+      expect(<%= entityNameCamel %>.createdAt).toBeInstanceOf(Date);
+      expect(<%= entityNameCamel %>.updatedAt).toBeInstanceOf(Date);
+    });
+
+<% if (hasEvent) { %>
+    it('should generate a <%= eventName %>', () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+<% props.forEach((prop, index) => { %>
+        <%= prop.name %>: <% if (prop.type === 'string') { %>'test-<%= prop.name %>'<% } else if (prop.type === 'number') { %>100<% } else if (prop.type === 'boolean') { %>true<% } else if (prop.type === 'Date') { %>new Date()<% } else { %>null<% } %><%= index < props.length - 1 ? ',' : '' %>
+<% }); %>
+      });
+
+      const events = <%= entityNameCamel %>.pullDomainEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(<%= eventName %>);
+    });
+<% } %>
+  });
+
+<% props.forEach(prop => { %>
+  describe('update<%= naming.toPascalCase(prop.name) %>', () => {
+    it('should update the <%= prop.name %>', () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+<% props.forEach((p, index) => { %>
+        <%= p.name %>: <% if (p.type === 'string') { %>'test-<%= p.name %>'<% } else if (p.type === 'number') { %>100<% } else if (p.type === 'boolean') { %>true<% } else if (p.type === 'Date') { %>new Date()<% } else { %>null<% } %><%= index < props.length - 1 ? ',' : '' %>
+<% }); %>
+      });
+
+      const oldUpdatedAt = <%= entityNameCamel %>.updatedAt;
+
+      <%= entityNameCamel %>.update<%= naming.toPascalCase(prop.name) %>(<% if (prop.type === 'string') { %>'new-<%= prop.name %>'<% } else if (prop.type === 'number') { %>200<% } else if (prop.type === 'boolean') { %>false<% } else if (prop.type === 'Date') { %>new Date()<% } else { %>null<% } %>);
+
+      expect(<%= entityNameCamel %>.<%= prop.name %>).toBe<% if (prop.type === 'string') { %>('new-<%= prop.name %>')<% } else if (prop.type === 'number') { %>(200)<% } else if (prop.type === 'boolean') { %>(false)<% } else { %>Defined()<% } %>;
+      expect(<%= entityNameCamel %>.updatedAt.getTime()).toBeGreaterThanOrEqual(oldUpdatedAt.getTime());
+    });
+
+<% if (!skipValidation && prop.type === 'string') { %>
+    it('should throw error for empty <%= prop.name %>', () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+<% props.forEach((p, index) => { %>
+        <%= p.name %>: <% if (p.type === 'string') { %>'test-<%= p.name %>'<% } else if (p.type === 'number') { %>100<% } else if (p.type === 'boolean') { %>true<% } else if (p.type === 'Date') { %>new Date()<% } else { %>null<% } %><%= index < props.length - 1 ? ',' : '' %>
+<% }); %>
+      });
+
+      expect(() => <%= entityNameCamel %>.update<%= naming.toPascalCase(prop.name) %>('')).toThrow('<%= entityName %> <%= prop.name %> cannot be empty');
+    });
+<% } %>
+
+<% if (!skipValidation && prop.type === 'number') { %>
+    it('should throw error for negative <%= prop.name %>', () => {
+      const <%= entityNameCamel %> = <%= entityName %>.create({
+<% props.forEach((p, index) => { %>
+        <%= p.name %>: <% if (p.type === 'string') { %>'test-<%= p.name %>'<% } else if (p.type === 'number') { %>100<% } else if (p.type === 'boolean') { %>true<% } else if (p.type === 'Date') { %>new Date()<% } else { %>null<% } %><%= index < props.length - 1 ? ',' : '' %>
+<% }); %>
+      });
+
+      expect(() => <%= entityNameCamel %>.update<%= naming.toPascalCase(prop.name) %>(-1)).toThrow('<%= entityName %> <%= prop.name %> cannot be negative');
+    });
+<% } %>
+  });
+
+<% }); %>
+});

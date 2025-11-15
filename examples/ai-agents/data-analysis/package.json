@@ -1,0 +1,26 @@
+{
+  "name": "@examples/data-analysis-agent",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Data Analysis Agent example using Stratix AI Agent Framework",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@stratix/primitives": "workspace:*",
+    "@stratix/abstractions": "workspace:*",
+    "@stratix/impl-ai-agents": "workspace:*",
+    "@stratix/ext-ai-agents-openai": "workspace:*",
+    "@stratix/ext-ai-agents-anthropic": "workspace:*",
+    "zod": "^3.22.4",
+    "csv-parse": "^5.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

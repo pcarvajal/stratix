@@ -1,0 +1,198 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #00D9E1;
+  --ifm-color-primary-dark: #00C4CB;
+  --ifm-color-primary-darker: #00B8BF;
+  --ifm-color-primary-darkest: #0098A0;
+  --ifm-color-primary-light: #1AE4EB;
+  --ifm-color-primary-lighter: #34E8EE;
+  --ifm-color-primary-lightest: #67EDF1;
+  --ifm-background-color: #ffffff;
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-footer-background-color: #f9fafb;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 217, 225, 0.1);
+  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #34E8EE;
+  --ifm-color-primary-dark: #1AE4EB;
+  --ifm-color-primary-darker: #00D9E1;
+  --ifm-color-primary-darkest: #00C4CB;
+  --ifm-color-primary-light: #4DEBF1;
+  --ifm-color-primary-lighter: #67EDF1;
+  --ifm-color-primary-lightest: #9BF3F6;
+  --ifm-background-color: #0f172a;
+  --ifm-navbar-background-color: #1e293b;
+  --ifm-footer-background-color: #1e293b;
+  --docusaurus-highlighted-code-line-bg: rgba(52, 232, 238, 0.15);
+  --ifm-menu-color: #cbd5e1;
+  --ifm-toc-border-color: #334155;
+}
+
+/* Hero customization */
+.hero--primary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #2d1b4e 100%);
+  padding: 6rem 0;
+}
+
+[data-theme='light'] .hero--primary {
+  background: linear-gradient(135deg, #00D9E1 0%, #5B8DEF 50%, #8B5CF6 100%);
+}
+
+.hero__title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.hero__subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 1.5rem auto;
+  line-height: 1.5;
+}
+
+/* Button improvements */
+.button--secondary {
+  background: white;
+  color: #1e293b;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.button--secondary:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  color: #1e293b;
+}
+
+[data-theme='dark'] .button--secondary {
+  background: #00D9E1;
+  color: #0f172a;
+}
+
+[data-theme='dark'] .button--secondary:hover {
+  background: #34E8EE;
+  color: #0f172a;
+}
+
+/* Navbar improvements */
+.navbar {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  padding: 0.5rem 0;
+}
+
+[data-theme='dark'] .navbar {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+}
+
+/* Footer improvements */
+.footer {
+  padding: 2rem 0;
+}
+
+.footer__title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Better code blocks */
+code {
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  background: rgba(0, 217, 225, 0.1);
+}
+
+[data-theme='dark'] code {
+  background: rgba(52, 232, 238, 0.15);
+}
+
+/* Improved link styling */
+.markdown a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.markdown a:hover {
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* Better table styling */
+.markdown table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.markdown table th {
+  background: var(--ifm-color-emphasis-100);
+  font-weight: 600;
+  text-align: left;
+}
+
+[data-theme='dark'] .markdown table th {
+  background: rgba(52, 232, 238, 0.1);
+}
+
+/* Improved admonitions */
+.admonition {
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+/* Better sidebar */
+.menu__link--active {
+  font-weight: 600;
+  border-left: 2px solid var(--ifm-color-primary);
+  padding-left: calc(var(--ifm-menu-link-padding-horizontal) - 2px);
+}
+
+/* Mermaid diagrams */
+.docusaurus-mermaid-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.docusaurus-mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mermaid dark theme adjustments */
+[data-theme='dark'] .docusaurus-mermaid-container .node rect,
+[data-theme='dark'] .docusaurus-mermaid-container .node circle,
+[data-theme='dark'] .docusaurus-mermaid-container .node ellipse,
+[data-theme='dark'] .docusaurus-mermaid-container .node polygon {
+  stroke: #00D9E1 !important;
+}
+
+[data-theme='dark'] .docusaurus-mermaid-container .edgePath .path {
+  stroke: #00D9E1 !important;
+}
+
+[data-theme='dark'] .docusaurus-mermaid-container .edgeLabel {
+  background-color: #1e293b !important;
+  color: #cbd5e1 !important;
+}

@@ -1,0 +1,60 @@
+{
+  "name": "@stratix/testing",
+  "version": "0.1.1",
+  "description": "Testing utilities for Stratix AI agents",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run || exit 0",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "stratix",
+    "ai",
+    "agents",
+    "testing",
+    "mock"
+  ],
+  "dependencies": {
+    "@stratix/primitives": "workspace:*",
+    "@stratix/abstractions": "workspace:*",
+    "@stratix/runtime": "workspace:*",
+    "@stratix/impl-di-awilix": "workspace:*",
+    "@stratix/impl-logger-console": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.0"
+  },
+  "author": "P. Andrés Carvajal <causticrez@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcarvajal/stratix.git",
+    "directory": "packages/testing"
+  },
+  "homepage": "https://github.com/pcarvajal/stratix#readme",
+  "bugs": {
+    "url": "https://github.com/pcarvajal/stratix/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

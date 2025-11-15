@@ -1,0 +1,49 @@
+storage: /verdaccio/storage
+auth:
+  htpasswd:
+    file: /verdaccio/storage/htpasswd
+    max_users: -1
+
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+    timeout: 30s
+    max_fails: 5
+    fail_timeout: 10m
+
+packages:
+  '@stratix/*':
+    access: $all
+    publish: $all
+    unpublish: $all
+
+  'create-stratix':
+    access: $all
+    publish: $all
+    unpublish: $all
+
+  '@*/*':
+    access: $all
+    publish: $authenticated
+    unpublish: $authenticated
+    proxy: npmjs
+
+  '**':
+    access: $all
+    publish: $authenticated
+    unpublish: $authenticated
+    proxy: npmjs
+
+server:
+  keepAliveTimeout: 60
+
+middlewares:
+  audit:
+    enabled: true
+
+log: { type: stdout, format: pretty, level: http }
+
+# Configuración de seguridad web
+web:
+  enable: true
+  title: Stratix Private Registry

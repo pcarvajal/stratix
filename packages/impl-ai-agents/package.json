@@ -1,0 +1,65 @@
+{
+  "name": "@stratix/impl-ai-agents",
+  "version": "0.1.2",
+  "description": "Stratix AI Agents - Core implementations",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ignore-pattern '**/*.test.ts' --ignore-pattern '**/__tests__/**'",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "ai",
+    "agents",
+    "ai-agents",
+    "llm",
+    "artificial-intelligence",
+    "orchestration",
+    "chatbot",
+    "autonomous-agents",
+    "typescript",
+    "framework"
+  ],
+  "author": "P. Andrés Carvajal <causticrez@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@stratix/primitives": "workspace:*",
+    "@stratix/abstractions": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcarvajal/stratix.git",
+    "directory": "packages/impl-ai-agents"
+  },
+  "homepage": "https://github.com/pcarvajal/stratix#readme",
+  "bugs": {
+    "url": "https://github.com/pcarvajal/stratix/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

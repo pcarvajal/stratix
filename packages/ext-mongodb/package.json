@@ -1,0 +1,57 @@
+{
+  "name": "@stratix/ext-mongodb",
+  "version": "0.1.1",
+  "description": "MongoDB extension for Stratix framework",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "stratix",
+    "mongodb",
+    "database",
+    "nosql",
+    "document-database",
+    "repository"
+  ],
+  "author": "P. Andrés Carvajal <causticrez@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@stratix/abstractions": "workspace:*",
+    "@stratix/primitives": "workspace:*",
+    "mongodb": "^6.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^1.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcarvajal/stratix.git",
+    "directory": "packages/ext-mongodb"
+  },
+  "homepage": "https://github.com/pcarvajal/stratix#readme",
+  "bugs": {
+    "url": "https://github.com/pcarvajal/stratix/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

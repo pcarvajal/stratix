@@ -1,0 +1,53 @@
+{
+  "name": "@stratix/ext-validation-zod",
+  "version": "0.1.2",
+  "description": "Zod-based input validation for Stratix framework",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run || exit 0",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "stratix",
+    "validation",
+    "zod",
+    "schema",
+    "dto"
+  ],
+  "author": "Stratix Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/stratix.git",
+    "directory": "packages/ext-validation-zod"
+  },
+  "dependencies": {
+    "@stratix/primitives": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

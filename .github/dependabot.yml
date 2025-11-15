@@ -1,0 +1,59 @@
+version: 2
+updates:
+  # Enable version updates for npm packages
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "causticrez"
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      # Group TypeScript and testing dependencies
+      development-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "typescript"
+          - "@types/*"
+          - "vitest"
+          - "eslint*"
+          - "prettier"
+      # Group production dependencies by category
+      stratix-core:
+        patterns:
+          - "@stratix/*"
+      ai-providers:
+        patterns:
+          - "openai"
+          - "@anthropic-ai/*"
+      build-tools:
+        patterns:
+          - "vite*"
+          - "rollup*"
+          - "esbuild"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "causticrez"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automated"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

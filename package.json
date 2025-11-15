@@ -1,0 +1,31 @@
+{
+  "name": "stratix",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Modern TypeScript framework with Domain-Driven Design, hexagonal architecture, and native AI agent support",
+  "author": "P. Andrés Carvajal <causticrez@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "pnpm -r --filter '!website' --filter '!./examples/**' --sort --workspace-concurrency=1 build",
+    "build:fast": "pnpm -r --filter '!website' --filter '!./examples/**' --sort build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r --filter '!website' typecheck",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"packages/**/src/**/*.ts\"",
+    "clean": "pnpm -r clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitest/coverage-v8": "^1.6.1",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

@@ -1,0 +1,34 @@
+import type { CommandHandler } from '@stratix/abstractions';
+import { Result } from '@stratix/primitives';
+import type { Create<%- entityName %>Command, Create<%- entityName %>Output } from './Create<%- entityName %>.js';
+import { <%- entityName %> } from '../../domain/entities/<%- entityName %>.js';
+import type { <%- entityName %>Repository } from '../../domain/repositories/<%- entityName %>Repository.js';
+
+/**
+ * Handler for Create<%- entityName %> command.
+ */
+export class Create<%- entityName %>Handler implements CommandHandler<Create<%- entityName %>Command, Result<Create<%- entityName %>Output>> {
+  constructor(private readonly <%- entityNameCamel %>Repository: <%- entityName %>Repository) {}
+
+  async handle(command: Create<%- entityName %>Command): Promise<Result<Create<%- entityName %>Output>> {
+    try {
+      const { data } = command;
+
+      // Create aggregate
+      const <%- entityNameCamel %> = <%- entityName %>.create({
+<% props.forEach((prop, index) => { -%>
+        <%- prop.name %>: data.<%- prop.name %><%= index < props.length - 1 ? ',' : '' %>
+<% }); -%>
+      });
+
+      // Save to repository
+      await this.<%- entityNameCamel %>Repository.save(<%- entityNameCamel %>);
+
+      return Result.ok({
+        <%- entityNameCamel %>Id: <%- entityNameCamel %>.id.value,
+      });
+    } catch (error) {
+      return Result.fail(error as Error);
+    }
+  }
+}

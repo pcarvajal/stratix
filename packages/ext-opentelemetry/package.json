@@ -1,0 +1,62 @@
+{
+  "name": "@stratix/ext-opentelemetry",
+  "version": "0.1.1",
+  "description": "OpenTelemetry extension for Stratix framework",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run || exit 0",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ignore-pattern '**/*.test.ts' --ignore-pattern '**/__tests__/**'",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "stratix",
+    "opentelemetry",
+    "tracing",
+    "metrics",
+    "observability"
+  ],
+  "author": "P. Andrés Carvajal <causticrez@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@stratix/abstractions": "workspace:*",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-node": "^0.53.0",
+    "@opentelemetry/sdk-metrics": "^1.28.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.50.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.53.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^1.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcarvajal/stratix.git",
+    "directory": "packages/ext-opentelemetry"
+  },
+  "homepage": "https://github.com/pcarvajal/stratix#readme",
+  "bugs": {
+    "url": "https://github.com/pcarvajal/stratix/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

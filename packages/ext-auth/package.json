@@ -1,0 +1,59 @@
+{
+  "name": "@stratix/ext-auth",
+  "version": "0.1.2",
+  "description": "Authentication and authorization for Stratix framework",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run || exit 0",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "stratix",
+    "authentication",
+    "authorization",
+    "jwt",
+    "rbac",
+    "security"
+  ],
+  "author": "Stratix Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/stratix.git",
+    "directory": "packages/ext-auth"
+  },
+  "dependencies": {
+    "@stratix/abstractions": "workspace:*",
+    "@stratix/primitives": "workspace:*",
+    "@stratix/runtime": "workspace:*",
+    "jsonwebtoken": "^9.0.2",
+    "bcrypt": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

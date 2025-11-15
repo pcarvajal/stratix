@@ -1,0 +1,60 @@
+{
+  "name": "@stratix/primitives",
+  "version": "0.1.2",
+  "description": "Stratix primitives - Building blocks for domain-driven design",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ignore-pattern '**/*.test.ts' --ignore-pattern '**/__tests__/**'",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "ddd",
+    "domain-driven-design",
+    "entity",
+    "value-object",
+    "aggregate-root",
+    "primitives",
+    "typescript",
+    "hexagonal-architecture",
+    "clean-architecture",
+    "ai-agents"
+  ],
+  "author": "P. Andrés Carvajal <causticrez@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcarvajal/stratix.git",
+    "directory": "packages/primitives"
+  },
+  "homepage": "https://github.com/pcarvajal/stratix#readme",
+  "bugs": {
+    "url": "https://github.com/pcarvajal/stratix/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
