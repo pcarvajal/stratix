@@ -32,9 +32,9 @@
     "@stratix/impl-logger-console": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "typescript": "^5.3.3",
-    "vitest": "^1.0.0"
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.9"
   },
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",

@@ -49,9 +49,9 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.10.2",
-    "typescript": "^5.7.2",
-    "vitest": "^3.0.4"
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.9"
   },
   "publishConfig": {
     "access": "public"
