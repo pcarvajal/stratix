@@ -210,7 +210,7 @@ Both services communicate via RabbitMQ events.
 
 ## Example: Orders Context
 
-See the complete example at `examples/bc-migration/`:
+See the complete implementation in the repository demonstrating:
 - Modular monolith with 3 contexts
 - Extracted Orders microservice
 - Side-by-side comparison

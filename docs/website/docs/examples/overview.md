@@ -1,8 +1,8 @@
 # Examples
 
-Learn Stratix through complete, production-ready examples.
+Learn Stratix through complete, production-ready templates available via `create-stratix`.
 
-## Available Examples
+## Available Templates
 
 ### REST API
 
@@ -17,10 +17,9 @@ Build a full-featured REST API with Domain-Driven Design.
 
 **Difficulty:** Beginner
 
-[View REST API Example](https://github.com/stratix/stratix/tree/main/examples/rest-api)
-
 ```bash
-cd examples/rest-api
+pnpm create stratix my-api --template rest-api
+cd my-api
 pnpm install
 pnpm dev
 ```
@@ -38,15 +37,16 @@ Build distributed services with event-driven communication.
 
 **Difficulty:** Intermediate
 
-[View Microservices Example](https://github.com/stratix/stratix/tree/main/examples/microservices)
-
 ```bash
+pnpm create stratix my-service --template microservice
+cd my-service
+
 # Start RabbitMQ
 docker run -d --name rabbitmq -p 5672:5672 rabbitmq:3-management
 
-# Start services
-cd examples/microservices/order-service && pnpm dev
-cd examples/microservices/inventory-service && pnpm dev
+# Start service
+pnpm install
+pnpm dev
 ```
 
 ### Worker / Background Jobs
@@ -62,15 +62,17 @@ Build a background job processing system.
 
 **Difficulty:** Intermediate
 
-[View Worker Example](https://github.com/stratix/stratix/tree/main/examples/worker)
-
 ```bash
+pnpm create stratix my-worker --template worker
+cd my-worker
+
 # Start infrastructure
 docker run -d --name rabbitmq -p 5672:5672 rabbitmq:3-management
 docker run -d --name redis -p 6379:6379 redis:7-alpine
 
 # Start worker
-cd examples/worker && pnpm dev
+pnpm install
+pnpm dev
 ```
 
 ## Learning Path
@@ -101,7 +103,7 @@ Master background processing:
 
 ## What's Inside
 
-Each example includes:
+Each template includes:
 
 - **Complete source code** - Production-ready implementation
 - **Comprehensive README** - Setup instructions and explanations
@@ -109,9 +111,9 @@ Each example includes:
 - **Documentation** - Architecture diagrams and code comments
 - **Best practices** - Following Stratix conventions
 
-## Example Structure
+## Template Structure
 
-All examples follow the same architecture:
+All templates follow the same architecture:
 
 ```
 src/
@@ -129,7 +131,7 @@ src/
     └── messaging/     # Message queue integration
 ```
 
-## Running Examples
+## Getting Started
 
 ### Prerequisites
 
@@ -140,15 +142,14 @@ src/
 ### Quick Start
 
 ```bash
-# Clone repository
-git clone https://github.com/stratix/stratix.git
-cd stratix
+# Create a new project
+pnpm create stratix my-app --template rest-api
 
 # Install dependencies
+cd my-app
 pnpm install
 
-# Run an example
-cd examples/rest-api
+# Start development
 pnpm dev
 ```
 

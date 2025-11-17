@@ -1,156 +1,187 @@
 # API Reference
 
-Complete API documentation for all Stratix packages.
+Complete API documentation for Stratix framework. Documentation is organized by architectural layers, following the framework's dependency hierarchy.
 
-## Core Packages
+## Architecture Overview
 
-### [@stratix/primitives](./primitives/overview.md)
+Stratix follows a layered architecture where dependencies flow downward:
 
-Foundation types and base classes for building domain models.
+```
+Layer 5: Extensions (Production Ready, Data, AI, Observability)
+    ↓
+Layer 4: Implementations (Basic DI, Logger, CQRS, AI Orchestrator)
+    ↓
+Layer 3: Runtime (Application Bootstrap, Plugin System)
+    ↓
+Layer 2: Abstractions (Interfaces & Contracts)
+    ↓
+Layer 1: Primitives (DDD Building Blocks, AI Agents)
+```
 
-- **Entity & Aggregate Root**: Base classes for domain entities
-- **Value Objects**: Immutable value types with validation
-- **Result Pattern**: Explicit error handling
-- **Domain Events**: Event-driven architecture primitives
-- **Built-in Value Objects**: Money, Email, EntityId, and more
+---
 
-### [@stratix/abstractions](./abstractions/overview.md)
+## Layer 1: Primitives
 
-Core abstractions and interfaces for the framework.
+**Package:** `@stratix/primitives`
 
-- **Repository**: Data access abstraction
-- **CQRS**: Command and Query interfaces
-- **Event Bus**: Event publishing and subscription
-- **Logger**: Logging abstraction
-- **Service Lifetime**: Dependency injection scopes
+Foundation types and base classes for Domain-Driven Design and AI Agents.
 
-### [@stratix/runtime](./runtime/overview.md)
+### [Complete Documentation →](./primitives/README.md)
 
-Application runtime and plugin system.
+### Core DDD Components
 
-- **ApplicationBuilder**: Application configuration and startup
-- **Plugin System**: Extensible plugin architecture
-- **Lifecycle Management**: Startup and shutdown hooks
+- **[Entity](./primitives/entity)** - Base class for domain entities with identity
+- **[AggregateRoot](./primitives/aggregate-root)** - Domain aggregate pattern
+- **[ValueObject](./primitives/value-object)** - Immutable value types
+- **[EntityId](./primitives/entity-id)** - Type-safe entity identifiers
+- **[Result](./primitives/result)** - Explicit error handling pattern
+- **[DomainEvent](./primitives/domain-event)** - Event-driven architecture primitives
 
-## Implementation Packages
+### Value Objects
 
-### Dependency Injection
+- **[Money](./primitives/money)** - Monetary values with currency
+- **[Currency](./primitives/currency)** - Currency enumeration
 
-- **@stratix/impl-di-awilix**: Awilix-based DI container
+### AI Agents
 
-### Logging
+AI Agents as first-class domain entities.
 
-- **@stratix/impl-logger-console**: Console logging implementation
+- **[AIAgent](./primitives/ai-agents/ai-agent)** - AI agent entity base class
+- **[StratixTool](./primitives/ai-agents/stratix-tool)** - Tool interface for agents
+- **[AgentContext](./primitives/ai-agents/agent-context)** - Agent execution context
+- **[Types](./primitives/ai-agents/types)** - AI agent type definitions
+
+---
+
+## Layer 2: Abstractions
+
+**Package:** `@stratix/abstractions`
+
+Pure TypeScript interfaces with zero runtime code. Defines contracts for all framework components following Dependency Inversion Principle.
+
+### [Complete Documentation →](./abstractions/README.md)
+
+### Core Interfaces
+
+- **[Container](./abstractions/container)** - Dependency injection container interface
+- **[Logger](./abstractions/logger)** - Structured logging interface
+- **[Repository](./abstractions/repository)** - Entity persistence interface
+- **[EventBus](./abstractions/event-bus)** - Domain event publishing interface
+- **[Plugin](./abstractions/plugin)** - Base plugin interface
+- **[ContextPlugin](./abstractions/context-plugin)** - Bounded context plugin interface
 
 ### CQRS
 
-- **@stratix/impl-cqrs-inmemory**: In-memory command, query, and event buses
+Command Query Responsibility Segregation pattern interfaces.
 
-## Extension Packages
+- **[Command & CommandHandler](./abstractions/cqrs/command)** - Write operations
+- **[Query & QueryHandler](./abstractions/cqrs/query)** - Read operations
+- **[CommandBus](./abstractions/cqrs/command-bus)** - Command dispatcher
+- **[QueryBus](./abstractions/cqrs/query-bus)** - Query dispatcher
 
-### Phase 1 Production Extensions
+### AI Agents
 
-Production-ready extensions for building enterprise applications.
+- **[LLMProvider](./abstractions/ai-agents/llm-provider)** - LLM provider interface
+- **[AgentRepository](./abstractions/ai-agents/agent-repository)** - Agent storage interface
+- **[MemoryStore](./abstractions/ai-agents/memory-store)** - Agent memory interface
 
-#### @stratix/ext-http-fastify
+---
 
-Fastify HTTP server integration with Stratix plugin lifecycle.
+## Layer 3: Runtime
 
-- HTTP server management
-- Route registration
-- CORS support
-- Request/response handling
-- Health checks
+**Package:** `@stratix/runtime`
 
-#### @stratix/ext-validation-zod
+Application bootstrap and plugin lifecycle management.
 
-Zod-based schema validation for commands, queries, and DTOs.
+### [Complete Documentation →](./runtime/README.md)
 
-- Type-safe validation
-- Result pattern integration
-- Detailed error messages
-- Zero runtime overhead for valid data
+### Core Components
 
-#### @stratix/ext-mappers
+- **[ApplicationBuilder](./runtime/application-builder)** - Fluent API for building applications
+- **[Application](./runtime/application)** - Running application instance
+- **[LifecycleManager](./runtime/lifecycle-manager)** - Plugin lifecycle management
+- **[DependencyGraph](./runtime/dependency-graph)** - Dependency resolution
+- **[BaseContextPlugin](./runtime/base-context-plugin)** - Base for bounded context plugins
+- **[PluginContext](./runtime/plugin-context)** - Plugin initialization context
 
-Entity-to-DTO mapping utilities with type safety.
+---
 
-- Type-safe field mapping
-- Nested object support
-- Circular reference handling
-- Batch mapping
+## Layer 4: Implementations
 
-#### @stratix/ext-auth
+Basic implementations of core abstractions.
 
-JWT authentication and RBAC authorization.
+### Dependency Injection
 
-- JWT token generation and validation
-- Role-based access control
-- Permission checking
-- Password hashing
+- **@stratix/impl-di-awilix** - Awilix-based DI container
 
-#### @stratix/ext-migrations
+### Logging
 
-Database schema versioning and migration management.
+- **@stratix/impl-logger-console** - Console logging implementation
 
-- Version-controlled migrations
-- Rollback support
-- Migration history tracking
-- Seed data support
+### CQRS
 
-#### @stratix/ext-errors
+- **@stratix/impl-cqrs-inmemory** - In-memory command, query, and event buses
 
-Structured error handling with error taxonomy.
+### AI Agents
 
-- Error codes and severity levels
-- HTTP status code mapping
-- API response serialization
-- Result pattern integration
+- **@stratix/impl-ai-agents** - Agent orchestrator with budget enforcement
 
-### Data & Infrastructure Extensions
+---
 
-#### @stratix/ext-postgres
+## Layer 5: Extensions
 
-PostgreSQL database integration.
+Production-ready plugins for enterprise applications.
 
-#### @stratix/ext-mongodb
+### Production Extensions
 
-MongoDB database integration.
+- **@stratix/ext-http-fastify** - Fastify HTTP server integration
+- **@stratix/ext-validation-zod** - Zod-based schema validation
+- **@stratix/ext-mappers** - Entity-to-DTO mapping
+- **@stratix/ext-auth** - JWT authentication & RBAC
+- **@stratix/ext-migrations** - Database migration system
+- **@stratix/ext-errors** - Structured error handling
 
-#### @stratix/ext-redis
+### Data & Infrastructure
 
-Redis caching and session storage.
+- **@stratix/ext-postgres** - PostgreSQL integration
+- **@stratix/ext-mongodb** - MongoDB integration
+- **@stratix/ext-redis** - Redis caching
+- **@stratix/ext-rabbitmq** - RabbitMQ messaging
 
-#### @stratix/ext-rabbitmq
+### Observability
 
-RabbitMQ integration for distributed messaging.
+- **@stratix/ext-opentelemetry** - OpenTelemetry (traces, metrics, logs)
+- **@stratix/ext-secrets** - Secrets management
 
-### Observability Extensions
+### AI Providers
 
-#### @stratix/ext-opentelemetry
+- **@stratix/ext-ai-agents-openai** - OpenAI provider with streaming
+- **@stratix/ext-ai-agents-anthropic** - Anthropic Claude provider
 
-OpenTelemetry integration for observability (traces, metrics, logs).
-
-#### @stratix/ext-secrets
-
-Secrets management integration (AWS Secrets Manager, etc.).
-
-### AI Provider Extensions
-
-#### @stratix/ext-ai-agents-openai
-
-OpenAI LLM provider with streaming and function calling.
-
-#### @stratix/ext-ai-agents-anthropic
-
-Anthropic Claude provider with tool use.
+---
 
 ## Development Tools
 
-### [create-stratix](./tools/create-stratix.md)
+### [create-stratix](./tools/create-stratix)
 
-Project scaffolding tool.
+CLI tool for scaffolding new Stratix projects.
 
 ### @stratix/testing
 
-Testing utilities and helpers.
+Testing utilities and mock implementations for unit and integration testing.
+
+---
+
+## Getting Started
+
+1. **Start with [Layer 1 - Primitives](./primitives/README)** to understand DDD building blocks
+2. **Explore [Layer 2 - Abstractions](./abstractions/README)** to see framework contracts
+3. **Learn [Layer 3 - Runtime](./runtime/README)** to build and run applications
+4. **Choose extensions** from Layers 4 & 5 based on your needs
+
+## Quick Links
+
+- [Installation Guide](/docs/getting-started/installation)
+- [Quick Start](/docs/getting-started/quick-start)
+- [Core Concepts](/docs/core-concepts/architecture)
+

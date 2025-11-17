@@ -12,8 +12,6 @@ This example demonstrates Stratix's killer feature: extracting microservices fro
 
 ### Modular Monolith
 
-Location: `templates/modular-monolith`
-
 Three Bounded Contexts in one application:
 
 ```typescript
@@ -26,8 +24,6 @@ const app = await ApplicationBuilder.create()
 ```
 
 ### Extracted Microservice
-
-Location: `examples/bc-migration/orders-service`
 
 Orders context running as independent service:
 
@@ -64,8 +60,9 @@ Architecture: Modular Monolith
 
 ### 2. Orders Microservice
 
+Create a new project with the extracted context and run it:
+
 ```bash
-cd examples/bc-migration/orders-service
 pnpm install
 pnpm dev
 ```
@@ -426,7 +423,8 @@ eventBus.publish(new OrderCreatedEvent(order.id));
 
 ## Source Code
 
-- Modular monolith: `packages/create-stratix/templates/modular-monolith`
-- Orders microservice: `examples/bc-migration/orders-service`
-- Side-by-side comparison in the repository
+The modular monolith template is available via `create-stratix`:
+- Modular monolith: Use `--template modular-monolith`
+- Complete implementation with 3 bounded contexts
+- Migration guide included in template
 - Bounded Contexts for domain/business logic modules

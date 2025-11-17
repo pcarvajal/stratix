@@ -30,7 +30,7 @@ yarn create stratix
 Choose from 8 production-ready templates:
 
 - **Modular Monolith** - Bounded Contexts as Modules (monolith → microservices with zero rewrite)
-- **REST API Complete** - Production REST API with all Phase 1 extensions (Fastify, Zod, Auth, Errors)
+- **REST API Complete** - Production REST API with all production extensions (Fastify, Zod, Auth, Errors)
 - **REST API** - Basic REST API with authentication and CQRS pattern
 - **Microservice** - Event-driven service with message queue integration (RabbitMQ)
 - **Monolith** - Modular monolith architecture with bounded contexts
@@ -100,11 +100,11 @@ src/
 - Avoiding big-bang rewrites
 
 **Migration Path**:
-Extract any context to microservice by copying the plugin. See [BC Migration Guide](../../examples/bc-migration.md).
+Extract any context to microservice by copying the plugin. See [BC Migration Guide](../../examples/bc-migration.md) for detailed steps.
 
 ### rest-api-complete
 
-**NEW** - Production-ready REST API with all Phase 1 extensions integrated.
+**NEW** - Production-ready REST API with all production extensions integrated.
 
 ```bash
 npm create stratix@latest my-api --template rest-api-complete
@@ -490,7 +490,6 @@ stratix generate test OrderHandler --type unit
 
 - [Stratix Documentation](https://stratix.dev/docs)
 - [GitHub Repository](https://github.com/pcarvajal/stratix)
-- [Examples](https://github.com/pcarvajal/stratix/tree/main/examples)
 - [Quick Start Guide](../../getting-started/quick-start.md)
 - [Bounded Contexts](../../core-concepts/bounded-contexts.md)
 - [BC Migration Guide](../../examples/bc-migration.md)

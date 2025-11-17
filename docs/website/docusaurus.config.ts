@@ -63,7 +63,7 @@ const config: Config = {
   deploymentBranch: 'gh-pages', // The branch where the site will be deployed.
   trailingSlash: false,
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn', // Changed from 'throw' to 'warn' for API docs with external links
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you

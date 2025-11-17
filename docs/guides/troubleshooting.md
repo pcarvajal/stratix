@@ -842,7 +842,6 @@ If you're still experiencing issues:
 1. **Check GitHub Issues**: https://github.com/pcarvajal/stratix/issues
 2. **Join Discord**: https://discord.gg/stratix
 3. **Read API Docs**: [API Reference](../api/README.md)
-4. **Check Examples**: [Examples](../../examples/)
 
 When reporting issues, include:
 

@@ -32,7 +32,7 @@ cd my-shop
 
 Choose from templates:
 - **modular-monolith** - Bounded Contexts as Plugins (monolith → microservices)
-- **rest-api-complete** - Production REST API with all Phase 1 extensions
+- **rest-api-complete** - Production REST API with all production extensions
 - **rest-api** - Basic REST API with DDD/CQRS
 - **microservice** - Event-driven architecture
 - **worker** - Background job processing

@@ -29,7 +29,7 @@ yarn create stratix
 
 Choose from 8 production-ready templates:
 
-- **REST API Complete** - Production-ready REST API with all Phase 1 extensions (Fastify, Zod, Auth, Migrations)
+- **REST API Complete** - Production-ready REST API with all production extensions (Fastify, Zod, Auth, Migrations)
 - **REST API** - Complete REST API with authentication, CQRS commands/queries, and repository pattern
 - **Microservice** - Event-driven service with message queue integration (RabbitMQ)
 - **Modular Monolith** - Bounded Contexts as Plugins (monolith to microservices ready)

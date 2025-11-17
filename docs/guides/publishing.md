@@ -398,11 +398,6 @@ ls packages/*/dist/*.d.ts
 ```bash
 # Full test suite
 pnpm test
-
-# Test in example projects
-cd examples/basic-agent
-pnpm install
-pnpm build
 ```
 
 ### 2. Use Dry Run

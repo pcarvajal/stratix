@@ -955,7 +955,6 @@ class MapReduceAgent extends AIAgent<{ documents: string[] }, { summary: string 
 ## Getting Help
 
 - [API Reference](../api/README.md)
-- [Examples](../../examples/)
 - [Troubleshooting Guide](./troubleshooting.md)
 - [GitHub Issues](https://github.com/pcarvajal/stratix/issues)
 - [Discord Community](https://discord.gg/stratix)

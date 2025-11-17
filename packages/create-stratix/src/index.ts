@@ -114,7 +114,7 @@ async function createProject(projectName?: string, cmdOptions?: CommandOptions):
       message: 'Which template would you like to use?',
       choices: [
         {
-          name: 'REST API Complete - Production-ready REST API with all Phase 1 extensions',
+          name: 'REST API Complete - Production-ready REST API with all production extensions',
           value: 'rest-api-complete',
         },
         {

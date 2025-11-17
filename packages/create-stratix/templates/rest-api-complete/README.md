@@ -5,7 +5,7 @@ A production-ready REST API built with Stratix framework, featuring:
 - Domain-Driven Design (DDD)
 - CQRS pattern
 - Hexagonal Architecture
-- Full integration with Stratix Phase 1 extensions
+- Full integration with Stratix production extensions
 
 ## Features
 
@@ -17,7 +17,7 @@ A production-ready REST API built with Stratix framework, featuring:
 - **@stratix/impl-logger-console** - Logging
 - **@stratix/impl-cqrs-inmemory** - Command and Query buses
 
-### Phase 1 Extensions
+### Production Extensions
 - **@stratix/ext-http-fastify** - HTTP server with Fastify
 - **@stratix/ext-validation-zod** - Request validation with Zod
 - **@stratix/ext-mappers** - Object mapping utilities
