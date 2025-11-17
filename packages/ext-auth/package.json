@@ -1,6 +1,6 @@
 {
   "name": "@stratix/ext-auth",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Authentication and authorization for Stratix framework",
   "type": "module",
   "main": "./dist/index.js",

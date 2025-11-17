@@ -36,14 +36,11 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { SecretsPlugin } from '@stratix/ext-secrets';
 
 const app = await ApplicationBuilder.create()
-  .usePlugin(new SecretsPlugin())
-  .withConfig({
-    'secrets': {
-      provider: 'environment',
-      prefix: 'APP_',
-      cache: true,
-      cacheTTL: 300000  // 5 minutes
-    }
+  .usePlugin(new SecretsPlugin(), {
+    provider: 'environment',
+    prefix: 'APP_',
+    cache: true,
+    cacheTTL: 300000  // 5 minutes
   })
   .build();
 

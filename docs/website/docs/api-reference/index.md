@@ -48,17 +48,102 @@ Application runtime and plugin system.
 
 ## Extension Packages
 
-### @stratix/ext-rabbitmq
+### Phase 1 Production Extensions
+
+Production-ready extensions for building enterprise applications.
+
+#### @stratix/ext-http-fastify
+
+Fastify HTTP server integration with Stratix plugin lifecycle.
+
+- HTTP server management
+- Route registration
+- CORS support
+- Request/response handling
+- Health checks
+
+#### @stratix/ext-validation-zod
+
+Zod-based schema validation for commands, queries, and DTOs.
+
+- Type-safe validation
+- Result pattern integration
+- Detailed error messages
+- Zero runtime overhead for valid data
+
+#### @stratix/ext-mappers
+
+Entity-to-DTO mapping utilities with type safety.
+
+- Type-safe field mapping
+- Nested object support
+- Circular reference handling
+- Batch mapping
+
+#### @stratix/ext-auth
+
+JWT authentication and RBAC authorization.
+
+- JWT token generation and validation
+- Role-based access control
+- Permission checking
+- Password hashing
+
+#### @stratix/ext-migrations
+
+Database schema versioning and migration management.
+
+- Version-controlled migrations
+- Rollback support
+- Migration history tracking
+- Seed data support
+
+#### @stratix/ext-errors
+
+Structured error handling with error taxonomy.
+
+- Error codes and severity levels
+- HTTP status code mapping
+- API response serialization
+- Result pattern integration
+
+### Data & Infrastructure Extensions
+
+#### @stratix/ext-postgres
+
+PostgreSQL database integration.
+
+#### @stratix/ext-mongodb
+
+MongoDB database integration.
+
+#### @stratix/ext-redis
+
+Redis caching and session storage.
+
+#### @stratix/ext-rabbitmq
 
 RabbitMQ integration for distributed messaging.
 
-### @stratix/ext-opentelemetry
+### Observability Extensions
 
-OpenTelemetry integration for observability.
+#### @stratix/ext-opentelemetry
 
-### @stratix/ext-secrets
+OpenTelemetry integration for observability (traces, metrics, logs).
 
-Secrets management integration.
+#### @stratix/ext-secrets
+
+Secrets management integration (AWS Secrets Manager, etc.).
+
+### AI Provider Extensions
+
+#### @stratix/ext-ai-agents-openai
+
+OpenAI LLM provider with streaming and function calling.
+
+#### @stratix/ext-ai-agents-anthropic
+
+Anthropic Claude provider with tool use.
 
 ## Development Tools
 

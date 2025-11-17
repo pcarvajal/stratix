@@ -37,14 +37,11 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { RedisPlugin } from '@stratix/ext-redis';
 
 const app = await ApplicationBuilder.create()
-  .usePlugin(new RedisPlugin())
-  .withConfig({
-    'redis': {
-      url: 'redis://localhost:6379',
-      cache: {
-        prefix: 'myapp:',
-        ttl: 3600  // 1 hour default TTL
-      }
+  .usePlugin(new RedisPlugin(), {
+    url: 'redis://localhost:6379',
+    cache: {
+      prefix: 'myapp:',
+      ttl: 3600  // 1 hour default TTL
     }
   })
   .build();

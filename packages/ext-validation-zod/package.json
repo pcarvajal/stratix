@@ -1,6 +1,6 @@
 {
   "name": "@stratix/ext-validation-zod",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Zod-based input validation for Stratix framework",
   "type": "module",
   "main": "./dist/index.js",

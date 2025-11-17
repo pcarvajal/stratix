@@ -37,13 +37,10 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { MongoPlugin } from '@stratix/ext-mongodb';
 
 const app = await ApplicationBuilder.create()
-  .usePlugin(new MongoPlugin())
-  .withConfig({
-    'mongo': {
-      connectionString: 'mongodb://localhost:27017',
-      database: 'mydb',
-      maxPoolSize: 20
-    }
+  .usePlugin(new MongoPlugin(), {
+    connectionString: 'mongodb://localhost:27017',
+    database: 'mydb',
+    maxPoolSize: 20
   })
   .build();
 

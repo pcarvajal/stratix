@@ -91,6 +91,19 @@ export class Product extends AggregateRoot<'Product'> {
   }
 
   static create(props: ProductProps, id?: ProductId): Product {
+    // Business validations in domain layer
+    if (!props.name || props.name.trim().length === 0) {
+      throw new Error('Product name is required');
+    }
+
+    if (props.price < 0) {
+      throw new Error('Price cannot be negative');
+    }
+
+    if (props.stock < 0) {
+      throw new Error('Stock cannot be negative');
+    }
+
     const productId = id ?? EntityId.create<'Product'>();
     const now = new Date();
     return new Product(productId, props.name, props.price, props.stock, now, now);
@@ -122,13 +135,14 @@ First, create a domain event for when stock is decreased:
 import { DomainEvent } from '@stratix/primitives';
 import { ProductId } from '../entities/Product.js';
 
-export class ProductStockDecreasedEvent extends DomainEvent {
+export class ProductStockDecreasedEvent implements DomainEvent {
+  readonly occurredAt: Date;
+
   constructor(
     public readonly productId: ProductId,
-    public readonly quantity: number,
-    public readonly timestamp: Date = new Date()
+    public readonly quantity: number
   ) {
-    super();
+    this.occurredAt = new Date();
   }
 }
 ```
@@ -193,19 +207,10 @@ export class CreateProductHandler implements CommandHandler<CreateProduct, Resul
 
   async handle(command: CreateProduct): Promise<Result<CreateProductOutput>> {
     try {
-      // Validate input
-      if (command.data.price < 0) {
-        return Failure.create(new Error('Price cannot be negative'));
-      }
-
-      if (command.data.stock < 0) {
-        return Failure.create(new Error('Stock cannot be negative'));
-      }
-
-      // Create product
+      // Domain layer handles all business validations
       const product = Product.create(command.data);
 
-      // Save
+      // Application layer orchestrates persistence
       await this.repository.save(product);
 
       return Success.create({ id: product.id.toString() });
@@ -225,9 +230,17 @@ import { Repository } from '@stratix/abstractions';
 import { Product, ProductId } from '../entities/Product.js';
 
 export interface ProductRepository extends Repository<Product, ProductId> {
+  // Make base methods required for this repository
+  findById(id: ProductId): Promise<Product | null>;
+  findAll(): Promise<Product[]>;
+  delete(id: ProductId): Promise<void>;
+
+  // Domain-specific query
   findByName(name: string): Promise<Product | null>;
 }
 ```
+
+**Note**: The base `Repository<T, ID>` interface only requires `save()`. All other methods (`findById`, `findAll`, `delete`, `exists`) are optional. You explicitly declare which methods your specific repository needs, making the contract clear and following DDD principles.
 
 ## 7. Implement Repository
 

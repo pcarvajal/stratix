@@ -9,7 +9,10 @@ import {
   InMemoryEventBus,
 } from '@stratix/impl-cqrs-inmemory';
 import { ServiceLifetime } from '@stratix/abstractions';
-import Fastify from 'fastify';
+import { FastifyHttpPlugin } from '@stratix/ext-http-fastify';
+import { ZodValidationPlugin } from '@stratix/ext-validation-zod';
+import { MappersPlugin } from '@stratix/ext-mappers';
+import { ErrorsPlugin } from '@stratix/ext-errors';
 
 import { InMemoryTaskRepository } from './infrastructure/persistence/InMemoryTaskRepository.js';
 import { CreateTaskHandler } from './application/commands/CreateTask.js';
@@ -55,15 +58,33 @@ async function bootstrap() {
   const taskCompletedHandler = new TaskCompletedEventHandler(logger);
   eventBus.subscribe(TaskCompletedEvent, taskCompletedHandler);
 
-  const app = await ApplicationBuilder.create().useContainer(container).useLogger(logger).build();
+  const errorsPlugin = new ErrorsPlugin({
+    includeStack: process.env.NODE_ENV !== 'production',
+  });
+
+  const validationPlugin = new ZodValidationPlugin();
+  const mappersPlugin = new MappersPlugin();
+
+  const httpPlugin = new FastifyHttpPlugin({
+    port: Number(PORT),
+    host: '0.0.0.0',
+    cors: true,
+  });
+
+  const app = await ApplicationBuilder.create()
+    .useContainer(container)
+    .useLogger(logger)
+    .usePlugin(errorsPlugin)
+    .usePlugin(validationPlugin)
+    .usePlugin(mappersPlugin)
+    .usePlugin(httpPlugin)
+    .build();
 
   await app.start();
 
-  const fastify = Fastify({ logger: false });
+  const server = httpPlugin.getServer();
   const controller = new TaskController(commandBus, queryBus);
-  await controller.register(fastify);
-
-  await fastify.listen({ port: Number(PORT), host: '0.0.0.0' });
+  await controller.register(server);
 
   logger.info('Microservice started', {
     port: PORT,
@@ -71,7 +92,6 @@ async function bootstrap() {
 
   const shutdown = async () => {
     logger.info('Shutting down microservice...');
-    await fastify.close();
     await app.stop();
     process.exit(0);
   };

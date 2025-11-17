@@ -141,9 +141,36 @@ async function bootstrap() {
 bootstrap().catch(console.error);
 ```
 
-## Development Tools
+### Configure package.json
 
-### Testing Utilities
+Add the following to your `package.json`:
+
+```json
+{
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  }
+}
+```
+
+**Important**: The `"type": "module"` field is required as Stratix is a full ESM framework.
+
+### Install Development Tools
+
+```bash
+pnpm add -D tsx typescript @types/node
+```
+
+**tsx** is the recommended tool for development because it provides:
+- Hot reload with `tsx watch` - automatically restarts when files change
+- Native ESM support - works seamlessly with Stratix
+- Fast TypeScript execution - no build step needed during development
+
+## Testing Utilities
 
 For testing, install:
 
