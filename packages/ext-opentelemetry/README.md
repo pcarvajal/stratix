@@ -38,16 +38,13 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { OpenTelemetryPlugin } from '@stratix/ext-opentelemetry';
 
 const app = await ApplicationBuilder.create()
-  .usePlugin(new OpenTelemetryPlugin())
-  .withConfig({
-    'opentelemetry': {
-      serviceName: 'my-service',
-      environment: 'production',
-      traceEndpoint: 'http://localhost:4318/v1/traces',
-      metricsEndpoint: 'http://localhost:4318/v1/metrics',
-      autoInstrumentation: true,
-      metricInterval: 60000
-    }
+  .usePlugin(new OpenTelemetryPlugin(), {
+    serviceName: 'my-service',
+    environment: 'production',
+    traceEndpoint: 'http://localhost:4318/v1/traces',
+    metricsEndpoint: 'http://localhost:4318/v1/metrics',
+    autoInstrumentation: true,
+    metricInterval: 60000
   })
   .build();
 

@@ -38,14 +38,11 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { PostgresPlugin } from '@stratix/ext-postgres';
 
 const app = await ApplicationBuilder.create()
-  .usePlugin(new PostgresPlugin())
-  .withConfig({
-    'postgres': {
-      connectionString: 'postgres://user:pass@localhost:5432/mydb',
-      poolSize: 20,
-      ssl: true,
-      timeout: 30000
-    }
+  .usePlugin(new PostgresPlugin(), {
+    connectionString: 'postgres://user:pass@localhost:5432/mydb',
+    poolSize: 20,
+    ssl: true,
+    timeout: 30000
   })
   .build();
 

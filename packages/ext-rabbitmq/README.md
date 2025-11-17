@@ -39,16 +39,13 @@ import { ApplicationBuilder } from '@stratix/runtime';
 import { RabbitMQPlugin } from '@stratix/ext-rabbitmq';
 
 const app = await ApplicationBuilder.create()
-  .usePlugin(new RabbitMQPlugin())
-  .withConfig({
-    'rabbitmq': {
-      url: 'amqp://localhost:5672',
-      exchangeName: 'events',
-      exchangeType: 'topic',
-      prefetch: 10,
-      enableDLQ: true,
-      maxRetries: 3
-    }
+  .usePlugin(new RabbitMQPlugin(), {
+    url: 'amqp://localhost:5672',
+    exchangeName: 'events',
+    exchangeType: 'topic',
+    prefetch: 10,
+    enableDLQ: true,
+    maxRetries: 3
   })
   .build();
 
