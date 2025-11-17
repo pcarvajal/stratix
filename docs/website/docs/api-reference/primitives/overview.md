@@ -39,12 +39,14 @@ import { AggregateRoot, EntityId, DomainEvent } from '@stratix/primitives';
 
 type UserId = EntityId<'User'>;
 
-class UserCreatedEvent extends DomainEvent {
+class UserCreatedEvent implements DomainEvent {
+  readonly occurredAt: Date;
+
   constructor(
     public readonly userId: string,
     public readonly email: string
   ) {
-    super();
+    this.occurredAt = new Date();
   }
 }
 
@@ -172,17 +174,19 @@ if (result.isSuccess) {
 ```typescript
 import { DomainEvent } from '@stratix/primitives';
 
-class OrderPlacedEvent extends DomainEvent {
+class OrderPlacedEvent implements DomainEvent {
+  readonly occurredAt: Date;
+
   constructor(
     public readonly orderId: string,
     public readonly customerId: string,
     public readonly total: number
   ) {
-    super();
+    this.occurredAt = new Date();
   }
 }
 
-// Domain events have an occurredAt timestamp automatically set
+// Domain events have an occurredAt timestamp
 const event = new OrderPlacedEvent('order-1', 'customer-1', 100);
 console.log(event.occurredAt); // Date
 ```

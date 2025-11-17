@@ -18,7 +18,10 @@
     "@stratix/impl-di-awilix": "^0.1.0",
     "@stratix/impl-logger-console": "^0.1.0",
     "@stratix/impl-cqrs-inmemory": "^0.1.0",
-    "fastify": "^5.2.0"
+    "@stratix/ext-http-fastify": "^0.1.0",
+    "@stratix/ext-validation-zod": "^0.1.0",
+    "@stratix/ext-mappers": "^0.1.0",
+    "@stratix/ext-errors": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -10,8 +10,8 @@ export interface RouteConfig<TBody = unknown, TQuery = unknown, TParams = unknow
   schema?: RouteSchema<TBody, TQuery, TParams>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface RouteSchema<TBody = unknown, TQuery = unknown, TParams = unknown> {
-  // eslint-disable-line @typescript-eslint/no-unused-vars
   body?: unknown;
   querystring?: unknown;
   params?: unknown;

@@ -1,5 +1,4 @@
 // @ts-nocheck
-import fastify from 'fastify';
 import { ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/impl-di-awilix';
 import { ConsoleLogger } from '@stratix/impl-logger-console';
@@ -9,6 +8,10 @@ import {
   InMemoryQueryBus,
   InMemoryEventBus,
 } from '@stratix/impl-cqrs-inmemory';
+import { FastifyHttpPlugin } from '@stratix/ext-http-fastify';
+import { ZodValidationPlugin } from '@stratix/ext-validation-zod';
+import { MappersPlugin } from '@stratix/ext-mappers';
+import { ErrorsPlugin } from '@stratix/ext-errors';
 
 import { ItemRepository } from './domain/repositories/ItemRepository.js';
 import { CreateItem, CreateItemHandler } from './application/commands/CreateItem.js';
@@ -42,13 +45,33 @@ async function bootstrap() {
   queryBus.register(GetItem, getItemHandler);
   queryBus.register(ListItems, listItemsHandler);
 
-  const app = await ApplicationBuilder.create().useContainer(container).useLogger(logger).build();
+  const errorsPlugin = new ErrorsPlugin({
+    includeStack: process.env.NODE_ENV !== 'production',
+  });
+
+  const validationPlugin = new ZodValidationPlugin();
+  const mappersPlugin = new MappersPlugin();
+
+  const httpPlugin = new FastifyHttpPlugin({
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+    host: '0.0.0.0',
+    cors: true,
+  });
+
+  const app = await ApplicationBuilder.create()
+    .useContainer(container)
+    .useLogger(logger)
+    .usePlugin(errorsPlugin)
+    .usePlugin(validationPlugin)
+    .usePlugin(mappersPlugin)
+    .usePlugin(httpPlugin)
+    .build();
 
   await app.start();
 
   logger.info('Stratix application started');
 
-  const server = fastify({ logger: false });
+  const server = httpPlugin.getServer();
 
   server.get('/health', async () => {
     return { status: 'ok', timestamp: new Date().toISOString() };
@@ -57,10 +80,7 @@ async function bootstrap() {
   const itemController = new ItemController(commandBus, queryBus);
   await itemController.register(server);
 
-  const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-  await server.listen({ port, host: '0.0.0.0' });
-
-  logger.info(`HTTP server listening on port ${port}`);
+  logger.info(`HTTP server listening on port ${httpPlugin.config.port}`);
   logger.info('Available endpoints:');
   logger.info('  GET    /health');
   logger.info('  POST   /items');
@@ -69,7 +89,6 @@ async function bootstrap() {
 
   const shutdown = async () => {
     logger.info('Shutting down...');
-    await server.close();
     await app.stop();
     logger.info('Application stopped');
     process.exit(0);

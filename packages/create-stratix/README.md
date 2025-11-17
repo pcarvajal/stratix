@@ -29,13 +29,13 @@ yarn create stratix
 
 Choose from 8 production-ready templates:
 
+- **REST API Complete** - Production-ready REST API with all Phase 1 extensions (Fastify, Zod, Auth, Migrations)
 - **REST API** - Complete REST API with authentication, CQRS commands/queries, and repository pattern
-- **REST API Complete** - Full-featured REST API with all Phase 1 production extensions (Fastify, Zod, Auth, Migrations)
 - **Microservice** - Event-driven service with message queue integration (RabbitMQ)
-- **Monolith** - Modular monolith architecture with bounded contexts
-- **Modular Monolith** - Advanced modular monolith with context modules (monolith-to-microservices ready)
+- **Modular Monolith** - Bounded Contexts as Plugins (monolith to microservices ready)
+- **Monolith** - Modular monolith with bounded contexts
 - **Worker** - Background job processor for async tasks
-- **AI Agent Starter** - Learn AI agents step-by-step with progressive examples (no API key needed for Level 1)
+- **AI Agent Starter** - Learn AI agents step-by-step (no API key needed for Level 1)
 - **Minimal** - Bare minimum setup with core Stratix packages
 
 ## Interactive Prompts
@@ -134,6 +134,46 @@ src/
 ├── domain/           # Domain layer (entities, value objects, repositories)
 ├── application/      # Application layer (use cases, commands, queries)
 └── infrastructure/   # Infrastructure layer (persistence, HTTP, external services)
+```
+
+## Code Generators
+
+Generate boilerplate code with the `generate` command:
+
+```bash
+# Inside your Stratix project
+npx create-stratix generate entity Product --props "name:string,price:number,stock:number"
+npx create-stratix g entity Product  # Short alias
+```
+
+**Available generators:**
+
+- `entity <name>` - Generate domain entity or aggregate root
+- `value-object <name>` - Generate value object
+- `use-case <name>` - Generate command/query with handler
+- `repository <name>` - Generate repository interface and implementation
+- `context <name>` - Generate complete bounded context
+- `test <name>` - Generate test file
+
+**Entity generator options:**
+
+```bash
+--props <props>           # Properties: "name:string,age:number"
+--aggregate              # Generate as AggregateRoot (default)
+--no-aggregate           # Generate as Entity
+--with-event <name>      # Generate domain event
+--with-tests             # Generate test file
+--dry-run                # Preview without writing files
+--force                  # Overwrite existing files
+```
+
+**Example:**
+
+```bash
+npx create-stratix generate entity Order \
+  --props "customerId:string,items:OrderItem[],total:Money" \
+  --with-event OrderPlaced \
+  --with-tests
 ```
 
 ## Learn More
