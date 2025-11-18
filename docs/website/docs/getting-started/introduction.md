@@ -263,14 +263,20 @@ Every generated file includes:
 #### Core Framework
 - **Lightning-Fast CLI**: Generate complete bounded contexts instantly
 - **Modular Architecture**: Monolith → Microservices without rewrites
-- **Plugin System**: 14 production extensions + custom distributable plugins
-- **Custom Plugins**: Write reusable, distributable plugins for enterprise needs
 - **Rich Primitives**: Money, Email, EntityId, and more built-in value objects
 - **Type-Safe**: Strict TypeScript with phantom types and full inference
 - **Result Pattern**: No try-catch in domain logic
 - **Testing Utilities**: Built-in test helpers and factories
 
-#### Production Extensions (Layer 5)
+#### Plugin-First Architecture
+- **14 Production Extensions**: HTTP, Auth, Validation, Postgres, Redis, RabbitMQ, and more
+- **Custom Plugins**: Create distributable plugins for integrations and business logic
+- **Enterprise Composition**: Mix and match plugins per client/deployment
+- **Lifecycle Management**: Automatic initialization, startup, shutdown, health checks
+- **Dependency Resolution**: Plugins declare dependencies, framework handles ordering
+- **Distribution**: Publish plugins to npm, share across teams
+
+#### Production Extensions
 - **HTTP**: Fastify integration with route handlers
 - **Auth**: JWT + RBAC authorization
 - **Validation**: Zod-based schema validation
@@ -464,7 +470,7 @@ console.log(result.value.totalCost); // Automatic cost tracking
 **Production AI patterns included:**
 - Budget enforcement (per execution, per user, per agent)
 - Automatic retries with exponential backoff
-- 📊 Cost tracking and audit logging
+- Cost tracking and audit logging
 - Mock providers for deterministic testing
 - Multi-LLM support (OpenAI, Anthropic, custom)
 

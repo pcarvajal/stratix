@@ -55,6 +55,8 @@ my-app/
 ├── stratix.config.ts
 ├── package.json
 ├── tsconfig.json
+├── .eslintrc.json
+├── .prettierrc
 └── .gitignore
 ```
 
@@ -776,6 +778,103 @@ Would create: src/contexts/products/domain/entities/Product.ts
 Would create: src/contexts/products/domain/repositories/ProductRepository.ts
 Would create: src/contexts/products/domain/events/ProductCreated.ts
 ...
+```
+
+---
+
+## Code Quality Tools
+
+All projects generated with `stratix new` include pre-configured ESLint and Prettier for code quality and consistency.
+
+### ESLint Configuration
+
+Generated projects include `.eslintrc.json` with TypeScript-optimized rules:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules"]
+}
+```
+
+**Usage:**
+
+```bash
+# Run linter
+npm run lint
+
+# Auto-fix issues
+npm run lint -- --fix
+```
+
+### Prettier Configuration
+
+Generated projects include `.prettierrc` with framework-standard formatting rules:
+
+```json
+{
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false
+}
+```
+
+**Usage:**
+
+```bash
+# Format all files
+npm run format
+
+# Check formatting (CI)
+npm run format -- --check
+```
+
+### IDE Integration
+
+Both ESLint and Prettier integrate automatically with:
+- **VS Code**: Install ESLint and Prettier extensions
+- **WebStorm/IntelliJ**: Enable ESLint and Prettier in settings
+- **Vim/Neovim**: Use ALE or CoC plugins
+
+### Pre-commit Hooks (Optional)
+
+Add Husky and lint-staged for automatic formatting:
+
+```bash
+npm install --save-dev husky lint-staged
+npx husky init
+```
+
+Add to `package.json`:
+
+```json
+{
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
 ```
 
 ---

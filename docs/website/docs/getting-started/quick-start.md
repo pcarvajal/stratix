@@ -185,6 +185,24 @@ await app.start();
 
 ---
 
+## Quick Decision Guide
+
+Choose the right structure for your project:
+
+| Criteria | DDD Structure | Modular Structure |
+|----------|--------------|-------------------|
+| **Bounded Contexts** | 1-2 | 3+ |
+| **Team Size** | 1-5 developers | 5+ developers |
+| **Deployment** | Single service | Monolith → Microservices |
+| **Complexity** | Low to Medium | Medium to High |
+| **Scaling Strategy** | Vertical | Horizontal (gradual) |
+| **Learning Curve** | Easier | Moderate |
+| **Refactoring Cost** | Medium | Very Low |
+
+**Still unsure?** Start with `--structure ddd`. You can always refactor to modular when you add more contexts.
+
+---
+
 ## The Enterprise AI Agent Framework
 
 Stratix treats **AI agents as domain entities**, not service wrappers. Build intelligent applications where AI agents live in your domain layer with full type safety, testability, and production patterns.
@@ -317,19 +335,79 @@ For detailed AI agent documentation, see [AI Agents Guide](../core-concepts/ai-a
 
 ---
 
-## Quick Decision Guide
+## Extensibility with Custom Plugins
 
-| Criteria | DDD Structure | Modular Structure |
-|----------|--------------|-------------------|
-| **Bounded Contexts** | 1-2 | 3+ |
-| **Team Size** | 1-5 developers | 5+ developers |
-| **Deployment** | Single service | Monolith → Microservices |
-| **Complexity** | Low to Medium | Medium to High |
-| **Scaling Strategy** | Vertical | Horizontal (gradual) |
-| **Learning Curve** | Easier | Moderate |
-| **Refactoring Cost** | Medium | Very Low |
+Beyond the built-in extensions, Stratix lets you **create and distribute custom plugins** to encapsulate integrations, business logic, or infrastructure concerns.
 
-**Still unsure?** Start with `--structure ddd`. You can always refactor to modular when you add more contexts.
+### Why Custom Plugins?
+
+**Enterprise scenario:** Building a multi-tenant SaaS platform where each client needs different integrations:
+- Client A: Stripe + Salesforce + Slack
+- Client B: PayPal + HubSpot + Microsoft Teams
+- Client C: Square + Dynamics 365 + Email
+
+Instead of conditionals scattered throughout your code, create plugins and compose them per client.
+
+### Creating a Custom Plugin
+
+```bash
+# Generate plugin template
+stratix g plugin PaymentProcessor
+```
+
+**Basic plugin structure:**
+```typescript
+import { Plugin, PluginContext } from '@stratix/abstractions';
+
+export class PaymentProcessorPlugin implements Plugin {
+  name = 'payment-processor';
+  version = '1.0.0';
+  
+  async initialize(context: PluginContext): Promise<void> {
+    // Register services with DI container
+    context.container.register('paymentService', () => 
+      new PaymentService(this.config)
+    );
+  }
+  
+  async start(): Promise<void> {
+    // Initialize payment gateway
+  }
+  
+  async stop(): Promise<void> {
+    // Cleanup
+  }
+  
+  async healthCheck(): Promise<HealthCheckResult> {
+    return { healthy: true };
+  }
+}
+```
+
+**Compose per client:**
+```typescript
+// Client A
+const clientAApp = await ApplicationBuilder.create()
+  .usePlugin(new StripePlugin(clientA.stripeKey))
+  .usePlugin(new SalesforcePlugin(clientA.salesforceKey))
+  .usePlugin(new SlackPlugin(clientA.slackWebhook))
+  .build();
+
+// Client B - different plugins, same code structure
+const clientBApp = await ApplicationBuilder.create()
+  .usePlugin(new PayPalPlugin(clientB.paypalKey))
+  .usePlugin(new HubSpotPlugin(clientB.hubspotKey))
+  .usePlugin(new TeamsPlugin(clientB.teamsWebhook))
+  .build();
+```
+
+**Benefits:**
+- **Reusable**: Write once, use across clients
+- **Testable**: Test plugins independently
+- **Distributable**: Publish to private npm registry
+- **Isolated**: Each plugin manages its own lifecycle
+
+For detailed plugin development guide, see [Plugin Development](../core-concepts/plugins.md).
 
 ---
 

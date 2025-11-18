@@ -47,6 +47,8 @@ Create Stratix Project
 
 **What gets created:**
 - Complete TypeScript configuration (strict mode)
+- ESLint configuration with TypeScript rules
+- Prettier configuration for consistent formatting
 - Project structure (DDD or Modular)
 - Dependency injection configured (Awilix)
 - Logger setup (Console)
@@ -115,51 +117,155 @@ stratix g eh OrderPlaced --handler SendConfirmationEmail  # Short alias
 
 # Plugin
 stratix g plugin EmailService
+
+# Custom Plugin (advanced)
+stratix g plugin MyCustomIntegration
 ```
+
+### Creating Custom Plugins
+
+Stratix allows you to create distributable plugins to encapsulate business logic, integrations, or infrastructure concerns.
+
+**Generate a custom plugin:**
+```bash
+stratix g plugin PaymentProcessor
+```
+
+**Generated structure:**
+```
+src/plugins/
+└── PaymentProcessorPlugin.ts
+```
+
+**Example custom plugin:**
+```typescript
+import { Plugin, PluginContext } from '@stratix/abstractions';
+
+export class PaymentProcessorPlugin implements Plugin {
+  name = 'payment-processor';
+  version = '1.0.0';
+  dependencies = ['logger']; // Optional dependencies
+  
+  constructor(private config: PaymentConfig) {}
+  
+  async initialize(context: PluginContext): Promise<void> {
+    // Register services with DI container
+    context.container.register('paymentService', () => 
+      new PaymentService(this.config)
+    );
+  }
+  
+  async start(): Promise<void> {
+    // Start services (connect to payment gateway, etc.)
+  }
+  
+  async stop(): Promise<void> {
+    // Cleanup resources
+  }
+  
+  async healthCheck(): Promise<HealthCheckResult> {
+    // Verify payment gateway is accessible
+    return { healthy: true };
+  }
+}
+```
+
+**Using your custom plugin:**
+```typescript
+import { ApplicationBuilder } from '@stratix/runtime';
+import { PaymentProcessorPlugin } from './plugins/PaymentProcessorPlugin.js';
+
+const app = await ApplicationBuilder.create()
+  .usePlugin(new PaymentProcessorPlugin({
+    apiKey: process.env.PAYMENT_API_KEY,
+    environment: 'production'
+  }))
+  .build();
+```
+
+**Publishing to npm:**
+```bash
+# 1. Create package structure
+mkdir @your-company/stratix-payment-processor
+cd @your-company/stratix-payment-processor
+
+# 2. Add package.json
+{
+  "name": "@your-company/stratix-payment-processor",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "peerDependencies": {
+    "@stratix/abstractions": "^0.1.0",
+    "@stratix/runtime": "^0.1.0"
+  }
+}
+
+# 3. Build and publish
+npm run build
+npm publish
+```
+
+**Enterprise use case:** Multi-tenant SaaS where each client needs different integrations. Create plugins for Stripe, PayPal, Salesforce, HubSpot, etc., and compose them per client without changing core code.
 
 ### Add Production Extensions
 
-Install production-ready extensions with automatic dependency resolution:
+Install production-ready extensions with automatic dependency resolution. Extensions are plugins that add specific functionality to your application.
+
+**When to use each extension:**
 
 ```bash
-# HTTP Framework
-stratix add http          # Fastify integration
+# HTTP Framework (essential for APIs)
+stratix add http          # Fastify integration - use for REST APIs, webhooks
 
-# Validation
-stratix add validation    # Zod schemas
+# Validation (recommended for APIs)
+stratix add validation    # Zod schemas - validates inputs/outputs
 
-# Authentication & Authorization
-stratix add auth          # JWT + RBAC
+# Authentication & Authorization (for multi-user apps)
+stratix add auth          # JWT + RBAC - use for user authentication
 
-# Mappers
-stratix add mappers       # Entity-to-DTO mapping
+# Mappers (for DTOs/APIs)
+stratix add mappers       # Entity-to-DTO mapping - use for API responses
 
-# Database Migrations
+# Database Migrations (for schema management)
 stratix add migrations    # Version control for DB schemas
 
-# Error Handling
+# Error Handling (recommended)
 stratix add errors        # Structured error taxonomy
 
-# Databases
-stratix add postgres      # PostgreSQL
-stratix add mongodb       # MongoDB
-stratix add redis         # Redis caching
+# Databases (choose based on needs)
+stratix add postgres      # PostgreSQL - relational data
+stratix add mongodb       # MongoDB - document store
+stratix add redis         # Redis - caching, sessions
 
-# Messaging
-stratix add rabbitmq      # RabbitMQ event bus
+# Messaging (for event-driven architecture)
+stratix add rabbitmq      # RabbitMQ event bus - microservices communication
 
-# Observability
-stratix add opentelemetry # Traces, metrics, logs
+# Observability (for production monitoring)
+stratix add opentelemetry # Traces, metrics, logs - APM integration
 
-# Secrets
-stratix add secrets       # AWS Secrets Manager, etc.
+# Secrets (for production deployments)
+stratix add secrets       # AWS Secrets Manager, Azure Key Vault, etc.
 
-# AI Providers
+# AI Providers (for AI-powered features)
 stratix add ai-openai     # OpenAI GPT models
 stratix add ai-anthropic  # Anthropic Claude
 
 # List all available
 stratix add list
+```
+
+**Typical combinations:**
+
+```bash
+# REST API
+stratix add http validation auth mappers errors postgres
+
+# Microservice
+stratix add http validation rabbitmq postgres redis opentelemetry
+
+# AI-powered application
+stratix add http validation auth ai-openai postgres errors
 ```
 
 ### Project Information
@@ -174,6 +280,16 @@ Shows:
 - Project structure
 - Node version
 - Quick command reference
+
+### Generate Custom Plugin
+
+For advanced users who need custom integrations:
+
+```bash
+stratix g plugin MyIntegration
+```
+
+Creates a plugin template that you can customize and distribute. See "Creating Custom Plugins" section above for details.
 
 ---
 
@@ -382,16 +498,64 @@ Add to your `package.json`:
 The `"type": "module"` field is **required**. Stratix only supports ESM.
 :::
 
+### 6b. Configure ESLint
+
+Create `.eslintrc.json`:
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules"]
+}
+```
+
+### 6c. Configure Prettier
+
+Create `.prettierrc`:
+
+```json
+{
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false
+}
+```
+
 ### 7. Install Development Tools
 
 ```bash
 npm install -D tsx typescript @types/node vitest
+npm install -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser prettier
 ```
 
 **Why tsx?**
 - Hot reload with `tsx watch` (auto-restart on changes)
 - Native ESM support
 - Fast TypeScript execution (no build step in dev)
+
+**Code Quality Tools:**
+- **ESLint**: Identifies and fixes code quality issues
+- **TypeScript ESLint**: TypeScript-specific linting rules
+- **Prettier**: Automatic code formatting for consistency
 
 ### 8. Create Application Bootstrap
 

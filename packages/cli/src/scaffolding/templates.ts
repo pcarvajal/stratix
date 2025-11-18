@@ -27,11 +27,13 @@ export const packageJsonTemplate = (data: ProjectTemplateData): string => `{
   "devDependencies": {
     "@stratix/cli": "^0.1.5",
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "tsx": "^4.19.2",
-    "vitest": "^1.6.1",
-    "eslint": "^9.18.0",
-    "prettier": "^3.4.2"
+    "vitest": "^1.6.1"
   }
 }
 `;
@@ -211,6 +213,38 @@ export const stratixCliTypesTemplate = (): string => `declare module '@stratix/c
   }
 
   export function defineConfig(config: StratixConfig): StratixConfig;
+}
+`;
+
+export const eslintConfigTemplate = (): string => `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules"]
+}
+`;
+
+export const prettierConfigTemplate = (): string => `{
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false
 }
 `;
 

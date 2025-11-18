@@ -9,6 +9,8 @@ import {
   stratixCliTypesTemplate,
   gitignoreTemplate,
   readmeTemplate,
+  eslintConfigTemplate,
+  prettierConfigTemplate,
   type ProjectTemplateData,
 } from './templates.js';
 import { execa } from 'execa';
@@ -77,6 +79,16 @@ export class ProjectScaffolder {
     await FileSystemUtils.writeFile(
       path.join(projectPath, 'src', 'types', 'stratix-cli.d.ts'),
       stratixCliTypesTemplate()
+    );
+
+    await FileSystemUtils.writeFile(
+      path.join(projectPath, '.eslintrc.json'),
+      eslintConfigTemplate()
+    );
+
+    await FileSystemUtils.writeFile(
+      path.join(projectPath, '.prettierrc'),
+      prettierConfigTemplate()
     );
   }
 
