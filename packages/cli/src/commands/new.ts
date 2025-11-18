@@ -19,15 +19,19 @@ export function createNewCommand(): Command {
     .option('--structure <type>', 'Project structure (ddd, modular)', 'ddd')
     .option('--no-git', 'Skip git initialization')
     .option('--skip-install', 'Skip dependency installation')
-    .action(async (projectName?: string, options?: NewCommandOptions & { skipInstall?: boolean }) => {
-      try {
-        console.log(chalk.blue.bold('\n🚀 Create Stratix Project\n'));
+    .action(
+      async (
+        projectName?: string,
+        options?: NewCommandOptions & { skipInstall?: boolean },
+      ): Promise<void> => {
+        try {
+          console.log(chalk.blue.bold('\n🚀 Create Stratix Project\n'));
 
-        if (!projectName) {
-          const answer = await inquirer.prompt<{ name: string }>([
-            {
-              type: 'input',
-              name: 'name',
+          if (!projectName) {
+            const answer = await inquirer.prompt<{ name: string }>([
+              {
+                type: 'input',
+                name: 'name',
               message: 'Project name:',
               default: 'my-stratix-app',
               validate: (input: string) => {
@@ -51,7 +55,13 @@ export function createNewCommand(): Command {
           process.exit(1);
         }
 
-        const answers = await inquirer.prompt([
+        interface NewProjectAnswers {
+          packageManager?: 'npm' | 'pnpm' | 'yarn';
+          structure?: 'ddd' | 'modular';
+          git?: boolean;
+        }
+
+        const answers = await inquirer.prompt<NewProjectAnswers>([
           {
             type: 'list',
             name: 'packageManager',
@@ -83,8 +93,11 @@ export function createNewCommand(): Command {
           },
         ]);
 
-        const packageManager = (options?.pm || answers.packageManager) as 'npm' | 'pnpm' | 'yarn';
-        const structure = (options?.structure || answers.structure) as 'ddd' | 'modular';
+        const packageManager = (options?.pm || answers.packageManager || 'npm') as
+          | 'npm'
+          | 'pnpm'
+          | 'yarn';
+        const structure = (options?.structure || answers.structure || 'ddd') as 'ddd' | 'modular';
         const git = options?.git !== false && answers.git !== false;
 
         const spinner = ora('Creating project...').start();

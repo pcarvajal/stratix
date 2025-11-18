@@ -44,5 +44,9 @@ export interface TemplateData {
   contextName?: string;
   props: PropDefinition[];
   aggregate?: boolean;
-  naming?: any;
+  naming?: {
+    toPascalCase: (str: string) => string;
+    toCamelCase: (str: string) => string;
+    toKebabCase: (str: string) => string;
+  };
 }

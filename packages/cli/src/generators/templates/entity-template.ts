@@ -1,7 +1,7 @@
 import type { TemplateData } from '../../types/index.js';
 
 export const entityTemplate = (data: TemplateData): string => {
-  const { entityName, props } = data;
+  const { entityName, props, naming } = data;
   const hasProps = props.length > 0;
 
   return `import { ${data.aggregate ? 'AggregateRoot' : 'Entity'} } from '@stratix/primitives';
@@ -22,7 +22,7 @@ export class ${entityName} extends ${data.aggregate ? 'AggregateRoot' : 'Entity'
     
     return entity;
   }
-${hasProps ? '\n' + props.map(p => `  get ${p.name}(): ${p.type} {\n    return this._${p.name};\n  }\n\n  set${data.naming.toPascalCase(p.name)}(${p.name}: ${p.type}): void {\n    this._${p.name} = ${p.name};\n  }`).join('\n\n') : ''}
+${hasProps ? '\n' + props.map(p => `  get ${p.name}(): ${p.type} {\n    return this._${p.name};\n  }\n\n  set${naming?.toPascalCase(p.name) ?? p.name}(${p.name}: ${p.type}): void {\n    this._${p.name} = ${p.name};\n  }`).join('\n\n') : ''}
 }
 `;
 };

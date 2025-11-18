@@ -1,8 +1,8 @@
 export class NamingUtils {
   static toPascalCase(str: string): string {
     return str
-      .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
-      .replace(/^(.)/, (char) => char.toUpperCase());
+      .replace(/[-_\s]+(.)?/g, (_: string, char?: string) => (char ? char.toUpperCase() : ''))
+      .replace(/^(.)/, (char: string) => char.toUpperCase());
   }
 
   static toCamelCase(str: string): string {
