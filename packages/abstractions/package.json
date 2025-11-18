@@ -1,6 +1,6 @@
 {
   "name": "@stratix/abstractions",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Stratix abstractions - Core interfaces and types",
   "type": "module",
   "main": "./dist/index.js",

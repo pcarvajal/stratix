@@ -6,6 +6,7 @@ import {
   tsconfigTemplate,
   indexTemplate,
   stratixConfigTemplate,
+  stratixCliTypesTemplate,
   gitignoreTemplate,
   readmeTemplate,
   type ProjectTemplateData,
@@ -71,6 +72,11 @@ export class ProjectScaffolder {
     await FileSystemUtils.writeFile(
       path.join(projectPath, 'README.md'),
       readmeTemplate(data)
+    );
+
+    await FileSystemUtils.writeFile(
+      path.join(projectPath, 'src', 'types', 'stratix-cli.d.ts'),
+      stratixCliTypesTemplate()
     );
   }
 

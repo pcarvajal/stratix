@@ -23,26 +23,30 @@ import type { Command, CommandHandler } from '@stratix/abstractions';
 ## Type Signature
 
 ```typescript
-interface Command {
-  readonly type: string;
-}
+interface Command {}
 
-interface CommandHandler<T extends Command> {
-  execute(command: T): Promise<Result<unknown, Error>>;
+interface CommandHandler<TCommand extends Command, TResult = void> {
+  handle(command: TCommand): Promise<TResult>;
 }
 ```
 
 ## Usage
 
 ```typescript
-interface CreateUserCommand extends Command {
-  type: 'CreateUser';
-  data: { email: string; name: string };
+interface CreateUserData {
+  email: string;
+  name: string;
 }
 
-class CreateUserHandler implements CommandHandler<CreateUserCommand> {
-  async execute(command: CreateUserCommand): Promise<Result<EntityId<'User'>, Error>> {
-    const user = User.create(command.data.email, command.data.name);
+class CreateUserCommand implements Command {
+  constructor(public readonly data: CreateUserData) {}
+}
+
+class CreateUserHandler implements CommandHandler<CreateUserCommand, Result<EntityId<'User'>, Error>> {
+  constructor(private readonly repository: UserRepository) {}
+
+  async handle(command: CreateUserCommand): Promise<Result<EntityId<'User'>, Error>> {
+    const user = User.create(command.data);
     await this.repository.save(user);
     return Success.create(user.id);
   }

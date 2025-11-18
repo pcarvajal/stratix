@@ -1,8 +1,16 @@
 {
   "name": "@stratix/cli",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Global CLI for Stratix framework",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "bin": {
     "stratix": "./bin/stratix.js"
   },
