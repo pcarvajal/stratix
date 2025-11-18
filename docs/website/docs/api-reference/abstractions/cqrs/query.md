@@ -23,26 +23,29 @@ import type { Query, QueryHandler } from '@stratix/abstractions';
 ## Type Signature
 
 ```typescript
-interface Query {
-  readonly type: string;
-}
+interface Query {}
 
-interface QueryHandler<T extends Query, R> {
-  execute(query: T): Promise<Result<R, Error>>;
+interface QueryHandler<TQuery extends Query, TResult = unknown> {
+  handle(query: TQuery): Promise<TResult>;
 }
 ```
 
 ## Usage
 
 ```typescript
-interface GetUserByIdQuery extends Query {
-  type: 'GetUserById';
+interface GetUserByIdData {
   userId: string;
 }
 
-class GetUserByIdHandler implements QueryHandler<GetUserByIdQuery, UserDTO> {
-  async execute(query: GetUserByIdQuery): Promise<Result<UserDTO, Error>> {
-    const user = await this.repository.findById(query.userId);
+class GetUserByIdQuery implements Query {
+  constructor(public readonly data: GetUserByIdData) {}
+}
+
+class GetUserByIdHandler implements QueryHandler<GetUserByIdQuery, Result<UserDTO, Error>> {
+  constructor(private readonly repository: UserRepository) {}
+
+  async handle(query: GetUserByIdQuery): Promise<Result<UserDTO, Error>> {
+    const user = await this.repository.findById(query.data.userId);
     if (!user) return Failure.create(new Error('User not found'));
     return Success.create(this.mapper.toDTO(user));
   }

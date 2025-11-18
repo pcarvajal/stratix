@@ -1,6 +1,6 @@
 {
   "name": "@stratix/runtime",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Stratix runtime - Plugin system and application lifecycle",
   "type": "module",
   "main": "./dist/index.js",

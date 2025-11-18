@@ -43,7 +43,6 @@ export const tsconfigTemplate = (): string => `{
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
     "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -57,9 +56,10 @@ export const tsconfigTemplate = (): string => `{
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src"],
+  "include": ["src", "stratix.config.ts"],
   "exclude": ["node_modules", "dist"]
 }
 `;
@@ -170,6 +170,48 @@ coverage/
 # Temp
 tmp/
 temp/
+`;
+
+export const stratixCliTypesTemplate = (): string => `declare module '@stratix/cli' {
+  export interface StratixConfig {
+    structure?: {
+      type?: 'ddd' | 'modular' | 'custom';
+      sourceRoot?: string;
+      domainPath?: string;
+      applicationPath?: string;
+      infrastructurePath?: string;
+      contextsPath?: string;
+    };
+    generators?: {
+      context?: {
+        path: string;
+        withTests?: boolean;
+      };
+      entity?: {
+        path: string;
+        aggregate?: boolean;
+        withTests?: boolean;
+      };
+      valueObject?: {
+        path: string;
+        withValidation?: boolean;
+        withTests?: boolean;
+      };
+      command?: {
+        path: string;
+        withHandler?: boolean;
+        withTests?: boolean;
+      };
+      query?: {
+        path: string;
+        withHandler?: boolean;
+        withTests?: boolean;
+      };
+    };
+  }
+
+  export function defineConfig(config: StratixConfig): StratixConfig;
+}
 `;
 
 export const readmeTemplate = (data: ProjectTemplateData): string => `# ${data.projectName}
