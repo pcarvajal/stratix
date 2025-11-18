@@ -18,7 +18,7 @@ Stratix is a modern TypeScript framework that brings **AI Agents**, **Domain-Dri
 - **Rich Primitives Library**: Money, Email, EntityId, and more built-in value objects
 - **Plugin-First Architecture**: Modular, extensible, and tree-shakeable
 - **Type-Safe**: Leveraging TypeScript's full power with strict mode
-- **Zero Configuration**: Get started in seconds with `create-stratix`
+- **Zero Configuration**: Get started in seconds with `stratix CLI`
 - **Testing Utilities**: Built-in test helpers, factories, and mock LLM providers
 - **CLI Tools**: Powerful code generators and project scaffolding
 

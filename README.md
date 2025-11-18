@@ -63,27 +63,26 @@ While other frameworks treat AI as an afterthought, Stratix makes AI agents firs
 ## Quick Start
 
 ```bash
-# Learn AI agents step by step
-npm create stratix my-learning -- --template ai-agent-starter
+# Install Stratix CLI globally
+npm install -g @stratix/cli
 
-cd my-learning
-pnpm start
+# Create a new project
+stratix new my-app
+
+# Navigate to project
+cd my-app
+
+# Generate a bounded context
+stratix generate context Products --props "name:string,price:number,stock:number"
+
+# Install dependencies and start
+pnpm install
+pnpm run dev
 ```
-
-**Choose your path:**
-
-- `ai-agent-starter` - Learn AI agents progressively (FREE to start)
-- `modular-monolith` - Bounded Contexts as Plugins (monolith → microservices)
-- `rest-api-complete` - Production-ready REST API with all extensions
-- `rest-api` - REST API with DDD/CQRS
-- `microservice` - Event-driven architecture
-- `monolith` - Modular monolith with bounded contexts
-- `worker` - Background job processing
-- `minimal` - Start from scratch
 
 ### Generated Project Structure
 
-When you run `npm create stratix`, you get a fully configured project:
+When you run `stratix new`, you get a fully configured project:
 
 ```
 my-project/

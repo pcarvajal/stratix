@@ -695,7 +695,7 @@ console.log('Agent version:', execution.agentVersion);
 Start with the **AI Agent Starter** template to learn these patterns hands-on:
 
 ```bash
-npm create stratix my-learning -- --template ai-agent-starter
+stratix new my-learning -- --template ai-agent-starter
 cd my-learning
 pnpm start
 ```

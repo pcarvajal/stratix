@@ -9,7 +9,7 @@ Get started with Stratix in 5 minutes. Choose your path: learn AI agents or buil
 Start with our interactive AI agent learning path. No API key needed for the first two levels:
 
 ```bash
-npm create stratix my-learning -- --template ai-agent-starter
+stratix new my-learning -- --template ai-agent-starter
 cd my-learning
 pnpm start
 ```
@@ -26,7 +26,7 @@ Perfect for learning how AI agents work in Stratix with minimal cost (total ~$0.
 Build a REST API, microservice, or modular monolith:
 
 ```bash
-pnpm create stratix my-shop
+pstratix new my-shop
 cd my-shop
 ```
 
@@ -47,7 +47,7 @@ This guide shows building a traditional Stratix application. For AI agents, see 
 ## 1. Create a Project
 
 ```bash
-pnpm create stratix my-shop
+pstratix new my-shop
 cd my-shop
 ```
 
@@ -356,7 +356,7 @@ Congratulations! You've built your first Stratix application.
 Check out the **AI Agent Starter** template to learn how to integrate AI agents into your application:
 
 ```bash
-npm create stratix my-ai-learning -- --template ai-agent-starter
+stratix new my-ai-learning -- --template ai-agent-starter
 ```
 
 ### Continue Learning

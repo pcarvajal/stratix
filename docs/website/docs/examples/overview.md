@@ -1,6 +1,6 @@
 # Examples
 
-Learn Stratix through complete, production-ready templates available via `create-stratix`.
+Learn Stratix through complete, production-ready templates available via `stratix CLI`.
 
 ## Available Templates
 
@@ -18,7 +18,7 @@ Build a full-featured REST API with Domain-Driven Design.
 **Difficulty:** Beginner
 
 ```bash
-pnpm create stratix my-api --template rest-api
+stratix new my-api --template rest-api
 cd my-api
 pnpm install
 pnpm dev
@@ -38,7 +38,7 @@ Build distributed services with event-driven communication.
 **Difficulty:** Intermediate
 
 ```bash
-pnpm create stratix my-service --template microservice
+stratix new my-service --template microservice
 cd my-service
 
 # Start RabbitMQ
@@ -63,7 +63,7 @@ Build a background job processing system.
 **Difficulty:** Intermediate
 
 ```bash
-pnpm create stratix my-worker --template worker
+stratix new my-worker --template worker
 cd my-worker
 
 # Start infrastructure
@@ -143,7 +143,7 @@ src/
 
 ```bash
 # Create a new project
-pnpm create stratix my-app --template rest-api
+stratix new my-app --template rest-api
 
 # Install dependencies
 cd my-app
@@ -200,7 +200,7 @@ After exploring examples:
 
 1. **Build Your Own**
    ```bash
-   pnpm create stratix my-app
+   stratix new my-app
    ```
 
 2. **Read Core Concepts**

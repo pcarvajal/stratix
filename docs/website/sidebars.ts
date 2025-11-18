@@ -147,7 +147,7 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: 'Tools',
           items: [
-            'api-reference/tools/create-stratix',
+            'api-reference/tools/cli',
           ],
         },
       ],

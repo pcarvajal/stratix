@@ -41,7 +41,7 @@ const app = await ApplicationBuilder.create()
 ### 1. Modular Monolith
 
 ```bash
-npm create stratix my-monolith -- --template modular-monolith
+stratix new my-monolith -- --template modular-monolith
 cd my-monolith
 pnpm install
 pnpm dev
@@ -423,7 +423,7 @@ eventBus.publish(new OrderCreatedEvent(order.id));
 
 ## Source Code
 
-The modular monolith template is available via `create-stratix`:
+The modular monolith template is available via `stratix CLI`:
 - Modular monolith: Use `--template modular-monolith`
 - Complete implementation with 3 bounded contexts
 - Migration guide included in template

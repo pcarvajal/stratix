@@ -2,49 +2,51 @@
 
 Get started with Stratix in seconds.
 
-## Using create-stratix (Recommended)
+## Using Stratix CLI (Recommended)
 
 The fastest way to create a new Stratix application:
 
+### Install CLI Globally
+
 ```bash
-npm create stratix@latest my-app
+npm install -g @stratix/cli
 ```
 
 Or with your preferred package manager:
 
 ```bash
 # pnpm (recommended)
-pnpm create stratix my-app
+pnpm add -g @stratix/cli
 
 # yarn
-yarn create stratix my-app
+yarn global add @stratix/cli
+```
+
+### Create New Project
+
+```bash
+stratix new my-app
 ```
 
 This will:
 1. Create a new directory with your project name
-2. Set up the project structure
-3. Install all dependencies
-4. Initialize a git repository
+2. Set up the project structure (DDD or Modular)
+3. Generate configuration files
+4. Optionally initialize a git repository
+5. Optionally install dependencies
 
 ### Interactive Setup
 
 The CLI will ask you a few questions:
 
 ```bash
- Welcome to Stratix!
+🚀 Create Stratix Project
 
-? Which template would you like to use?
-  ❯ REST API - Complete REST API with authentication
-    Microservice - Service with message queue
-    Worker - Background job processor
-    Minimal - Bare minimum setup
-
-? Which package manager do you want to use?
-  ❯ pnpm (recommended)
-    npm
-    yarn
-
-? Initialize git repository? (Y/n)
+? Project name: my-app
+? Package manager: pnpm
+? Project structure: DDD (Domain-Driven Design)
+? Initialize git repository? Yes
+? Install dependencies? Yes
 ```
 
 ### Start Development
@@ -54,6 +56,21 @@ Once created, navigate to your project:
 ```bash
 cd my-app
 pnpm run dev
+```
+
+### Generate Code
+
+Use the CLI to generate code artifacts:
+
+```bash
+# Generate a complete bounded context (16 files)
+stratix generate context Products --props "name:string,price:number,stock:number"
+
+# Generate individual components
+stratix g entity Customer --props "name:string,email:string"
+stratix g value-object Money --props "amount:number,currency:string"
+stratix g command CreateOrder --input "customerId:string,total:number"
+stratix g query GetOrderById --input "id:string" --output "Order"
 ```
 
 Your Stratix application is now running! 

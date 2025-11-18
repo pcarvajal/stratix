@@ -140,7 +140,7 @@ export class OrdersModule extends BaseContextModule {
 ### Step 1: Start with Modular Monolith
 
 ```bash
-npm create stratix my-app -- --template modular-monolith
+stratix new my-app -- --template modular-monolith
 ```
 
 Develop quickly with all contexts in one application.
@@ -305,4 +305,4 @@ products-service -> [products_db]
 ## Next Steps
 
 - Try the [modular-monolith template](../getting-started/quick-start.md)
-- Learn about [CLI generators](../api-reference/tools/create-stratix.md)
+- Learn about [CLI generators](../api-reference/tools/stratix CLI.md)
