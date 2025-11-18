@@ -1,6 +1,6 @@
 {
   "name": "@stratix/impl-logger-console",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Console logger implementation for Stratix",
   "type": "module",
   "main": "./dist/index.js",
