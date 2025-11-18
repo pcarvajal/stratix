@@ -441,7 +441,6 @@ src/
 ## Learn More
 
 - [Stratix Documentation](https://stratix.dev/docs)
-- [Examples](https://github.com/stratix/examples)
 `;
 
   await fs.writeFile(path.join(projectPath, 'README.md'), readme);

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Plugin, PluginMetadata, PluginContext } from '@stratix/abstractions';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
+import { ModuleRegistry } from '../module/ModuleRegistry.js';
 import { LifecycleManager, LifecyclePhase } from '../lifecycle/LifecycleManager.js';
 import { PluginLifecycleError } from '../errors/RuntimeError.js';
 
@@ -47,7 +48,7 @@ describe('LifecycleManager', () => {
   describe('initialization', () => {
     it('should start in UNINITIALIZED phase', () => {
       const registry = new PluginRegistry();
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
 
       expect(manager.currentPhase).toBe(LifecyclePhase.UNINITIALIZED);
     });
@@ -78,7 +79,7 @@ describe('LifecycleManager', () => {
       registry.register(database);
       registry.register(api);
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       const context = createMockContext();
 
       await manager.initializeAll(context);
@@ -100,7 +101,7 @@ describe('LifecycleManager', () => {
       );
       registry.register(createPlugin('metrics')); // No initialize
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
 
       expect(initialized).toEqual(['logger']);
@@ -120,7 +121,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(context);
 
       expect(receivedContext).toBe(context);
@@ -136,15 +137,15 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
 
       await expect(manager.initializeAll(createMockContext())).rejects.toThrow('failed during');
 
       // Create new manager for additional checks since initialization only runs once
-      const manager2 = new LifecycleManager(registry);
+      const manager2 = new LifecycleManager(registry, new ModuleRegistry());
       await expect(manager2.initializeAll(createMockContext())).rejects.toThrow(/logger/);
 
-      const manager3 = new LifecycleManager(registry);
+      const manager3 = new LifecycleManager(registry, new ModuleRegistry());
       await expect(manager3.initializeAll(createMockContext())).rejects.toThrow(/initialize/);
     });
 
@@ -160,7 +161,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       phases.push(manager.currentPhase);
 
       await manager.initializeAll(createMockContext());
@@ -185,7 +186,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.initializeAll(createMockContext());
       await manager.initializeAll(createMockContext());
@@ -217,7 +218,7 @@ describe('LifecycleManager', () => {
       registry.register(logger);
       registry.register(database);
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
 
@@ -238,7 +239,7 @@ describe('LifecycleManager', () => {
       );
       registry.register(createPlugin('metrics')); // No start
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
 
@@ -255,7 +256,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
 
       const error = manager.startAll();
@@ -268,7 +269,7 @@ describe('LifecycleManager', () => {
       const registry = new PluginRegistry();
       registry.register(createPlugin('logger'));
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
 
       await expect(manager.startAll()).rejects.toThrow(/initialized/);
     });
@@ -293,7 +294,7 @@ describe('LifecycleManager', () => {
       registry.register(logger);
       registry.register(database);
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
       await manager.stopAll();
@@ -315,7 +316,7 @@ describe('LifecycleManager', () => {
       );
       registry.register(createPlugin('metrics')); // No stop
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
       await manager.stopAll();
@@ -349,7 +350,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
 
@@ -372,7 +373,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.stopAll();
 
@@ -385,7 +386,7 @@ describe('LifecycleManager', () => {
       const registry = new PluginRegistry();
       registry.register(createPlugin('logger'));
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
 
       expect(manager.getPluginPhase('logger')).toBe(LifecyclePhase.UNINITIALIZED);
     });
@@ -394,7 +395,7 @@ describe('LifecycleManager', () => {
       const registry = new PluginRegistry();
       registry.register(createPlugin('logger'));
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
 
       expect(manager.getPluginPhase('logger')).toBe(LifecyclePhase.INITIALIZED);
@@ -404,7 +405,7 @@ describe('LifecycleManager', () => {
       const registry = new PluginRegistry();
       registry.register(createPlugin('logger'));
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
 
@@ -415,7 +416,7 @@ describe('LifecycleManager', () => {
       const registry = new PluginRegistry();
       registry.register(createPlugin('logger'));
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
       await manager.stopAll();
@@ -425,7 +426,7 @@ describe('LifecycleManager', () => {
 
     it('should return UNINITIALIZED for unknown plugin', () => {
       const registry = new PluginRegistry();
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
 
       expect(manager.getPluginPhase('nonexistent')).toBe(LifecyclePhase.UNINITIALIZED);
     });
@@ -464,7 +465,7 @@ describe('LifecycleManager', () => {
         })
       );
 
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
       await manager.initializeAll(createMockContext());
       await manager.startAll();
       await manager.stopAll();
@@ -481,7 +482,7 @@ describe('LifecycleManager', () => {
 
     it('should handle empty registry', async () => {
       const registry = new PluginRegistry();
-      const manager = new LifecycleManager(registry);
+      const manager = new LifecycleManager(registry, new ModuleRegistry());
 
       await manager.initializeAll(createMockContext());
       await manager.startAll();

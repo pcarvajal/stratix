@@ -1,5 +1,6 @@
 import type { Container, Logger, Plugin, ContextModule } from '@stratix/abstractions';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
+import { ModuleRegistry } from '../module/ModuleRegistry.js';
 import { LifecycleManager } from '../lifecycle/LifecycleManager.js';
 import { DefaultPluginContext } from './DefaultPluginContext.js';
 import { Application } from './Application.js';
@@ -48,8 +49,10 @@ export interface ApplicationBuilderOptions {
 export class ApplicationBuilder {
   private container?: Container;
   private logger?: Logger;
-  private registry = new PluginRegistry();
+  private pluginRegistry = new PluginRegistry();
+  private moduleRegistry = new ModuleRegistry();
   private pluginConfigs = new Map<string, unknown>();
+  private moduleConfigs = new Map<string, unknown>();
 
   private constructor() {}
 
@@ -110,7 +113,7 @@ export class ApplicationBuilder {
    * ```
    */
   usePlugin(plugin: Plugin, config?: unknown): this {
-    this.registry.register(plugin);
+    this.pluginRegistry.register(plugin);
 
     if (config) {
       this.pluginConfigs.set(plugin.metadata.name, config);
@@ -136,16 +139,16 @@ export class ApplicationBuilder {
    */
   usePlugins(plugins: Plugin[]): this {
     for (const plugin of plugins) {
-      this.registry.register(plugin);
+      this.pluginRegistry.register(plugin);
     }
     return this;
   }
 
   /**
-   * Registers a Bounded Context module.
+   * Registers a domain module.
    *
    * Context modules are domain/business logic modules that encapsulate
-   * a complete bounded context (domain, application, infrastructure).
+   * a complete domain (domain layer, application layer, infrastructure).
    *
    * @param contextModule - The context module to register
    * @param config - Optional configuration for the module
@@ -158,17 +161,17 @@ export class ApplicationBuilder {
    * ```
    */
   useContext(contextModule: ContextModule, config?: unknown): this {
-    this.registry.register(contextModule);
+    this.moduleRegistry.register(contextModule);
 
     if (config) {
-      this.pluginConfigs.set(contextModule.metadata.name, config);
+      this.moduleConfigs.set(contextModule.metadata.name, config);
     }
 
     return this;
   }
 
   /**
-   * Registers multiple Bounded Context modules.
+   * Registers multiple domain modules.
    *
    * @param contextModules - The context modules to register
    * @returns This builder for chaining
@@ -184,7 +187,7 @@ export class ApplicationBuilder {
    */
   useContexts(contextModules: ContextModule[]): this {
     for (const contextModule of contextModules) {
-      this.registry.register(contextModule);
+      this.moduleRegistry.register(contextModule);
     }
     return this;
   }
@@ -232,19 +235,31 @@ export class ApplicationBuilder {
       throw new Error('Logger must be set before building');
     }
 
-    const lifecycleManager = new LifecycleManager(this.registry);
-    const context = new DefaultPluginContext(this.container, this.logger, this.pluginConfigs);
+    const lifecycleManager = new LifecycleManager(this.pluginRegistry, this.moduleRegistry);
+    const pluginContext = new DefaultPluginContext(this.container, this.logger, this.pluginConfigs);
 
-    // Initialize all plugins
-    await lifecycleManager.initializeAll(context);
+    // Initialize plugins first
+    await lifecycleManager.initializePlugins(pluginContext);
 
-    return new Application(this.container, this.registry, lifecycleManager);
+    // Initialize modules after plugins (if any)
+    if (this.moduleRegistry.size > 0) {
+      await lifecycleManager.initializeModules(this.container, this.logger, this.moduleConfigs);
+    }
+
+    return new Application(this.container, this.pluginRegistry, this.moduleRegistry, lifecycleManager);
   }
 
   /**
    * Gets the number of registered plugins.
    */
   get pluginCount(): number {
-    return this.registry.size;
+    return this.pluginRegistry.size;
+  }
+
+  /**
+   * Gets the number of registered modules.
+   */
+  get moduleCount(): number {
+    return this.moduleRegistry.size;
   }
 }

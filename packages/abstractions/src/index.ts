@@ -29,13 +29,17 @@ export type { HealthCheckResult, HealthCheck } from './infrastructure/HealthChec
 export type { PluginMetadata } from './plugin/PluginMetadata.js';
 export type { PluginContext } from './plugin/PluginContext.js';
 export type { Plugin } from './plugin/Plugin.js';
+
+// Module (Bounded Contexts)
+export type { ModuleMetadata } from './module/ModuleMetadata.js';
+export type { ModuleContext } from './module/ModuleContext.js';
+export type { ContextModule } from './module/ContextModule.js';
 export type {
   CommandDefinition,
   QueryDefinition,
   EventHandlerDefinition,
   RepositoryDefinition,
-  ContextModule,
-} from './plugin/ContextModule.js';
+} from './module/definitions.js';
 
 // AI Agents
 export * from './ai-agents/index.js';

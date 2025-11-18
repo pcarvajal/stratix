@@ -714,4 +714,3 @@ Total cost: ~$0.30-0.50
 
 - [Architecture](./architecture.md) - Understand how agents fit in the architecture
 - [Testing](../advanced/testing.md) - Testing strategies for AI agents
-- [Examples](../examples/overview.md) - See complete agent examples

@@ -466,6 +466,6 @@ Copyright (c) 2025 P. Andres Carvajal
 
 **Build AI agents with the same rigor as the rest of your application.**
 
-[Documentation](./docs/website) • [Examples](./examples) • [GitHub](https://github.com/pcarvajal/stratix)
+[Documentation](./docs/website) • [GitHub](https://github.com/pcarvajal/stratix)
 
 </div>

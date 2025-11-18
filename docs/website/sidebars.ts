@@ -29,7 +29,7 @@ const sidebars: SidebarsConfig = {
       label: 'Core Concepts',
       items: [
         'core-concepts/architecture',
-        'core-concepts/bounded-contexts',
+        'core-concepts/modules',
         'core-concepts/ai-agents',
         'core-concepts/entities',
         'core-concepts/value-objects',
@@ -103,7 +103,7 @@ const sidebars: SidebarsConfig = {
             'api-reference/abstractions/repository',
             'api-reference/abstractions/event-bus',
             'api-reference/abstractions/plugin',
-            'api-reference/abstractions/context-plugin',
+            'api-reference/abstractions/context-module',
             {
               type: 'category',
               label: 'CQRS',
@@ -137,7 +137,7 @@ const sidebars: SidebarsConfig = {
             'api-reference/runtime/lifecycle-manager',
             'api-reference/runtime/dependency-graph',
             'api-reference/runtime/plugin-registry',
-            'api-reference/runtime/base-context-plugin',
+            'api-reference/runtime/base-context-module',
             'api-reference/runtime/plugin-context',
             'api-reference/runtime/default-plugin-context',
             'api-reference/runtime/runtime-error',

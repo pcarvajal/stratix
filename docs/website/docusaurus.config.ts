@@ -150,10 +150,7 @@ const config: Config = {
         {
           title: 'Resources',
           items: [
-            {
-              label: 'Examples',
-              to: '/docs/examples/overview',
-            },
+
             // TODO: Add these guides
             // {
             //   label: 'Migration from LangChain',

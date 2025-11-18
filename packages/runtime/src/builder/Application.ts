@@ -1,6 +1,7 @@
 import type { Container, Plugin, HealthCheckResult } from '@stratix/abstractions';
 import { HealthStatus } from '@stratix/abstractions';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
+import { ModuleRegistry } from '../module/ModuleRegistry.js';
 import { LifecycleManager, LifecyclePhase } from '../lifecycle/LifecycleManager.js';
 
 /**
@@ -22,7 +23,8 @@ import { LifecycleManager, LifecyclePhase } from '../lifecycle/LifecycleManager.
 export class Application {
   constructor(
     private readonly container: Container,
-    private readonly registry: PluginRegistry,
+    private readonly pluginRegistry: PluginRegistry,
+    private readonly moduleRegistry: ModuleRegistry,
     private readonly lifecycleManager: LifecycleManager
   ) {}
 
@@ -68,7 +70,7 @@ export class Application {
    * Gets all registered plugins.
    */
   getPlugins(): Plugin[] {
-    return this.registry.getAll();
+    return this.pluginRegistry.getAll();
   }
 
   /**
@@ -78,7 +80,7 @@ export class Application {
    * @returns The plugin if found, undefined otherwise
    */
   getPlugin(name: string): Plugin | undefined {
-    return this.registry.get(name);
+    return this.pluginRegistry.get(name);
   }
 
   /**
@@ -89,12 +91,13 @@ export class Application {
   }
 
   /**
-   * Performs health checks on all plugins.
+   * Performs health checks on all plugins and modules.
    *
    * @returns Aggregated health check result
    */
   async healthCheck(): Promise<HealthCheckResult> {
-    const plugins = this.registry.getAll();
+    const plugins = this.pluginRegistry.getAll();
+    const modules = this.moduleRegistry.getAll();
     const results: Record<string, HealthCheckResult> = {};
     let overallStatus: HealthStatus = HealthStatus.UP;
 
@@ -112,6 +115,27 @@ export class Application {
           }
         } catch (error) {
           results[plugin.metadata.name] = {
+            status: HealthStatus.DOWN,
+            message: `Health check failed: ${(error as Error).message}`,
+          };
+          overallStatus = HealthStatus.DOWN;
+        }
+      }
+    }
+
+    for (const module of modules) {
+      if (module.healthCheck) {
+        try {
+          const result = await module.healthCheck();
+          results[module.metadata.name] = result;
+
+          if (result.status === HealthStatus.DOWN) {
+            overallStatus = HealthStatus.DOWN;
+          } else if (result.status === HealthStatus.DEGRADED && overallStatus === HealthStatus.UP) {
+            overallStatus = HealthStatus.DEGRADED;
+          }
+        } catch (error) {
+          results[module.metadata.name] = {
             status: HealthStatus.DOWN,
             message: `Health check failed: ${(error as Error).message}`,
           };

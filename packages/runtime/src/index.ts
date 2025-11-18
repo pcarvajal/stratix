@@ -4,8 +4,10 @@ export type { ApplicationBuilderOptions } from './builder/ApplicationBuilder.js'
 export { Application } from './builder/Application.js';
 export { DefaultPluginContext } from './builder/DefaultPluginContext.js';
 
-// Plugin
-export { BaseContextModule } from './plugin/BaseContextModule.js';
+// Module
+export { BaseContextModule } from './module/BaseContextModule.js';
+export { ModuleRegistry } from './module/ModuleRegistry.js';
+export { DefaultModuleContext } from './module/DefaultModuleContext.js';
 
 // Registry
 export { PluginRegistry } from './registry/PluginRegistry.js';

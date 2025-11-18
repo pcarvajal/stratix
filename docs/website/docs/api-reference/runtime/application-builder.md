@@ -17,7 +17,7 @@ Fluent API for building Stratix applications. Provides declarative configuration
 **Key Features:**
 - Fluent builder pattern
 - Plugin registration and configuration
-- Bounded context modules
+- Domain modules
 - Automatic dependency resolution
 - Lifecycle management
 - Type-safe configuration
@@ -85,7 +85,7 @@ const app = await ApplicationBuilder.create()
   .build();
 ```
 
-### With Bounded Contexts
+### With Domain Modules
 
 ```typescript
 const app = await ApplicationBuilder.create()
@@ -94,7 +94,7 @@ const app = await ApplicationBuilder.create()
   // Infrastructure
   .usePlugin(new PostgresPlugin())
   .usePlugin(new RabbitMQPlugin())
-  // Bounded Contexts
+  // Domain Modules
   .useContext(new ProductsContextModule())
   .useContext(new OrdersContextModule())
   .useContext(new CustomersContextModule())
@@ -112,7 +112,7 @@ const ordersService = await ApplicationBuilder.create()
   .useLogger(logger)
   .usePlugin(new PostgresPlugin({ database: 'orders' }))
   .usePlugin(new RabbitMQPlugin())
-  .useContext(new OrdersContextModule()) // Only orders context
+  .useContext(new OrdersContextModule()) // Only orders module
   .build();
 
 // Products microservice
@@ -121,7 +121,7 @@ const productsService = await ApplicationBuilder.create()
   .useLogger(logger)
   .usePlugin(new PostgresPlugin({ database: 'products' }))
   .usePlugin(new RabbitMQPlugin())
-  .useContext(new ProductsContextModule()) // Only products context
+  .useContext(new ProductsContextModule()) // Only products module
   .build();
 ```
 
@@ -150,7 +150,7 @@ const app = await ApplicationBuilder.create()
   .usePlugin(new AuthPlugin(authConfig))
   .usePlugin(new ValidationPlugin())
   
-  // Bounded Contexts
+  // Domain Modules
   .useContext(new UsersContextModule())
   .useContext(new ProductsContextModule())
   .useContext(new OrdersContextModule())
@@ -213,7 +213,7 @@ builder.usePlugins([
 
 ### useContext()
 
-Registers a bounded context module.
+Registers a domain module.
 
 ```typescript
 builder.useContext(new OrdersContextModule());
@@ -241,9 +241,9 @@ When `build()` is called:
 
 ## Best Practices
 
-- **Do:** Register infrastructure plugins before business contexts
+- **Do:** Register infrastructure plugins before domain modules
 - **Do:** Use plugin configs for environment-specific settings
-- **Do:** Keep builder chain readable (one plugin per line)
+- **Do:** Keep builder chain readable (one plugin/module per line)
 - **Do:** Register dependencies before dependents
 - **Don't:** Call build() multiple times on same builder
 - **Don't:** Forget to set container and logger
@@ -271,8 +271,9 @@ try {
 - [Application](./application.md) - Built application instance
 - [LifecycleManager](./lifecycle-manager.md) - Plugin lifecycle
 - [DependencyGraph](./dependency-graph.md) - Dependency resolution
+- [BaseContextModule](./base-context-module.md) - Base class for domain modules
 
 ## See Also
 
-- [Package README](../../../packages/runtime/README.md)
-- [Plugin System](../../layer-2-abstractions/plugin.md)
+- [Plugin](../abstractions/plugin.md) - Plugin interface
+- [ContextModule](../abstractions/context-module.md) - Module interface

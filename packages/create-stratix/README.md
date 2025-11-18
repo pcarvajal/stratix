@@ -180,7 +180,6 @@ npx create-stratix generate entity Order \
 
 - [Stratix Documentation](https://stratix.dev/docs)
 - [GitHub Repository](https://github.com/pcarvajal/stratix)
-- [Examples](https://github.com/pcarvajal/stratix/tree/main/examples)
 
 ## License
 

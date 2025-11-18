@@ -318,4 +318,3 @@ class User extends Entity<'User'> {
 - [Package Source Code](https://github.com/pcarvajal/stratix/tree/main/packages/primitives)
 - [Core Concepts - Entities](../../website/docs/core-concepts/entities.md)
 - [Core Concepts - Value Objects](../../website/docs/core-concepts/value-objects.md)
-- [Examples](https://github.com/pcarvajal/stratix/tree/main/examples)

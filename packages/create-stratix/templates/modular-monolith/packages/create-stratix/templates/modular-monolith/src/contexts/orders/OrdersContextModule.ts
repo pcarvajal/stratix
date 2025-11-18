@@ -1,11 +1,11 @@
 import { BaseContextModule } from '@stratix/runtime';
 import type {
-  PluginMetadata,
+  ModuleMetadata,
   CommandDefinition,
   QueryDefinition,
   EventHandlerDefinition,
   RepositoryDefinition,
-  PluginContext,
+  ModuleContext,
 } from '@stratix/abstractions';
 import { CreateOrderCommand } from './application/commands/CreateOrder.js';
 import { CreateOrderHandler } from './application/commands/CreateOrderHandler.js';
@@ -17,26 +17,27 @@ import { InMemoryOrderRepository } from './infrastructure/persistence/InMemoryOr
 import type { OrderRepository } from './domain/repositories/OrderRepository.js';
 
 /**
- * Orders Bounded Context Module.
+ * Orders Domain Module Module.
  *
- * This module encapsulates the entire Orders bounded context including:
+ * This module encapsulates the entire Orders domain including:
  * - Domain entities, value objects, and events
  * - Application commands and queries with handlers
  * - Infrastructure repositories
  *
  * The module can be deployed as:
- * - Part of a monolith (alongside other context modules)
+ * - Part of a monolith (alongside other modules)
  * - Standalone microservice (only this context)
  *
  * To switch from monolith to microservice, only change infrastructure
- * modules in main.ts - NO changes needed to this context code.
+ * modules in main.ts - NO changes needed to this module code.
  */
 export class OrdersContextModule extends BaseContextModule {
-  readonly metadata: PluginMetadata = {
+  readonly metadata: ModuleMetadata = {
     name: 'orders-context',
     version: '1.0.0',
-    description: 'Orders Bounded Context',
-    dependencies: [],
+    description: 'Orders Domain Module',
+    requiredPlugins: [],
+    requiredModules: [],
   };
 
   readonly contextName = 'Orders';

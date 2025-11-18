@@ -1,11 +1,11 @@
 import { BaseContextModule } from '@stratix/runtime';
 import type {
-  PluginMetadata,
+  ModuleMetadata,
   CommandDefinition,
   QueryDefinition,
   EventHandlerDefinition,
   RepositoryDefinition,
-  PluginContext,
+  ModuleContext,
 } from '@stratix/abstractions';
 import { CreateProductCommand } from './application/commands/CreateProduct.js';
 import { CreateProductHandler } from './application/commands/CreateProductHandler.js';
@@ -17,26 +17,27 @@ import { InMemoryProductRepository } from './infrastructure/persistence/InMemory
 import type { ProductRepository } from './domain/repositories/ProductRepository.js';
 
 /**
- * Products Bounded Context Module.
+ * Products Domain Module.
  *
- * This module encapsulates the entire Products bounded context including:
+ * This module encapsulates the entire Products domain including:
  * - Domain entities, value objects, and events
  * - Application commands and queries with handlers
  * - Infrastructure repositories
  *
  * The module can be deployed as:
- * - Part of a monolith (alongside other context modules)
- * - Standalone microservice (only this context)
+ * - Part of a monolith (alongside other modules)
+ * - Standalone microservice (only this module)
  *
  * To switch from monolith to microservice, only change infrastructure
- * modules in main.ts - NO changes needed to this context code.
+ * plugins in main.ts - NO changes needed to this module code.
  */
 export class ProductsContextModule extends BaseContextModule {
-  readonly metadata: PluginMetadata = {
+  readonly metadata: ModuleMetadata = {
     name: 'products-context',
     version: '1.0.0',
-    description: 'Products Bounded Context',
-    dependencies: [],
+    description: 'Products Domain Module',
+    requiredPlugins: [],
+    requiredModules: [],
   };
 
   readonly contextName = 'Products';
@@ -44,38 +45,44 @@ export class ProductsContextModule extends BaseContextModule {
   private productRepository!: ProductRepository;
 
   /**
-   * Returns all command definitions for the Products context.
+   * Returns all command definitions for the Products module.
    */
   getCommands(): CommandDefinition[] {
+    // Resolve repository lazily when commands are registered
+    const repo = this.productRepository || this.context?.container.resolve<ProductRepository>('productRepository');
+    
     return [
       {
         name: 'CreateProduct',
         commandType: CreateProductCommand,
-        handler: new CreateProductHandler(this.productRepository),
+        handler: new CreateProductHandler(repo!),
       },
     ];
   }
 
   /**
-   * Returns all query definitions for the Products context.
+   * Returns all query definitions for the Products module.
    */
   getQueries(): QueryDefinition[] {
+    // Resolve repository lazily when queries are registered
+    const repo = this.productRepository || this.context?.container.resolve<ProductRepository>('productRepository');
+    
     return [
       {
         name: 'GetProductById',
         queryType: GetProductByIdQuery,
-        handler: new GetProductByIdHandler(this.productRepository),
+        handler: new GetProductByIdHandler(repo!),
       },
       {
         name: 'ListProducts',
         queryType: ListProductsQuery,
-        handler: new ListProductsHandler(this.productRepository),
+        handler: new ListProductsHandler(repo!),
       },
     ];
   }
 
   /**
-   * Returns all event handler definitions for the Products context.
+   * Returns all event handler definitions for the Products module.
    */
   getEventHandlers(): EventHandlerDefinition[] {
     // Add event handlers here when needed
@@ -83,7 +90,7 @@ export class ProductsContextModule extends BaseContextModule {
   }
 
   /**
-   * Returns all repository definitions for the Products context.
+   * Returns all repository definitions for the Products module.
    */
   getRepositories(): RepositoryDefinition[] {
     return [
@@ -96,16 +103,21 @@ export class ProductsContextModule extends BaseContextModule {
   }
 
   /**
-   * Initialize the Products context module.
+   * Initialize the Products module.
    *
-   * Repositories are registered first by the base class, so we can
-   * resolve them here before registering commands/queries.
+   * The base class will:
+   * 1. Register all repositories in the container
+   * 2. Call getCommands(), getQueries(), getEventHandlers()
+   * 3. Register commands/queries with their buses
+   * 4. Subscribe event handlers
+   *
+   * After super.initialize(), repositories are available for resolution.
    */
-  async initialize(context: PluginContext): Promise<void> {
-    // Resolve repositories from container (registered by base class)
-    this.productRepository = context.container.resolve<ProductRepository>('productRepository');
-
-    // Call super to auto-register all commands, queries, and event handlers
+  async initialize(context: ModuleContext): Promise<void> {
+    // Call super first to register repositories and CQRS components
     await super.initialize(context);
+    
+    // Now repositories are registered and we can resolve them for later use
+    this.productRepository = context.container.resolve<ProductRepository>('productRepository');
   }
 }
