@@ -47,7 +47,6 @@ export const updateCommandTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
 
   return `import type { Command } from '@stratix/abstractions';
-import { EntityId } from '@stratix/primitives';
 
 export interface Update${entityName}Data {
   id: string;

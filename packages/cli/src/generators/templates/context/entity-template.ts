@@ -3,9 +3,7 @@ import type { TemplateData } from '../../../types/index.js';
 export const contextEntityTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
 
-  return `import { AggregateRoot } from '@stratix/primitives';
-import type { DomainEvent } from '@stratix/primitives';
-import { EntityId } from '@stratix/primitives';
+  return `import { AggregateRoot, EntityId } from '@stratix/primitives';
 import { ${entityName}Created } from '../events/${entityName}Created.js';
 
 export class ${entityName} extends AggregateRoot<'${entityName}'> {

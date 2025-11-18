@@ -66,7 +66,7 @@ import type { ${entityName}Repository } from '../../domain/repositories/${entity
 export class List${entityNamePlural}Handler implements QueryHandler<List${entityNamePlural}, Result<${entityName}[], Error>> {
   constructor(private readonly repository: ${entityName}Repository) {}
 
-  async handle(query: List${entityNamePlural}): Promise<Result<${entityName}[], Error>> {
+  async handle(): Promise<Result<${entityName}[], Error>> {
     try {
       const entities = await this.repository.findAll();
       return Success.create(entities);
