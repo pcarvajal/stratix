@@ -3,7 +3,8 @@ import type { TemplateData } from '../../../types/index.js';
 export const contextPluginTemplate = (data: TemplateData): string => {
   const { entityName, entityNamePlural, contextName = 'Unknown' } = data;
 
-  return `import type { Plugin, PluginContext } from '@stratix/abstractions';
+  return `import type { Plugin, PluginContext, HealthCheckResult } from '@stratix/abstractions';
+import { HealthStatus } from '@stratix/abstractions';
 import { Create${entityName}Handler } from './application/commands/Create${entityName}Handler.js';
 import { Update${entityName}Handler } from './application/commands/Update${entityName}Handler.js';
 import { Delete${entityName}Handler } from './application/commands/Delete${entityName}Handler.js';
@@ -12,8 +13,11 @@ import { List${entityNamePlural}Handler } from './application/queries/List${enti
 import { InMemory${entityName}Repository } from './infrastructure/persistence/InMemory${entityName}Repository.js';
 
 export class ${contextName}ContextPlugin implements Plugin {
-  name = '${contextName.toLowerCase()}-context';
-  version = '1.0.0';
+  readonly metadata = {
+    name: '${contextName.toLowerCase()}-context',
+    version: '1.0.0',
+    dependencies: [],
+  };
 
   async initialize(context: PluginContext): Promise<void> {
     const repository = new InMemory${entityName}Repository();
@@ -41,8 +45,11 @@ export class ${contextName}ContextPlugin implements Plugin {
     // No shutdown logic needed
   }
 
-  async healthCheck() {
-    return { healthy: true };
+  async healthCheck(): Promise<HealthCheckResult> {
+    return { 
+      status: HealthStatus.UP,
+      message: '${contextName} context is healthy'
+    };
   }
 }
 `;
