@@ -1,12 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { InMemoryAgentMemory } from '../InMemoryAgentMemory.js';
 
-// FIXME: These tests should be moved to @stratix/impl-ai-agents package
-// Skipping for now to avoid cyclic dependency
-describe.skip('InMemoryAgentMemory', () => {
-  let memory: any;
+describe('InMemoryAgentMemory', () => {
+  let memory: InMemoryAgentMemory;
 
   beforeEach(() => {
-    memory = {};
+    memory = new InMemoryAgentMemory();
   });
 
   describe('store and retrieve', () => {
