@@ -1,6 +1,6 @@
 {
   "name": "@stratix/cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Global CLI for Stratix framework",
   "type": "module",
   "bin": {
