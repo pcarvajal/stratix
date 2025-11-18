@@ -17,14 +17,15 @@ export const packageJsonTemplate = (data: ProjectTemplateData): string => `{
     "format": "prettier --write \\"src/**/*.ts\\""
   },
   "dependencies": {
-    "@stratix/primitives": "^0.1.3",
-    "@stratix/abstractions": "^0.1.3",
-    "@stratix/runtime": "^0.1.3",
-    "@stratix/impl-di-awilix": "^0.1.3",
-    "@stratix/impl-logger-console": "^0.1.3",
-    "@stratix/impl-cqrs-inmemory": "^0.1.3"
+    "@stratix/primitives": "^0.1.5",
+    "@stratix/abstractions": "^0.1.5",
+    "@stratix/runtime": "^0.1.5",
+    "@stratix/impl-di-awilix": "^0.1.5",
+    "@stratix/impl-logger-console": "^0.1.5",
+    "@stratix/impl-cqrs-inmemory": "^0.1.5"
   },
   "devDependencies": {
+    "@stratix/cli": "^0.1.5",
     "@types/node": "^20.0.0",
     "typescript": "^5.7.2",
     "tsx": "^4.19.2",

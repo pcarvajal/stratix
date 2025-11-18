@@ -1,6 +1,6 @@
 {
   "name": "@stratix/impl-cqrs-inmemory",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "In-memory CQRS implementation for Stratix",
   "type": "module",
   "main": "./dist/index.js",

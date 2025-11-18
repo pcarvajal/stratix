@@ -1,6 +1,6 @@
 {
   "name": "@stratix/ext-ai-agents-openai",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Stratix AI Agents - OpenAI Provider",
   "type": "module",
   "main": "./dist/index.js",
