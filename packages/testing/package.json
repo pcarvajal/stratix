@@ -27,7 +27,6 @@
   "dependencies": {
     "@stratix/runtime": "workspace:*",
     "@stratix/di-awilix": "workspace:*",
-    "@stratix/logger-console": "workspace:*",
     "@stratix/core": "workspace:*"
   },
   "devDependencies": {

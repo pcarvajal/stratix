@@ -116,15 +116,15 @@ Basic implementations of core abstractions.
 
 ### Logging
 
-- **@stratix/logger-console** - Console logging implementation
+- **@stratix/core** - Console logging implementation
 
 ### CQRS
 
-- **@stratix/cqrs-inmemory** - In-memory command, query, and event buses
+- **@stratix/core** - In-memory command, query, and event buses
 
 ### AI Agents
 
-- **@stratix/ai-runtime** - Agent orchestrator with budget enforcement
+- **@stratix/runtime** - Agent orchestrator with budget enforcement
 
 ---
 

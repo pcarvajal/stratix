@@ -61,9 +61,15 @@ export type { CommandBus } from './messaging/CommandBus.js';
 export type { QueryBus } from './messaging/QueryBus.js';
 export type { EventBus } from './messaging/EventBus.js';
 
+// Default CQRS Implementations
+export { InMemoryCommandBus } from './messaging/InMemoryCommandBus.js';
+export { InMemoryQueryBus } from './messaging/InMemoryQueryBus.js';
+export { InMemoryEventBus } from './messaging/InMemoryEventBus.js';
+
 // Infrastructure
 export { LogLevel } from './infrastructure/LogLevel.js';
 export type { Logger } from './infrastructure/Logger.js';
+export { ConsoleLogger } from './infrastructure/ConsoleLogger.js';
 export type { Repository } from './infrastructure/Repository.js';
 export type { UnitOfWork } from './infrastructure/UnitOfWork.js';
 export { HealthStatus } from './infrastructure/HealthCheck.js';

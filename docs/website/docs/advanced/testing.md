@@ -166,7 +166,7 @@ Use cases should be tested with in-memory implementations for speed.
 import { describe, it, expect, beforeEach } from 'vitest';
 import { CreateProductHandler } from '../application/commands/CreateProduct';
 import { InMemoryProductRepository } from '../infrastructure/persistence/InMemoryProductRepository';
-import { InMemoryEventBus } from '@stratix/cqrs-inmemory';
+import { InMemoryEventBus } from '@stratix/core';
 
 describe('CreateProductHandler', () => {
   let handler: CreateProductHandler;

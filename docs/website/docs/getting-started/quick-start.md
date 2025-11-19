@@ -259,7 +259,7 @@ console.log('Cost:', result.executionTrace.totalCost); // Automatic tracking
 
 **Agent orchestration:**
 ```typescript
-import { StratixAgentOrchestrator } from '@stratix/ai-runtime';
+import { StratixAgentOrchestrator } from '@stratix/runtime';
 
 const orchestrator = new StratixAgentOrchestrator(
   agentRepository,
@@ -696,7 +696,7 @@ Update `src/index.ts`:
 ```typescript
 import { ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/di-awilix';
-import { ConsoleLogger, LogLevel, ServiceLifetime } from '@stratix/logger-console';
+import { ConsoleLogger, LogLevel, ServiceLifetime } from '@stratix/core';
 import { CreateProductHandler } from './application/commands/CreateProduct.js';
 import { InMemoryProductRepository } from './infrastructure/persistence/InMemoryProductRepository.js';
 

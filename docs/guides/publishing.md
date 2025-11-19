@@ -206,7 +206,7 @@ git push origin v0.1.0
 # Check published versions
 npm view @stratix/core versions
 npm view @stratix/core versions
-npm view @stratix/ai-runtime versions
+npm view @stratix/runtime versions
 
 # Test installation
 mkdir /tmp/test-stratix
@@ -231,7 +231,7 @@ cd test-project
 npm init -y
 
 # Install packages
-npm install @stratix/core @stratix/core @stratix/ai-runtime
+npm install @stratix/core @stratix/core @stratix/runtime
 
 # Test imports
 node -e "const { AIAgent } = require('@stratix/core'); console.log('Success!');"

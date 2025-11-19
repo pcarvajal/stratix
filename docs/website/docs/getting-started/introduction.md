@@ -155,7 +155,7 @@ class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse> {
 **Agent Orchestration:**
 
 ```typescript
-import { StratixAgentOrchestrator } from '@stratix/ai-runtime';
+import { StratixAgentOrchestrator } from '@stratix/runtime';
 
 const orchestrator = new StratixAgentOrchestrator(
   agentRepository,

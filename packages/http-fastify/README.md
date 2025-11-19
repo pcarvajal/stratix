@@ -30,7 +30,7 @@ yarn add @stratix/http-fastify
 ```typescript
 import { ApplicationBuilder } from '@stratix/runtime';
 import { FastifyHTTPPlugin } from '@stratix/http-fastify';
-import { ConsoleLoggerPlugin } from '@stratix/logger-console';
+import { ConsoleLoggerPlugin } from '@stratix/core';
 
 const app = await ApplicationBuilder.create()
   .usePlugin(new ConsoleLoggerPlugin())

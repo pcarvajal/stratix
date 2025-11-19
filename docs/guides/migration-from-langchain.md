@@ -37,8 +37,8 @@ This guide helps you migrate your LangChain applications to Stratix AI Agent Fra
 | `langchain/llms/anthropic` | `@stratix/ai-anthropic`       |
 | `langchain/chains`         | `@stratix/core` (AIAgent)          |
 | `langchain/tools`          | `@stratix/core` (AgentTool)      |
-| `langchain/memory`         | `@stratix/core` (AgentMemory interface), `@stratix/ai-runtime` (InMemoryAgentMemory) |
-| `langchain/agents`         | `@stratix/ai-runtime` (Orchestrator) |
+| `langchain/memory`         | `@stratix/core` (AgentMemory interface), `@stratix/runtime` (InMemoryAgentMemory) |
+| `langchain/agents`         | `@stratix/runtime` (Orchestrator) |
 
 ## Migration Examples
 
@@ -480,7 +480,7 @@ import {
   StratixAgentOrchestrator,
   InMemoryAgentRepository,
   InMemoryExecutionAuditLog,
-} from '@stratix/ai-runtime';
+} from '@stratix/runtime';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 class SynopsisAgent extends AIAgent<{ title: string }, { synopsis: string }> {
@@ -584,7 +584,7 @@ if (synopsisResult.isSuccess()) {
 npm uninstall langchain
 
 # Install Stratix core packages
-npm install @stratix/core @stratix/core @stratix/ai-runtime
+npm install @stratix/core @stratix/core @stratix/runtime
 
 # Install provider
 npm install @stratix/ai-openai
@@ -610,7 +610,7 @@ import { PromptTemplate } from 'langchain/prompts';
 ```typescript
 import { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
-import { StratixAgentOrchestrator } from '@stratix/ai-runtime';
+import { StratixAgentOrchestrator } from '@stratix/runtime';
 ```
 
 ### Step 3: Convert Chains to Agents

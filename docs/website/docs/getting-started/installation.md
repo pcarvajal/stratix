@@ -392,10 +392,10 @@ You need at least one implementation for each abstraction:
 npm install @stratix/di-awilix
 
 # Logger (required)
-npm install @stratix/logger-console
+npm install @stratix/core
 
 # CQRS buses (recommended)
-npm install @stratix/cqrs-inmemory
+npm install @stratix/core
 ```
 
 ### 3. Install Production Extensions (Optional)
@@ -422,7 +422,7 @@ npm install @stratix/secrets            # Secrets management
 # AI Providers
 npm install @stratix/ai-openai      # OpenAI
 npm install @stratix/ai-anthropic   # Anthropic
-npm install @stratix/ai-runtime            # AI Orchestrator
+npm install @stratix/runtime            # AI Orchestrator
 ```
 
 ### 4. Create Project Structure
@@ -564,7 +564,7 @@ Create `src/index.ts`:
 ```typescript
 import { ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/di-awilix';
-import { ConsoleLogger, LogLevel } from '@stratix/logger-console';
+import { ConsoleLogger, LogLevel } from '@stratix/core';
 
 async function bootstrap() {
   const container = new AwilixContainer();
@@ -708,8 +708,8 @@ All packages should use **same version** for compatibility:
 | `@stratix/core` | Interfaces (zero runtime code) |
 | `@stratix/runtime` | ApplicationBuilder, Plugin system |
 | `@stratix/di-awilix` | Dependency injection |
-| `@stratix/logger-console` | Console logger |
-| `@stratix/cqrs-inmemory` | In-memory CQRS buses |
+| `@stratix/core` | Console logger |
+| `@stratix/core` | In-memory CQRS buses |
 | `@stratix/cli` | Code generators |
 | `@stratix/testing` | Testing utilities |
 

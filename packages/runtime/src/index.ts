@@ -26,3 +26,9 @@ export {
   DuplicatePluginError,
   PluginLifecycleError,
 } from './errors/RuntimeError.js';
+
+// AI Agent Runtime
+export { StratixAgentOrchestrator } from './ai/StratixAgentOrchestrator.js';
+export { InMemoryAgentRepository } from './ai/InMemoryAgentRepository.js';
+export { InMemoryAgentMemory } from './ai/InMemoryAgentMemory.js';
+export { InMemoryExecutionAuditLog } from './ai/InMemoryExecutionAuditLog.js';

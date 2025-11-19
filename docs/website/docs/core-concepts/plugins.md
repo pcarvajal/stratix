@@ -69,9 +69,9 @@ Stratix provides production-ready plugins for common needs:
 
 **Core Implementations:**
 - `@stratix/di-awilix` - Dependency injection (Awilix)
-- `@stratix/logger-console` - Console logging
-- `@stratix/cqrs-inmemory` - In-memory CQRS buses
-- `@stratix/ai-runtime` - AI Agent orchestrator
+- `@stratix/core` - Console logging
+- `@stratix/core` - In-memory CQRS buses
+- `@stratix/runtime` - AI Agent orchestrator
 
 **Production Extensions:**
 - `@stratix/http-fastify` - Fastify HTTP server

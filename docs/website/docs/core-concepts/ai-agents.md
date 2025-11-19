@@ -147,8 +147,8 @@ mockProvider.setResponse({
 The `StratixAgentOrchestrator` manages agent lifecycle and execution:
 
 ```typescript
-import { StratixAgentOrchestrator } from '@stratix/ai-runtime';
-import { InMemoryAgentRepository, InMemoryExecutionAuditLog } from '@stratix/ai-runtime';
+import { StratixAgentOrchestrator } from '@stratix/runtime';
+import { InMemoryAgentRepository, InMemoryExecutionAuditLog } from '@stratix/runtime';
 
 const repository = new InMemoryAgentRepository();
 const auditLog = new InMemoryExecutionAuditLog();

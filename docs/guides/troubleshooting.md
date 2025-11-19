@@ -47,7 +47,7 @@ pnpm install
 
 ```
 WARN  Issues with peer dependencies found
-├─┬ @stratix/ai-runtime
+├─┬ @stratix/runtime
 │ └── ✕ missing peer @stratix/core@^0.1.0
 ```
 

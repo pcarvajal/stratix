@@ -1,6 +1,6 @@
 import { Application, ApplicationBuilder } from '@stratix/runtime';
 import { AwilixContainer } from '@stratix/di-awilix';
-import { ConsoleLogger } from '@stratix/logger-console';
+import { ConsoleLogger } from '@stratix/core';
 import type { Plugin, Logger, Container } from '@stratix/core';
 import { LogLevel } from '@stratix/core';
 
