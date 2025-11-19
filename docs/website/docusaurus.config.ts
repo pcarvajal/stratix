@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -99,8 +99,8 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/logo-light.png',
     metadata: [
-      {name: 'apple-mobile-web-app-capable', content: 'yes'},
-      {name: 'apple-mobile-web-app-status-bar-style', content: 'black'},
+      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
     ],
     colorMode: {
       defaultMode: 'dark',
@@ -134,16 +134,8 @@ const config: Config = {
           title: 'Documentation',
           items: [
             {
-              label: 'Getting Started',
-              to: '/docs/getting-started/introduction',
-            },
-            {
-              label: 'Core Concepts',
-              to: '/docs/core-concepts/architecture',
-            },
-            {
-              label: 'API Reference',
-              to: '/docs/api-reference',
+              label: 'Coming Soon',
+              to: '/docs/intro',
             },
           ],
         },
