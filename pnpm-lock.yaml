@@ -73,81 +73,6 @@ importers:
         specifier: ~5.6.2
         version: 5.6.3
 
-  packages/ai-anthropic:
-    dependencies:
-      '@anthropic-ai/sdk':
-        specifier: ^0.35.0
-        version: 0.35.0
-      '@stratix/core':
-        specifier: workspace:*
-        version: link:../core
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.24
-      eslint:
-        specifier: ^8.0.0
-        version: 8.57.1
-      typescript:
-        specifier: ^5.3.0
-        version: 5.9.3
-      vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
-
-  packages/ai-openai:
-    dependencies:
-      '@stratix/core':
-        specifier: workspace:*
-        version: link:../core
-      openai:
-        specifier: ^4.75.0
-        version: 4.104.0(ws@8.18.3)(zod@3.25.76)
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.24
-      eslint:
-        specifier: ^8.0.0
-        version: 8.57.1
-      typescript:
-        specifier: ^5.3.0
-        version: 5.9.3
-      vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
-
-  packages/auth:
-    dependencies:
-      '@stratix/core':
-        specifier: workspace:*
-        version: link:../core
-      '@stratix/runtime':
-        specifier: workspace:*
-        version: link:../runtime
-      bcrypt:
-        specifier: ^5.1.1
-        version: 5.1.1
-      jsonwebtoken:
-        specifier: ^9.0.2
-        version: 9.0.2
-    devDependencies:
-      '@types/bcrypt':
-        specifier: ^5.0.2
-        version: 5.0.2
-      '@types/jsonwebtoken':
-        specifier: ^9.0.7
-        version: 9.0.10
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.0
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
-
   packages/cli:
     dependencies:
       '@stratix/core':
@@ -209,11 +134,86 @@ importers:
         specifier: ^1.0.0
         version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
 
-  packages/db-mongodb:
+  packages/integrations/ai-anthropic:
+    dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.35.0
+        version: 0.35.0
+      '@stratix/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.24
+      eslint:
+        specifier: ^8.0.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
+
+  packages/integrations/ai-openai:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
+      openai:
+        specifier: ^4.75.0
+        version: 4.104.0(ws@8.18.3)(zod@3.25.76)
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.24
+      eslint:
+        specifier: ^8.0.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
+
+  packages/plugins/auth:
+    dependencies:
+      '@stratix/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@stratix/runtime':
+        specifier: workspace:*
+        version: link:../../runtime
+      bcrypt:
+        specifier: ^5.1.1
+        version: 5.1.1
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
+    devDependencies:
+      '@types/bcrypt':
+        specifier: ^5.0.2
+        version: 5.0.2
+      '@types/jsonwebtoken':
+        specifier: ^9.0.7
+        version: 9.0.10
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
+
+  packages/plugins/db-mongodb:
+    dependencies:
+      '@stratix/core':
+        specifier: workspace:*
+        version: link:../../core
       mongodb:
         specifier: ^6.10.0
         version: 6.20.0
@@ -225,11 +225,11 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/db-postgres:
+  packages/plugins/db-postgres:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
       pg:
         specifier: ^8.13.1
         version: 8.16.3
@@ -244,11 +244,11 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/db-redis:
+  packages/plugins/db-redis:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
       redis:
         specifier: ^4.7.0
         version: 4.7.1
@@ -260,11 +260,11 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/di-awilix:
+  packages/plugins/di-awilix:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
       awilix:
         specifier: ^10.0.2
         version: 10.0.2
@@ -279,11 +279,11 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
 
-  packages/errors:
+  packages/plugins/errors:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -295,17 +295,17 @@ importers:
         specifier: ^3.0.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/http-fastify:
+  packages/plugins/http-fastify:
     dependencies:
       '@fastify/cors':
         specifier: ^10.0.1
         version: 10.1.0
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
       '@stratix/runtime':
         specifier: workspace:*
-        version: link:../runtime
+        version: link:../../runtime
       fastify:
         specifier: ^5.2.0
         version: 5.6.1
@@ -320,11 +320,11 @@ importers:
         specifier: ^3.0.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/mappers:
+  packages/plugins/mappers:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -336,14 +336,14 @@ importers:
         specifier: ^3.0.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/migrations:
+  packages/plugins/migrations:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
       '@stratix/runtime':
         specifier: workspace:*
-        version: link:../runtime
+        version: link:../../runtime
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -355,11 +355,11 @@ importers:
         specifier: ^3.0.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/msg-rabbitmq:
+  packages/plugins/msg-rabbitmq:
     dependencies:
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
       amqplib:
         specifier: ^0.10.4
         version: 0.10.9
@@ -374,7 +374,7 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/obs-opentelemetry:
+  packages/plugins/obs-opentelemetry:
     dependencies:
       '@opentelemetry/api':
         specifier: ^1.9.0
@@ -396,7 +396,7 @@ importers:
         version: 0.53.0(@opentelemetry/api@1.9.0)
       '@stratix/core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../../core
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -404,6 +404,38 @@ importers:
       vitest:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
+
+  packages/plugins/secrets:
+    dependencies:
+      '@stratix/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^1.6.1
+        version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
+
+  packages/plugins/validation-zod:
+    dependencies:
+      '@stratix/core':
+        specifier: workspace:*
+        version: link:../../core
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
 
   packages/runtime:
     dependencies:
@@ -424,19 +456,6 @@ importers:
         specifier: ^1.0.0
         version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
 
-  packages/secrets:
-    dependencies:
-      '@stratix/core':
-        specifier: workspace:*
-        version: link:../core
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^1.6.1
-        version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
-
   packages/testing:
     dependencies:
       '@stratix/core':
@@ -444,7 +463,7 @@ importers:
         version: link:../core
       '@stratix/di-awilix':
         specifier: workspace:*
-        version: link:../di-awilix
+        version: link:../plugins/di-awilix
       '@stratix/runtime':
         specifier: workspace:*
         version: link:../runtime
@@ -458,25 +477,6 @@ importers:
       vitest:
         specifier: ^1.0.0
         version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
-
-  packages/validation-zod:
-    dependencies:
-      '@stratix/core':
-        specifier: workspace:*
-        version: link:../core
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.0
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
 
 packages:
 

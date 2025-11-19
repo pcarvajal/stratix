@@ -1,5 +1,8 @@
 packages:
-  - 'packages/*'
-  - 'examples/*'
-  - 'examples/ai-agents/*'
+  - 'packages/core'
+  - 'packages/runtime'
+  - 'packages/testing'
+  - 'packages/cli'
+  - 'packages/plugins/*'
+  - 'packages/integrations/*'
   - 'docs/website'
