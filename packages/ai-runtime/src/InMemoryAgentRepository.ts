@@ -1,5 +1,5 @@
-import type { AIAgent, AgentId, AgentCapability } from '@stratix/primitives';
-import type { AgentRepository } from '@stratix/abstractions';
+import type { AIAgent, AgentId, AgentCapability } from '@stratix/core';
+import type { AgentRepository } from '@stratix/core';
 
 /**
  * In-memory implementation of AgentRepository.

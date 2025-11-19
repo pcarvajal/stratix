@@ -1,4 +1,4 @@
-import type { Command, CommandBus, CommandHandler } from '@stratix/abstractions';
+import type { Command, CommandBus, CommandHandler } from '@stratix/core';
 
 /**
  * In-memory command bus implementation.

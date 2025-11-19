@@ -1,4 +1,4 @@
-import type { AgentMessage, TokenUsage, ToolCall } from '@stratix/primitives';
+import type { AgentMessage, TokenUsage, ToolCall } from './types.js';
 
 /**
  * Chat parameters for LLM API calls

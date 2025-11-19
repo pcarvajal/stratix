@@ -44,7 +44,7 @@ if (result.isSuccess) {
 The Result type represents either success or failure:
 
 ```typescript
-import { Result, Success, Failure } from '@stratix/primitives';
+import { Result, Success, Failure } from '@stratix/core';
 
 // Generic: Result<TValue, TError = Error>
 type Result<T, E = Error> = Success<T> | Failure<E>;
@@ -83,8 +83,8 @@ if (result.isSuccess) {
 ### Command Handlers
 
 ```typescript
-import { CommandHandler } from '@stratix/abstractions';
-import { Result, Success, Failure } from '@stratix/primitives';
+import { CommandHandler } from '@stratix/core';
+import { Result, Success, Failure } from '@stratix/core';
 
 export class CreateProductHandler implements CommandHandler<CreateProduct, Result<CreateProductOutput>> {
   async handle(command: CreateProduct): Promise<Result<CreateProductOutput>> {

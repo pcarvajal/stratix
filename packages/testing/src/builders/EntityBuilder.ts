@@ -1,4 +1,4 @@
-import { Entity, EntityId } from '@stratix/primitives';
+import { Entity, EntityId } from '@stratix/core';
 
 /**
  * Generic Entity Builder for testing

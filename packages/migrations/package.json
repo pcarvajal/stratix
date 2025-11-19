@@ -38,9 +38,8 @@
     "directory": "packages/migrations"
   },
   "dependencies": {
-    "@stratix/abstractions": "workspace:*",
-    "@stratix/primitives": "workspace:*",
-    "@stratix/runtime": "workspace:*"
+    "@stratix/runtime": "workspace:*",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

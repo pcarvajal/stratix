@@ -119,7 +119,7 @@ interface AgentMemoryStored {
 To use domain events, call `executeWithEvents()` instead of `execute()`:
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
+import { AIAgent, AgentResult } from '@stratix/core';
 
 class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse> {
   readonly name = 'Customer Support Agent';
@@ -159,7 +159,7 @@ await eventBus.publish(events);
 Integrate with your event bus to publish events for other bounded contexts:
 
 ```typescript
-import { EventBus } from '@stratix/abstractions';
+import { EventBus } from '@stratix/core';
 
 class AgentEventPublisher {
   constructor(private eventBus: EventBus) {}
@@ -186,7 +186,7 @@ class AgentEventPublisher {
 Use domain events for comprehensive audit trails:
 
 ```typescript
-import { AIAgentEvent } from '@stratix/primitives';
+import { AIAgentEvent } from '@stratix/core';
 
 class AgentAuditLogger {
   async logExecution(agent: AIAgent, input: unknown): Promise<void> {
@@ -393,7 +393,7 @@ class EventPublishingOrchestrator extends StratixAgentOrchestrator {
 All domain events are fully typed. Use the union type for type-safe event handling:
 
 ```typescript
-import { AIAgentEvent } from '@stratix/primitives';
+import { AIAgentEvent } from '@stratix/core';
 
 function handleEvent(event: AIAgentEvent): void {
   switch (event.eventType) {

@@ -1,4 +1,6 @@
-import type { AgentId, AgentVersion, AgentContext, ExecutionTrace } from '@stratix/primitives';
+import type { AgentId, AgentVersion } from './types.js';
+import type { AgentContext } from './AgentContext.js';
+import type { ExecutionTrace } from './ExecutionTrace.js';
 
 /**
  * Represents a complete agent execution record for audit purposes

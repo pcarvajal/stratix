@@ -38,7 +38,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stratix/abstractions": "workspace:*"
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -142,7 +142,7 @@ import type {
   CommandDefinition,
   QueryDefinition,
   RepositoryDefinition 
-} from '@stratix/abstractions';
+} from '@stratix/core';
 
 export class ProductsModule extends BaseContextModule {
   readonly metadata: ModuleMetadata = {

@@ -19,7 +19,7 @@ pnpm add @stratix/logger-console
 
 ```typescript
 import { ConsoleLogger } from '@stratix/logger-console';
-import { LogLevel } from '@stratix/abstractions';
+import { LogLevel } from '@stratix/core';
 
 const logger = new ConsoleLogger({ level: LogLevel.INFO });
 

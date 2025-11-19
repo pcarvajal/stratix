@@ -1,4 +1,4 @@
-import type { AgentResult } from '@stratix/primitives';
+import type { AgentResult } from '@stratix/core';
 
 /**
  * Assertion helpers for testing agents

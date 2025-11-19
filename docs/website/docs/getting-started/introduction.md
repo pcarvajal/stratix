@@ -107,7 +107,7 @@ Stratix exists to help development teams build production-ready applications wit
 **AI Agents as Domain Entities:**
 
 ```typescript
-import { AIAgent, AgentResult, AgentContext } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 // AI Agent = Domain Entity (not a service or utility)
@@ -444,7 +444,7 @@ Stratix handles the rest: CQRS wiring, DI configuration, repository patterns, ev
 Stratix treats AI agents with the same rigor as traditional domain entities:
 
 ```typescript
-import { AIAgent } from '@stratix/primitives';
+import { AIAgent } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 // AI Agent = Domain Entity
@@ -530,7 +530,7 @@ stratix add http validation auth postgres
 
 ```typescript
 // src/contexts/products/domain/entities/Product.ts
-import { AggregateRoot, EntityId } from '@stratix/primitives';
+import { AggregateRoot, EntityId } from '@stratix/core';
 
 export type ProductId = EntityId<'Product'>;
 

@@ -25,11 +25,10 @@
     "mock"
   ],
   "dependencies": {
-    "@stratix/primitives": "workspace:*",
-    "@stratix/abstractions": "workspace:*",
     "@stratix/runtime": "workspace:*",
     "@stratix/di-awilix": "workspace:*",
-    "@stratix/logger-console": "workspace:*"
+    "@stratix/logger-console": "workspace:*",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

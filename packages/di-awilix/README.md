@@ -19,7 +19,7 @@ pnpm add @stratix/di-awilix
 
 ```typescript
 import { AwilixContainer } from '@stratix/di-awilix';
-import { ServiceLifetime } from '@stratix/abstractions';
+import { ServiceLifetime } from '@stratix/core';
 
 const container = new AwilixContainer();
 

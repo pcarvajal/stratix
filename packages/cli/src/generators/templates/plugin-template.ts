@@ -24,8 +24,8 @@ export function generatePlugin(
 
   return `import type { Plugin, PluginContext, PluginMetadata${
     withHealthCheck ? ', HealthCheckResult' : ''
-  } } from '@stratix/abstractions';${
-    withHealthCheck ? "\nimport { HealthStatus } from '@stratix/abstractions';" : ''
+  } } from '@stratix/core';${
+    withHealthCheck ? "\nimport { HealthStatus } from '@stratix/core';" : ''
   }
 
 export interface ${pluginName}PluginOptions {

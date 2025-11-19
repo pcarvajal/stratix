@@ -21,7 +21,7 @@ Commands represent **intentions to change state**. They should be named in imper
 ### Creating a Command
 
 ```typescript
-import { Command } from '@stratix/abstractions';
+import { Command } from '@stratix/core';
 
 export interface CreateProductInput {
   name: string;
@@ -37,8 +37,8 @@ export class CreateProduct implements Command {
 ### Command Handler
 
 ```typescript
-import { CommandHandler } from '@stratix/abstractions';
-import { Result, Success, Failure } from '@stratix/primitives';
+import { CommandHandler } from '@stratix/core';
+import { Result, Success, Failure } from '@stratix/core';
 
 export interface CreateProductOutput {
   id: string;
@@ -102,7 +102,7 @@ Queries represent **requests for data**. They should be named in interrogative f
 ### Creating a Query
 
 ```typescript
-import { Query } from '@stratix/abstractions';
+import { Query } from '@stratix/core';
 
 export interface GetProductInput {
   id: string;
@@ -116,8 +116,8 @@ export class GetProduct implements Query {
 ### Query Handler
 
 ```typescript
-import { QueryHandler } from '@stratix/abstractions';
-import { Result, Success, Failure, EntityId } from '@stratix/primitives';
+import { QueryHandler } from '@stratix/core';
+import { Result, Success, Failure, EntityId } from '@stratix/core';
 
 export interface ProductDto {
   id: string;
@@ -189,8 +189,8 @@ The Command Bus dispatches commands to their handlers.
 ### Using the Command Bus
 
 ```typescript
-import { CommandBus } from '@stratix/abstractions';
-import { Result } from '@stratix/primitives';
+import { CommandBus } from '@stratix/core';
+import { Result } from '@stratix/core';
 
 class ProductController {
   constructor(private readonly commandBus: CommandBus) {}
@@ -233,8 +233,8 @@ The Query Bus dispatches queries to their handlers.
 ### Using the Query Bus
 
 ```typescript
-import { QueryBus } from '@stratix/abstractions';
-import { Result } from '@stratix/primitives';
+import { QueryBus } from '@stratix/core';
+import { Result } from '@stratix/core';
 
 class ProductController {
   constructor(private readonly queryBus: QueryBus) {}

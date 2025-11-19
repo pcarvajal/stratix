@@ -5,7 +5,7 @@ import type {
   ChatChunk,
   EmbeddingParams,
   EmbeddingResponse,
-} from '@stratix/abstractions';
+} from '@stratix/core';
 
 /**
  * Mock response configuration

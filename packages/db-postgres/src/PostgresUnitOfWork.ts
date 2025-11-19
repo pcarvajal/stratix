@@ -1,5 +1,5 @@
 import type { PoolClient, QueryResult, QueryResultRow } from 'pg';
-import type { UnitOfWork } from '@stratix/abstractions';
+import type { UnitOfWork } from '@stratix/core';
 import type { PostgresConnection } from './PostgresConnection.js';
 
 /**

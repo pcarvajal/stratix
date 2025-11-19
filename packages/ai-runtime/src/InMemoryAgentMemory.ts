@@ -1,4 +1,4 @@
-import type { AgentMemory } from '@stratix/primitives';
+import type { AgentMemory } from '@stratix/core';
 
 /**
  * Simple in-memory implementation of AgentMemory.

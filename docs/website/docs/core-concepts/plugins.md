@@ -7,7 +7,7 @@ Plugins are the primary extension mechanism in Stratix. They provide lifecycle m
 A **Plugin** is a self-contained module that extends Stratix functionality. Plugins handle initialization, startup, shutdown, and health checks following a well-defined lifecycle.
 
 ```typescript
-import { Plugin, PluginContext, HealthCheckResult } from '@stratix/abstractions';
+import { Plugin, PluginContext, HealthCheckResult } from '@stratix/core';
 
 export class MyPlugin implements Plugin {
   readonly name = 'my-plugin';
@@ -106,7 +106,7 @@ stratix generate plugin PaymentProcessor
 ### Basic Plugin Structure
 
 ```typescript
-import { Plugin, PluginContext, HealthCheckResult } from '@stratix/abstractions';
+import { Plugin, PluginContext, HealthCheckResult } from '@stratix/core';
 
 export interface PaymentPluginOptions {
   apiKey: string;
@@ -484,7 +484,7 @@ cd @mycompany/stratix-payment
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "peerDependencies": {
-    "@stratix/abstractions": "^0.1.0",
+    "@stratix/core": "^0.1.0",
     "@stratix/runtime": "^0.1.0"
   }
 }

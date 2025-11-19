@@ -6,8 +6,8 @@ import type {
   ChatChunk,
   EmbeddingParams,
   EmbeddingResponse,
-} from '@stratix/abstractions';
-import type { AgentMessage, TokenUsage, ToolCall } from '@stratix/primitives';
+} from '@stratix/core';
+import type { AgentMessage, TokenUsage, ToolCall } from '@stratix/core';
 
 /**
  * Pricing per 1M tokens for Anthropic models (as of 2025)

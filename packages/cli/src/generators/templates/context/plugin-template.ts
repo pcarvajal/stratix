@@ -3,8 +3,8 @@ import type { TemplateData } from '../../../types/index.js';
 export const contextPluginTemplate = (data: TemplateData): string => {
   const { entityName, entityNamePlural, contextName = 'Unknown' } = data;
 
-  return `import type { Plugin, PluginContext, HealthCheckResult } from '@stratix/abstractions';
-import { HealthStatus } from '@stratix/abstractions';
+  return `import type { Plugin, PluginContext, HealthCheckResult } from '@stratix/core';
+import { HealthStatus } from '@stratix/core';
 import { Create${entityName}Handler } from './application/commands/Create${entityName}Handler.js';
 import { Update${entityName}Handler } from './application/commands/Update${entityName}Handler.js';
 import { Delete${entityName}Handler } from './application/commands/Delete${entityName}Handler.js';

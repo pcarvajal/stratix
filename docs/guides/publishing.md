@@ -204,15 +204,15 @@ git push origin v0.1.0
 
 ```bash
 # Check published versions
-npm view @stratix/primitives versions
-npm view @stratix/abstractions versions
+npm view @stratix/core versions
+npm view @stratix/core versions
 npm view @stratix/ai-runtime versions
 
 # Test installation
 mkdir /tmp/test-stratix
 cd /tmp/test-stratix
 npm init -y
-npm install @stratix/primitives @stratix/abstractions
+npm install @stratix/core @stratix/core
 ```
 
 ### 2. Update Documentation
@@ -231,10 +231,10 @@ cd test-project
 npm init -y
 
 # Install packages
-npm install @stratix/primitives @stratix/abstractions @stratix/ai-runtime
+npm install @stratix/core @stratix/core @stratix/ai-runtime
 
 # Test imports
-node -e "const { AIAgent } = require('@stratix/primitives'); console.log('Success!');"
+node -e "const { AIAgent } = require('@stratix/core'); console.log('Success!');"
 ```
 
 ## Versioning Strategy
@@ -299,9 +299,9 @@ pnpm publish --access public --tag beta
 ### Users install specific tags:
 
 ```bash
-npm install @stratix/primitives@next
-npm install @stratix/primitives@beta
-npm install @stratix/primitives@latest
+npm install @stratix/core@next
+npm install @stratix/core@beta
+npm install @stratix/core@latest
 ```
 
 ## Troubleshooting
@@ -365,7 +365,7 @@ pnpm publish --dry-run
 # 3. implementations (depend on above)
 
 # Verify dependency published
-npm view @stratix/primitives
+npm view @stratix/core
 ```
 
 ### Missing Types
@@ -425,10 +425,10 @@ tar -tzf stratix-primitives-0.1.0.tgz
 pnpm publish --access public --tag beta
 
 # Test with beta users
-npm install @stratix/primitives@beta
+npm install @stratix/core@beta
 
 # Promote to latest when stable
-npm dist-tag add @stratix/primitives@0.1.0 latest
+npm dist-tag add @stratix/core@0.1.0 latest
 ```
 
 ### 5. Monitor After Release
@@ -444,10 +444,10 @@ npm dist-tag add @stratix/primitives@0.1.0 latest
 
 ```bash
 # Unpublish specific version
-npm unpublish @stratix/primitives@0.1.0
+npm unpublish @stratix/core@0.1.0
 
 # Unpublish entire package (careful!)
-npm unpublish @stratix/primitives --force
+npm unpublish @stratix/core --force
 ```
 
 **Warning:** Unpublishing is discouraged. Prefer deprecation.
@@ -456,10 +456,10 @@ npm unpublish @stratix/primitives --force
 
 ```bash
 # Deprecate specific version
-npm deprecate @stratix/primitives@0.1.0 "Security vulnerability, upgrade to 0.1.1"
+npm deprecate @stratix/core@0.1.0 "Security vulnerability, upgrade to 0.1.1"
 
 # Deprecate range
-npm deprecate @stratix/primitives@"<0.1.1" "Security vulnerability, upgrade to 0.1.1"
+npm deprecate @stratix/core@"<0.1.1" "Security vulnerability, upgrade to 0.1.1"
 ```
 
 ### Hotfix Release

@@ -1,4 +1,7 @@
-import type { AIAgent, AgentId, AgentResult, AgentContext } from '@stratix/primitives';
+import type { AIAgent } from './AIAgent.js';
+import type { AgentId } from './types.js';
+import type { AgentResult } from './AgentResult.js';
+import type { AgentContext } from './AgentContext.js';
 
 /**
  * Orchestrates the execution of AI agents.

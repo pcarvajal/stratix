@@ -139,7 +139,7 @@ src/plugins/
 
 **Example custom plugin:**
 ```typescript
-import { Plugin, PluginContext } from '@stratix/abstractions';
+import { Plugin, PluginContext } from '@stratix/core';
 
 export class PaymentProcessorPlugin implements Plugin {
   name = 'payment-processor';
@@ -196,7 +196,7 @@ cd @your-company/stratix-payment-processor
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "peerDependencies": {
-    "@stratix/abstractions": "^0.1.0",
+    "@stratix/core": "^0.1.0",
     "@stratix/runtime": "^0.1.0"
   }
 }
@@ -375,10 +375,10 @@ If you need full control or are integrating Stratix into existing project:
 
 ```bash
 # Core framework (required)
-npm install @stratix/primitives @stratix/abstractions @stratix/runtime
+npm install @stratix/core @stratix/core @stratix/runtime
 
 # Or with pnpm
-pnpm add @stratix/primitives @stratix/abstractions @stratix/runtime
+pnpm add @stratix/core @stratix/core @stratix/runtime
 ```
 
 
@@ -704,8 +704,8 @@ All packages should use **same version** for compatibility:
 
 | Package | Purpose |
 |---------|---------|
-| `@stratix/primitives` | Core classes (Entity, AggregateRoot, ValueObject) |
-| `@stratix/abstractions` | Interfaces (zero runtime code) |
+| `@stratix/core` | Core classes (Entity, AggregateRoot, ValueObject) |
+| `@stratix/core` | Interfaces (zero runtime code) |
 | `@stratix/runtime` | ApplicationBuilder, Plugin system |
 | `@stratix/di-awilix` | Dependency injection |
 | `@stratix/logger-console` | Console logger |
@@ -867,7 +867,7 @@ When new version released:
 npm update -g @stratix/cli
 
 # In your project, update all packages
-npm update @stratix/primitives @stratix/abstractions @stratix/runtime
+npm update @stratix/core @stratix/core @stratix/runtime
 npm update @stratix/impl-*
 npm update @stratix/ext-*
 ```
@@ -889,7 +889,7 @@ All `@stratix/*` packages should use **same version**. Mixing versions may cause
 stratix info
 
 # Or manually
-npm list @stratix/primitives @stratix/runtime
+npm list @stratix/core @stratix/runtime
 ```
 
 ---

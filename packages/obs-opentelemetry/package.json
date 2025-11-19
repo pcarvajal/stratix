@@ -32,13 +32,13 @@
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@stratix/abstractions": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/sdk-node": "^0.53.0",
     "@opentelemetry/sdk-metrics": "^1.28.0",
     "@opentelemetry/auto-instrumentations-node": "^0.50.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
-    "@opentelemetry/exporter-metrics-otlp-http": "^0.53.0"
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.53.0",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

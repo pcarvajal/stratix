@@ -5,7 +5,7 @@ import type {
   Logger,
   PluginMetadata,
   HealthStatus,
-} from '@stratix/abstractions';
+} from '@stratix/core';
 import Fastify, { type FastifyInstance, type FastifyRequest, type FastifyReply } from 'fastify';
 import cors from '@fastify/cors';
 import type { FastifyHTTPPluginOptions, RouteConfig, HttpRequest } from './types.js';

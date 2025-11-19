@@ -1,4 +1,4 @@
-import type { Container, Logger, PluginContext } from '@stratix/abstractions';
+import type { Container, Logger, PluginContext } from '@stratix/core';
 
 /**
  * Default implementation of PluginContext.

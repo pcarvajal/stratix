@@ -2,8 +2,8 @@ export function generateEventHandler(
   eventName: string,
   handlerName: string
 ): string {
-  return `import type { EventHandler } from '@stratix/abstractions';
-import type { DomainEvent } from '@stratix/primitives';
+  return `import type { EventHandler } from '@stratix/core';
+import type { DomainEvent } from '@stratix/core';
 
 // TODO: Import or define ${eventName} type
 // import type { ${eventName} } from '../../domain/events/${eventName}.js';

@@ -3,7 +3,7 @@ import type { TemplateData } from '../../../types/index.js';
 export const createCommandTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
 
-  return `import type { Command } from '@stratix/abstractions';
+  return `import type { Command } from '@stratix/core';
 
 export interface Create${entityName}Data {
 ${props.map(p => `  ${p.name}: ${p.type};`).join('\n')}
@@ -18,8 +18,8 @@ export class Create${entityName} implements Command {
 export const createCommandHandlerTemplate = (data: TemplateData): string => {
   const { entityName, entityNameCamel } = data;
 
-  return `import type { CommandHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result } from '@stratix/primitives';
+  return `import type { CommandHandler } from '@stratix/core';
+import { Success, Failure, type Result } from '@stratix/core';
 import { Create${entityName} } from './Create${entityName}.js';
 import { ${entityName} } from '../../domain/entities/${entityName}.js';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';
@@ -46,7 +46,7 @@ export class Create${entityName}Handler implements CommandHandler<Create${entity
 export const updateCommandTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
 
-  return `import type { Command } from '@stratix/abstractions';
+  return `import type { Command } from '@stratix/core';
 
 export interface Update${entityName}Data {
   id: string;
@@ -62,8 +62,8 @@ export class Update${entityName} implements Command {
 export const updateCommandHandlerTemplate = (data: TemplateData): string => {
   const { entityName, entityNameCamel } = data;
 
-  return `import type { CommandHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result, EntityId } from '@stratix/primitives';
+  return `import type { CommandHandler } from '@stratix/core';
+import { Success, Failure, type Result, EntityId } from '@stratix/core';
 import { Update${entityName} } from './Update${entityName}.js';
 import { ${entityName} } from '../../domain/entities/${entityName}.js';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';
@@ -98,7 +98,7 @@ export class Update${entityName}Handler implements CommandHandler<Update${entity
 export const deleteCommandTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import type { Command } from '@stratix/abstractions';
+  return `import type { Command } from '@stratix/core';
 
 export interface Delete${entityName}Data {
   id: string;
@@ -113,8 +113,8 @@ export class Delete${entityName} implements Command {
 export const deleteCommandHandlerTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import type { CommandHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result, EntityId } from '@stratix/primitives';
+  return `import type { CommandHandler } from '@stratix/core';
+import { Success, Failure, type Result, EntityId } from '@stratix/core';
 import { Delete${entityName} } from './Delete${entityName}.js';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';
 

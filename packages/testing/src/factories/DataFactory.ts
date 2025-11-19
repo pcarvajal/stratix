@@ -1,4 +1,4 @@
-import { Email, EntityId } from '@stratix/primitives';
+import { Email, EntityId } from '@stratix/core';
 
 /**
  * Data Factory for generating test data

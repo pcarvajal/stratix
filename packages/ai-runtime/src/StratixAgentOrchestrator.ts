@@ -4,13 +4,13 @@ import type {
   AgentResult,
   AgentContext,
   ExecutionTrace,
-} from '@stratix/primitives';
+} from '@stratix/core';
 import type {
   AgentOrchestrator,
   AgentRepository,
   ExecutionAuditLog,
   LLMProvider,
-} from '@stratix/abstractions';
+} from '@stratix/core';
 
 /**
  * Configuration options for the orchestrator
@@ -150,7 +150,7 @@ export class StratixAgentOrchestrator implements AgentOrchestrator {
     }
 
     // Initialize trace
-    const trace = new (await import('@stratix/primitives')).ExecutionTrace(agentId, startTime);
+    const trace = new (await import('@stratix/core')).ExecutionTrace(agentId, startTime);
 
     // Set context on agent
     (agent as AIAgent<TInput, TOutput>).setContext(context);
@@ -300,7 +300,7 @@ export class StratixAgentOrchestrator implements AgentOrchestrator {
     _context: AgentContext,
     startTime: Date
   ): Promise<AgentResult<TOutput>> {
-    const { AgentResult } = await import('@stratix/primitives');
+    const { AgentResult } = await import('@stratix/core');
 
     return AgentResult.failure<TOutput>(error, {
       model: agent.model.model,

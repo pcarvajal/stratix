@@ -38,9 +38,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stratix/primitives": "workspace:*",
-    "@stratix/abstractions": "workspace:*",
-    "@anthropic-ai/sdk": "^0.35.0"
+    "@anthropic-ai/sdk": "^0.35.0",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

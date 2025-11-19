@@ -1,5 +1,5 @@
 import type { QueryResult, QueryResultRow } from 'pg';
-import type { Repository } from '@stratix/abstractions';
+import type { Repository } from '@stratix/core';
 import type { PostgresConnection } from './PostgresConnection.js';
 import type { PostgresUnitOfWork } from './PostgresUnitOfWork.js';
 

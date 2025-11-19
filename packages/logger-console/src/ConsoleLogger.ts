@@ -1,5 +1,5 @@
-import type { Logger } from '@stratix/abstractions';
-import { LogLevel } from '@stratix/abstractions';
+import type { Logger } from '@stratix/core';
+import { LogLevel } from '@stratix/core';
 
 /**
  * ANSI color codes for terminal output.

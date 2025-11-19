@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { LogLevel } from '@stratix/abstractions';
+import { LogLevel } from '@stratix/core';
 import { ConsoleLogger } from '../ConsoleLogger.js';
 
 describe('ConsoleLogger', () => {

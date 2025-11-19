@@ -7,7 +7,7 @@ The Repository pattern provides an abstraction layer between the domain layer an
 A **Repository** is a collection-like interface for accessing domain objects. It provides methods to add, remove, and query aggregates without exposing persistence details to the domain layer.
 
 ```typescript
-import { Repository } from '@stratix/abstractions';
+import { Repository } from '@stratix/core';
 import { Product, ProductId } from '../entities/Product.js';
 
 export interface ProductRepository extends Repository<Product, ProductId> {
@@ -20,7 +20,7 @@ export interface ProductRepository extends Repository<Product, ProductId> {
 
 ## Repository Interface
 
-The base `Repository<T, ID>` interface from `@stratix/abstractions` requires only one method:
+The base `Repository<T, ID>` interface from `@stratix/core` requires only one method:
 
 ```typescript
 interface Repository<T, ID> {
@@ -70,7 +70,7 @@ src/
 
 ```typescript
 // src/domain/repositories/ProductRepository.ts
-import { Repository } from '@stratix/abstractions';
+import { Repository } from '@stratix/core';
 import { Product, ProductId } from '../entities/Product.js';
 
 export interface ProductRepository extends Repository<Product, ProductId> {
@@ -132,7 +132,7 @@ export class InMemoryProductRepository implements ProductRepository {
 import { Pool } from 'pg';
 import { ProductRepository } from '../../domain/repositories/ProductRepository.js';
 import { Product, ProductId } from '../../domain/entities/Product.js';
-import { EntityId } from '@stratix/primitives';
+import { EntityId } from '@stratix/core';
 
 export class PostgresProductRepository implements ProductRepository {
   constructor(private readonly pool: Pool) {}

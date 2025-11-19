@@ -165,7 +165,7 @@ type CreateProductInput = z.infer<typeof CreateProductSchema>;
 
 ```typescript
 import { z, validateOrThrow } from '@stratix/validation-zod';
-import type { Command } from '@stratix/abstractions';
+import type { Command } from '@stratix/core';
 
 const CreateUserInputSchema = z.object({
   name: z.string(),

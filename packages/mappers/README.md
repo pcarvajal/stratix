@@ -51,7 +51,7 @@ Use mapper functions for complex transformations:
 ```typescript
 import { Mapper } from '@stratix/mappers';
 import { Product } from './domain/entities/Product.js';
-import { Money } from '@stratix/primitives';
+import { Money } from '@stratix/core';
 
 interface ProductDTO {
   id: string;

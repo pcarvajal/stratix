@@ -18,7 +18,7 @@ A **Value Object** is defined by its attributes, not by an identity. Two value o
 ### Basic Value Object
 
 ```typescript
-import { ValueObject } from '@stratix/primitives';
+import { ValueObject } from '@stratix/core';
 
 interface EmailProps {
   value: string;
@@ -80,7 +80,7 @@ Stratix provides production-ready value objects with validation and rich behavio
 Monetary values with currency support and arithmetic operations.
 
 ```typescript
-import { Money, Currency } from '@stratix/primitives';
+import { Money, Currency } from '@stratix/core';
 
 const price = Money.create(99.99, Currency.USD);
 const tax = Money.create(10.00, Currency.USD);
@@ -103,7 +103,7 @@ const mixed = usd.add(eur); // Throws error: Cannot add EUR to USD
 ISO 4217 currency codes with metadata.
 
 ```typescript
-import { Currency } from '@stratix/primitives';
+import { Currency } from '@stratix/core';
 
 console.log(Currency.USD.code); // "USD"
 console.log(Currency.USD.symbol); // "$"
@@ -119,7 +119,7 @@ console.log(Currency.JPY.decimalPlaces); // 0
 Email address validation with domain extraction.
 
 ```typescript
-import { Email } from '@stratix/primitives';
+import { Email } from '@stratix/core';
 
 const email = Email.create('user@example.com');
 console.log(email.value); // 'user@example.com'
@@ -135,7 +135,7 @@ Email.create('invalid-email'); // Throws validation error
 International phone numbers with country calling codes.
 
 ```typescript
-import { PhoneNumber } from '@stratix/primitives';
+import { PhoneNumber } from '@stratix/core';
 
 const phone = PhoneNumber.create('+1', '4155552671');
 console.log(phone.format()); // "+1 415-555-2671"
@@ -148,7 +148,7 @@ console.log(phone.nationalNumber); // "4155552671"
 URL validation and parsing.
 
 ```typescript
-import { URL } from '@stratix/primitives';
+import { URL } from '@stratix/core';
 
 const url = URL.create('https://example.com/path?query=value');
 console.log(url.protocol); // "https"
@@ -162,7 +162,7 @@ console.log(url.queryString); // "query=value"
 UUID v4 generation and validation.
 
 ```typescript
-import { UUID } from '@stratix/primitives';
+import { UUID } from '@stratix/core';
 
 const id = UUID.generate();
 console.log(id.value); // "550e8400-e29b-41d4-a716-446655440000"
@@ -177,7 +177,7 @@ console.log(UUID.isValid('invalid')); // false
 Date ranges with overlap detection and duration calculations.
 
 ```typescript
-import { DateRange } from '@stratix/primitives';
+import { DateRange } from '@stratix/core';
 
 const range = DateRange.create(
   new Date('2024-01-01'),
@@ -197,7 +197,7 @@ const nextWeek = DateRange.fromNow(7); // 7 days from today
 Percentage values with validation and conversion support.
 
 ```typescript
-import { Percentage } from '@stratix/primitives';
+import { Percentage } from '@stratix/core';
 
 const discountResult = Percentage.fromPercentage(15); // 15%
 if (discountResult.isSuccess) {
@@ -229,7 +229,7 @@ console.log(invalid.isFailure); // true
 Physical addresses with country support.
 
 ```typescript
-import { Address } from '@stratix/primitives';
+import { Address } from '@stratix/core';
 
 const address = Address.create({
   street: '123 Main St',
@@ -249,7 +249,7 @@ console.log(address.format()); // "123 Main St, San Francisco, CA 94105, US"
 Type-safe entity identifiers using phantom types.
 
 ```typescript
-import { EntityId } from '@stratix/primitives';
+import { EntityId } from '@stratix/core';
 
 type UserId = EntityId<'User'>;
 type OrderId = EntityId<'Order'>;
@@ -274,8 +274,8 @@ While Stratix provides many built-in value objects, you can create your own for 
 A price that includes tax calculations and discount support.
 
 ```typescript
-import { ValueObject } from '@stratix/primitives';
-import { Money, Currency, Percentage } from '@stratix/primitives';
+import { ValueObject } from '@stratix/core';
+import { Money, Currency, Percentage } from '@stratix/core';
 
 interface PriceProps {
   baseAmount: Money;

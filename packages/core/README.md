@@ -1,11 +1,17 @@
-# @stratix/primitives
+# @stratix/core
 
-Building blocks for domain-driven design in TypeScript.
+Core package for Stratix framework - DDD primitives, abstractions, and interfaces.
+
+This package combines:
+- **Domain Primitives**: Entity, AggregateRoot, ValueObject, Result Pattern
+- **Abstractions**: Container, CQRS interfaces, Infrastructure interfaces
+- **Plugin & Module System**: Plugin and ContextModule interfaces
+- **AI Agents**: AI agent primitives and abstractions
 
 ## Installation
 
 ```bash
-pnpm add @stratix/primitives
+pnpm add @stratix/core
 ```
 
 ## What's Included
@@ -44,7 +50,7 @@ pnpm add @stratix/primitives
 ## Quick Example
 
 ```typescript
-import { Entity, EntityId } from '@stratix/primitives';
+import { Entity, EntityId } from '@stratix/core';
 
 type UserId = EntityId<'User'>;
 
@@ -70,7 +76,7 @@ const user = new User(userId, 'user@example.com', 'John');
 ## Result Pattern
 
 ```typescript
-import { Result, Success, Failure } from '@stratix/primitives';
+import { Result, Success, Failure } from '@stratix/core';
 
 function divide(a: number, b: number): Result<number> {
   if (b === 0) {
@@ -97,8 +103,8 @@ import {
   AgentVersionFactory,
   EntityId,
   type ModelConfig,
-} from '@stratix/primitives';
-import type { LLMProvider } from '@stratix/abstractions';
+} from '@stratix/core';
+import type { LLMProvider } from '@stratix/core';
 
 class MyAgent extends AIAgent<InputType, OutputType> {
   readonly name = 'My Agent';
@@ -135,7 +141,7 @@ class MyAgent extends AIAgent<InputType, OutputType> {
 ### Money and Currency
 
 ```typescript
-import { Money, Currency } from '@stratix/primitives';
+import { Money, Currency } from '@stratix/core';
 
 // Using factory methods (recommended)
 const price = Money.USD(99.99);
@@ -158,7 +164,7 @@ console.log(Currency.EUR.symbol); // "€"
 ### Email and URL
 
 ```typescript
-import { Email, URL } from '@stratix/primitives';
+import { Email, URL } from '@stratix/core';
 
 const email = Email.create('user@example.com');
 console.log(email.domain); // "example.com"
@@ -170,7 +176,7 @@ console.log(url.protocol); // "https"
 ### PhoneNumber with Country Codes
 
 ```typescript
-import { PhoneNumber } from '@stratix/primitives';
+import { PhoneNumber } from '@stratix/core';
 
 const phoneResult = PhoneNumber.create('+14155552671');
 if (phoneResult.isSuccess) {
@@ -183,7 +189,7 @@ if (phoneResult.isSuccess) {
 ### Date Ranges and Percentages
 
 ```typescript
-import { DateRange, Percentage } from '@stratix/primitives';
+import { DateRange, Percentage } from '@stratix/core';
 
 const rangeResult = DateRange.create(
   new Date('2024-01-01'),
@@ -203,7 +209,7 @@ if (discountResult.isSuccess) {
 ### UUID Generation
 
 ```typescript
-import { UUID } from '@stratix/primitives';
+import { UUID } from '@stratix/core';
 
 const id = UUID.generate();
 console.log(id.value); // "550e8400-e29b-41d4-a716-446655440000"

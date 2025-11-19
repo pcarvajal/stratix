@@ -1,5 +1,5 @@
 import type { MongoClient, ClientSession } from 'mongodb';
-import type { UnitOfWork } from '@stratix/abstractions';
+import type { UnitOfWork } from '@stratix/core';
 
 /**
  * MongoDB Unit of Work implementation

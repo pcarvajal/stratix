@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { Plugin, PluginMetadata } from '@stratix/abstractions';
+import type { Plugin, PluginMetadata } from '@stratix/core';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
 import {
   DuplicatePluginError,

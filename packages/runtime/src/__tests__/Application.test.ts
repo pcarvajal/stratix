@@ -5,8 +5,8 @@ import type {
   Plugin,
   PluginMetadata,
   HealthCheckResult,
-} from '@stratix/abstractions';
-import { HealthStatus } from '@stratix/abstractions';
+} from '@stratix/core';
+import { HealthStatus } from '@stratix/core';
 import { ApplicationBuilder } from '../builder/ApplicationBuilder.js';
 import { LifecyclePhase } from '../lifecycle/LifecycleManager.js';
 

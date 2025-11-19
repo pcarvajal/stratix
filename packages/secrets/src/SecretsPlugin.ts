@@ -3,8 +3,8 @@ import type {
   PluginMetadata,
   PluginContext,
   HealthCheckResult,
-} from '@stratix/abstractions';
-import { HealthStatus, ServiceLifetime } from '@stratix/abstractions';
+} from '@stratix/core';
+import { HealthStatus, ServiceLifetime } from '@stratix/core';
 import { SecretsManager } from './SecretsManager.js';
 
 /**

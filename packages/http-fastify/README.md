@@ -181,7 +181,7 @@ httpPlugin.route({
 ### Integration with CQRS
 
 ```typescript
-import { CommandBus } from '@stratix/abstractions';
+import { CommandBus } from '@stratix/core';
 import { CreateProductCommand } from './commands/CreateProduct';
 
 httpPlugin.post('/products', async (request) => {

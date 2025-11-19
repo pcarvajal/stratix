@@ -8,7 +8,7 @@ import {
   AgentCapabilities,
   type AgentCapability,
   type ModelConfig,
-} from '@stratix/primitives';
+} from '@stratix/core';
 
 // Test agent implementation
 class TestAgent extends AIAgent<{ input: string }, { output: string }> {

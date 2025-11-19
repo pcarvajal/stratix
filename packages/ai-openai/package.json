@@ -39,9 +39,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stratix/primitives": "workspace:*",
-    "@stratix/abstractions": "workspace:*",
-    "openai": "^4.75.0"
+    "openai": "^4.75.0",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -1,5 +1,5 @@
-import type { Result } from '@stratix/primitives';
-import { Success, Failure } from '@stratix/primitives';
+import type { Result } from '@stratix/core';
+import { Success, Failure } from '@stratix/core';
 import type { Schema, ValidationResult } from './types.js';
 import { ZodValidator } from './ZodValidator.js';
 import { ValidationErrorException } from './ValidationError.js';

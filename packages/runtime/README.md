@@ -48,7 +48,7 @@ Plugins follow a three-phase lifecycle:
 3. **Stop** - Gracefully shutdown in reverse order
 
 ```typescript
-import type { Plugin, PluginContext } from '@stratix/abstractions';
+import type { Plugin, PluginContext } from '@stratix/core';
 
 class DatabasePlugin implements Plugin {
   readonly metadata = {

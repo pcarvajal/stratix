@@ -22,7 +22,7 @@ Layer 1: Primitives (DDD Building Blocks, AI Agents)
 
 ## Layer 1: Primitives
 
-**Package:** `@stratix/primitives`
+**Package:** `@stratix/core`
 
 Foundation types and base classes for Domain-Driven Design and AI Agents.
 
@@ -55,7 +55,7 @@ AI Agents as first-class domain entities.
 
 ## Layer 2: Abstractions
 
-**Package:** `@stratix/abstractions`
+**Package:** `@stratix/core`
 
 Pure TypeScript interfaces with zero runtime code. Defines contracts for all framework components following Dependency Inversion Principle.
 

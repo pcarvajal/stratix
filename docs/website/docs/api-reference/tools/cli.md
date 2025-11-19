@@ -143,8 +143,8 @@ stratix g entity Customer --props "name:string,email:string" --no-aggregate
 
 ```typescript
 // src/domain/entities/Product.ts
-import { AggregateRoot } from '@stratix/primitives';
-import { EntityId } from '@stratix/primitives';
+import { AggregateRoot } from '@stratix/core';
+import { EntityId } from '@stratix/core';
 
 export class Product extends AggregateRoot<EntityId<'Product'>> {
   private constructor(
@@ -206,7 +206,7 @@ stratix g vo Address --props "street:string,city:string,zipCode:string"
 
 ```typescript
 // src/domain/value-objects/Money.ts
-import { ValueObject } from '@stratix/primitives';
+import { ValueObject } from '@stratix/core';
 
 interface MoneyProps {
   amount: number;
@@ -285,8 +285,8 @@ export class CreateOrder {
 
 ```typescript
 // src/application/commands/CreateOrderHandler.ts
-import type { CommandHandler } from '@stratix/abstractions';
-import { Result } from '@stratix/primitives';
+import type { CommandHandler } from '@stratix/core';
+import { Result } from '@stratix/core';
 import { CreateOrder } from './CreateOrder.js';
 
 export class CreateOrderHandler implements CommandHandler<CreateOrder, void> {
@@ -344,8 +344,8 @@ export class GetProductById {
 
 ```typescript
 // src/application/queries/GetProductByIdHandler.ts
-import type { QueryHandler } from '@stratix/abstractions';
-import { Result } from '@stratix/primitives';
+import type { QueryHandler } from '@stratix/core';
+import { Result } from '@stratix/core';
 import { GetProductById } from './GetProductById.js';
 
 export class GetProductByIdHandler implements QueryHandler<GetProductById, Product> {
@@ -390,7 +390,7 @@ stratix g repo Order --no-implementation
 
 ```typescript
 // src/domain/repositories/ProductRepository.ts
-import type { Repository } from '@stratix/abstractions';
+import type { Repository } from '@stratix/core';
 import type { Product } from '../entities/Product.js';
 import type { ProductId } from '../entities/Product.js';
 
@@ -469,7 +469,7 @@ stratix g eh OrderPlaced --handler NotifyCustomerHandler
 
 ```typescript
 // src/application/event-handlers/ProductCreatedHandler.ts
-import type { DomainEventHandler } from '@stratix/abstractions';
+import type { DomainEventHandler } from '@stratix/core';
 import type { ProductCreated } from '../../domain/events/ProductCreated.js';
 
 export class ProductCreatedHandler implements DomainEventHandler<ProductCreated> {
@@ -521,7 +521,7 @@ stratix g plugin Cache --no-health-check
 
 ```typescript
 // src/plugins/PaymentPlugin.ts
-import type { Plugin, PluginContext, HealthCheckResult } from '@stratix/abstractions';
+import type { Plugin, PluginContext, HealthCheckResult } from '@stratix/core';
 
 export interface PaymentPluginOptions {
   // Add your plugin configuration options here
@@ -676,8 +676,8 @@ Environment:
   Node Version: v20.10.0
 
 Stratix Packages:
-  @stratix/primitives@0.1.3
-  @stratix/abstractions@0.1.3
+  @stratix/core@0.1.3
+  @stratix/core@0.1.3
   @stratix/runtime@0.1.3
   @stratix/di-awilix@0.1.3
   @stratix/http-fastify@0.1.3

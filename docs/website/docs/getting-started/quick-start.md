@@ -210,7 +210,7 @@ Stratix treats **AI agents as domain entities**, not service wrappers. Build int
 ### AI Agents as Domain Entities
 
 ```typescript
-import { AIAgent, AgentResult, AgentContext } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 class CustomerSupportAgent extends AIAgent<SupportTicket, SupportResponse> {
@@ -357,7 +357,7 @@ stratix g plugin PaymentProcessor
 
 **Basic plugin structure:**
 ```typescript
-import { Plugin, PluginContext } from '@stratix/abstractions';
+import { Plugin, PluginContext } from '@stratix/core';
 
 export class PaymentProcessorPlugin implements Plugin {
   name = 'payment-processor';
@@ -461,7 +461,7 @@ cd my-shop
 Create `src/domain/entities/Product.ts`:
 
 ```typescript
-import { AggregateRoot, EntityId } from '@stratix/primitives';
+import { AggregateRoot, EntityId } from '@stratix/core';
 
 export type ProductId = EntityId<'Product'>;
 
@@ -537,7 +537,7 @@ First, create a domain event for when stock is decreased:
 
 ```typescript
 // src/domain/events/ProductStockDecreasedEvent.ts
-import { DomainEvent } from '@stratix/primitives';
+import { DomainEvent } from '@stratix/core';
 import { ProductId } from '../entities/Product.js';
 
 export class ProductStockDecreasedEvent implements DomainEvent {
@@ -588,8 +588,8 @@ export class Product extends AggregateRoot<'Product'> {
 Create `src/application/commands/CreateProduct.ts`:
 
 ```typescript
-import { Command, CommandHandler } from '@stratix/abstractions';
-import { Result, Success, Failure } from '@stratix/primitives';
+import { Command, CommandHandler } from '@stratix/core';
+import { Result, Success, Failure } from '@stratix/core';
 import { Product, ProductId } from '../../domain/entities/Product.js';
 import { ProductRepository } from '../../domain/repositories/ProductRepository.js';
 
@@ -631,7 +631,7 @@ export class CreateProductHandler implements CommandHandler<CreateProduct, Resul
 Create `src/domain/repositories/ProductRepository.ts`:
 
 ```typescript
-import { Repository } from '@stratix/abstractions';
+import { Repository } from '@stratix/core';
 import { Product, ProductId } from '../entities/Product.js';
 
 export interface ProductRepository extends Repository<Product, ProductId> {

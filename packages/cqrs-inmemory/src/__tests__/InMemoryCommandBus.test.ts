@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import type { Command } from '@stratix/abstractions';
+import type { Command } from '@stratix/core';
 import { InMemoryCommandBus } from '../InMemoryCommandBus.js';
 
 // Test commands

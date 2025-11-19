@@ -1,4 +1,4 @@
-import type { Container, Logger, Plugin, ContextModule } from '@stratix/abstractions';
+import type { Container, Logger, Plugin, ContextModule } from '@stratix/core';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
 import { ModuleRegistry } from '../module/ModuleRegistry.js';
 import { LifecycleManager } from '../lifecycle/LifecycleManager.js';

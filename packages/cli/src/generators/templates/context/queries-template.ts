@@ -3,7 +3,7 @@ import type { TemplateData } from '../../../types/index.js';
 export const getByIdQueryTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import type { Query } from '@stratix/abstractions';
+  return `import type { Query } from '@stratix/core';
 
 export interface Get${entityName}ByIdData {
   id: string;
@@ -18,8 +18,8 @@ export class Get${entityName}ById implements Query {
 export const getByIdQueryHandlerTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import type { QueryHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result, EntityId } from '@stratix/primitives';
+  return `import type { QueryHandler } from '@stratix/core';
+import { Success, Failure, type Result, EntityId } from '@stratix/core';
 import { Get${entityName}ById } from './Get${entityName}ById.js';
 import type { ${entityName} } from '../../domain/entities/${entityName}.js';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';
@@ -46,7 +46,7 @@ export class Get${entityName}ByIdHandler implements QueryHandler<Get${entityName
 export const listQueryTemplate = (data: TemplateData): string => {
   const { entityNamePlural } = data;
 
-  return `import type { Query } from '@stratix/abstractions';
+  return `import type { Query } from '@stratix/core';
 
 export class List${entityNamePlural} implements Query {
   constructor(public readonly data: Record<string, never> = {}) {}
@@ -57,8 +57,8 @@ export class List${entityNamePlural} implements Query {
 export const listQueryHandlerTemplate = (data: TemplateData): string => {
   const { entityName, entityNamePlural } = data;
 
-  return `import type { QueryHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result } from '@stratix/primitives';
+  return `import type { QueryHandler } from '@stratix/core';
+import { Success, Failure, type Result } from '@stratix/core';
 import { List${entityNamePlural} } from './List${entityNamePlural}.js';
 import type { ${entityName} } from '../../domain/entities/${entityName}.js';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';

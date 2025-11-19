@@ -17,8 +17,8 @@ export const packageJsonTemplate = (data: ProjectTemplateData): string => `{
     "format": "prettier --write \\"src/**/*.ts\\""
   },
   "dependencies": {
-    "@stratix/primitives": "^0.1.5",
-    "@stratix/abstractions": "^0.1.5",
+    "@stratix/core": "^0.1.5",
+    "@stratix/core": "^0.1.5",
     "@stratix/runtime": "^0.1.5",
     "@stratix/di-awilix": "^0.1.5",
     "@stratix/logger-console": "^0.1.5",

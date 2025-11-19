@@ -17,12 +17,12 @@ Common issues and solutions when working with Stratix AI Agent Framework.
 
 ## Installation Issues
 
-### Error: Cannot find module '@stratix/primitives'
+### Error: Cannot find module '@stratix/core'
 
 **Symptoms:**
 
 ```
-Error: Cannot find module '@stratix/primitives'
+Error: Cannot find module '@stratix/core'
 ```
 
 **Cause:** Package not installed or workspace not linked properly.
@@ -48,14 +48,14 @@ pnpm install
 ```
 WARN  Issues with peer dependencies found
 ├─┬ @stratix/ai-runtime
-│ └── ✕ missing peer @stratix/primitives@^0.1.0
+│ └── ✕ missing peer @stratix/core@^0.1.0
 ```
 
 **Solution:**
 
 ```bash
 # Install all peer dependencies
-pnpm add @stratix/primitives @stratix/abstractions
+pnpm add @stratix/core @stratix/core
 
 # Or use --force to override
 pnpm install --force
@@ -66,7 +66,7 @@ pnpm install --force
 **Symptoms:**
 
 ```
-error TS2307: Cannot find module '@stratix/primitives' or its corresponding type declarations.
+error TS2307: Cannot find module '@stratix/core' or its corresponding type declarations.
 ```
 
 **Solution:**

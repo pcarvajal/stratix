@@ -38,7 +38,7 @@
     "directory": "packages/mappers"
   },
   "dependencies": {
-    "@stratix/primitives": "workspace:*"
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

@@ -1,4 +1,4 @@
-import type { AIAgent, AgentResult, AgentContext } from '@stratix/primitives';
+import type { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import { MockLLMProvider } from './MockLLMProvider.js';
 
 /**

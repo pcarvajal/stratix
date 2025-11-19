@@ -1,5 +1,5 @@
-import { AgentContext, EntityId } from '@stratix/primitives';
-import type { AgentId } from '@stratix/primitives';
+import { AgentContext, EntityId } from '@stratix/core';
+import type { AgentId } from '@stratix/core';
 
 /**
  * Helper functions for creating test data

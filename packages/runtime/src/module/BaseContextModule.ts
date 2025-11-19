@@ -9,7 +9,7 @@ import {
   HealthCheckResult,
   HealthStatus,
   ServiceLifetime,
-} from '@stratix/abstractions';
+} from '@stratix/core';
 
 /**
  * Base implementation for domain modules.

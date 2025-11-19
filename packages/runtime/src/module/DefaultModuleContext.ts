@@ -1,4 +1,4 @@
-import type { Container, Logger, ModuleContext } from '@stratix/abstractions';
+import type { Container, Logger, ModuleContext } from '@stratix/core';
 
 /**
  * Default implementation of ModuleContext.

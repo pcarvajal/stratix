@@ -26,8 +26,8 @@
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@stratix/abstractions": "workspace:*",
-    "awilix": "^10.0.2"
+    "awilix": "^10.0.2",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

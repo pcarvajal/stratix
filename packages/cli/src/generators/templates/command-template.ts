@@ -3,7 +3,7 @@ import type { TemplateData } from '../../types/index.js';
 export const commandTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
 
-  return `import type { Command } from '@stratix/abstractions';
+  return `import type { Command } from '@stratix/core';
 
 export interface ${entityName}Command {
 ${props.map(p => `  ${p.name}: ${p.type};`).join('\n')}
@@ -18,8 +18,8 @@ export class ${entityName} implements Command {
 export const commandHandlerTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import type { CommandHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result } from '@stratix/primitives';
+  return `import type { CommandHandler } from '@stratix/core';
+import { Success, Failure, type Result } from '@stratix/core';
 import { ${entityName} } from './${entityName}.js';
 
 export class ${entityName}Handler implements CommandHandler<${entityName}, Result<void, Error>> {

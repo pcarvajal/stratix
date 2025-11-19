@@ -1,5 +1,5 @@
 import type { Collection, Document, Filter, FindOptions, UpdateFilter, ObjectId } from 'mongodb';
-import type { Repository } from '@stratix/abstractions';
+import type { Repository } from '@stratix/core';
 import type { MongoConnection } from './MongoConnection.js';
 import type { MongoUnitOfWork } from './MongoUnitOfWork.js';
 

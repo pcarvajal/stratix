@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ServiceLifetime } from '@stratix/abstractions';
+import { ServiceLifetime } from '@stratix/core';
 import { AwilixContainer } from '../AwilixContainer.js';
 
 describe('AwilixContainer', () => {

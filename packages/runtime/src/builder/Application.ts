@@ -1,5 +1,5 @@
-import type { Container, Plugin, HealthCheckResult } from '@stratix/abstractions';
-import { HealthStatus } from '@stratix/abstractions';
+import type { Container, Plugin, HealthCheckResult } from '@stratix/core';
+import { HealthStatus } from '@stratix/core';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
 import { ModuleRegistry } from '../module/ModuleRegistry.js';
 import { LifecycleManager, LifecyclePhase } from '../lifecycle/LifecycleManager.js';

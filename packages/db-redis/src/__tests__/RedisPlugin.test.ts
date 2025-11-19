@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { RedisPlugin } from '../RedisPlugin.js';
-import { HealthStatus } from '@stratix/abstractions';
-import type { PluginContext } from '@stratix/abstractions';
+import { HealthStatus } from '@stratix/core';
+import type { PluginContext } from '@stratix/core';
 
 // Create mocks
 const mockClient = {

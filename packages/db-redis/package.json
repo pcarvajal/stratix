@@ -31,8 +31,8 @@
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@stratix/abstractions": "workspace:*",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

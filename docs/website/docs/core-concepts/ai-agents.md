@@ -35,8 +35,8 @@ class CustomerSupportAgent extends AIAgent<Ticket, Response> {
 All agents extend `AIAgent<TInput, TOutput>`:
 
 ```typescript
-import { AIAgent, AgentResult, AgentVersionFactory, EntityId } from '@stratix/primitives';
-import { LLMProvider } from '@stratix/abstractions';
+import { AIAgent, AgentResult, AgentVersionFactory, EntityId } from '@stratix/core';
+import { LLMProvider } from '@stratix/core';
 
 class MyAgent extends AIAgent<InputType, OutputType> {
   readonly name = 'My Agent';
@@ -236,7 +236,7 @@ for (const execution of executions) {
 Agents can use tools for function calling:
 
 ```typescript
-import { StratixTool } from '@stratix/primitives';
+import { StratixTool } from '@stratix/core';
 import { z } from 'zod';
 
 const SearchInputSchema = z.object({

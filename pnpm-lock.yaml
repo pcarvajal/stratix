@@ -73,36 +73,14 @@ importers:
         specifier: ~5.6.2
         version: 5.6.3
 
-  packages/abstractions:
-    dependencies:
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.24
-      eslint:
-        specifier: ^8.0.0
-        version: 8.57.1
-      typescript:
-        specifier: ^5.3.0
-        version: 5.9.3
-      vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
-
   packages/ai-anthropic:
     dependencies:
       '@anthropic-ai/sdk':
         specifier: ^0.35.0
         version: 0.35.0
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -119,12 +97,9 @@ importers:
 
   packages/ai-openai:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       openai:
         specifier: ^4.75.0
         version: 4.104.0(ws@8.18.3)(zod@3.25.76)
@@ -144,12 +119,9 @@ importers:
 
   packages/ai-runtime:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -166,12 +138,9 @@ importers:
 
   packages/auth:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       '@stratix/runtime':
         specifier: workspace:*
         version: link:../runtime
@@ -200,12 +169,9 @@ importers:
 
   packages/cli:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       chalk:
         specifier: ^5.3.0
         version: 5.6.2
@@ -247,11 +213,26 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
 
+  packages/core:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.24
+      eslint:
+        specifier: ^8.0.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
+
   packages/cqrs-inmemory:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^20.10.0
@@ -265,12 +246,9 @@ importers:
 
   packages/db-mongodb:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       mongodb:
         specifier: ^6.10.0
         version: 6.20.0
@@ -284,12 +262,9 @@ importers:
 
   packages/db-postgres:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       pg:
         specifier: ^8.13.1
         version: 8.16.3
@@ -306,9 +281,9 @@ importers:
 
   packages/db-redis:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
       redis:
         specifier: ^4.7.0
         version: 4.7.1
@@ -322,9 +297,9 @@ importers:
 
   packages/di-awilix:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
       awilix:
         specifier: ^10.0.2
         version: 10.0.2
@@ -341,9 +316,9 @@ importers:
 
   packages/errors:
     dependencies:
-      '@stratix/primitives':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -360,12 +335,9 @@ importers:
       '@fastify/cors':
         specifier: ^10.0.1
         version: 10.1.0
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       '@stratix/runtime':
         specifier: workspace:*
         version: link:../runtime
@@ -385,9 +357,9 @@ importers:
 
   packages/logger-console:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^20.10.0
@@ -401,9 +373,9 @@ importers:
 
   packages/mappers:
     dependencies:
-      '@stratix/primitives':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -417,12 +389,9 @@ importers:
 
   packages/migrations:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       '@stratix/runtime':
         specifier: workspace:*
         version: link:../runtime
@@ -439,9 +408,9 @@ importers:
 
   packages/msg-rabbitmq:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
       amqplib:
         specifier: ^0.10.4
         version: 0.10.9
@@ -476,9 +445,9 @@ importers:
       '@opentelemetry/sdk-node':
         specifier: ^0.53.0
         version: 0.53.0(@opentelemetry/api@1.9.0)
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -487,26 +456,11 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@22.19.0)(terser@5.44.0)
 
-  packages/primitives:
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.24
-      eslint:
-        specifier: ^8.0.0
-        version: 8.57.1
-      typescript:
-        specifier: ^5.3.0
-        version: 5.9.3
-      vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.24)(terser@5.44.0)
-
   packages/runtime:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -523,9 +477,9 @@ importers:
 
   packages/secrets:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -536,18 +490,15 @@ importers:
 
   packages/testing:
     dependencies:
-      '@stratix/abstractions':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../abstractions
+        version: link:../core
       '@stratix/di-awilix':
         specifier: workspace:*
         version: link:../di-awilix
       '@stratix/logger-console':
         specifier: workspace:*
         version: link:../logger-console
-      '@stratix/primitives':
-        specifier: workspace:*
-        version: link:../primitives
       '@stratix/runtime':
         specifier: workspace:*
         version: link:../runtime
@@ -564,9 +515,9 @@ importers:
 
   packages/validation-zod:
     dependencies:
-      '@stratix/primitives':
+      '@stratix/core':
         specifier: workspace:*
-        version: link:../primitives
+        version: link:../core
       zod:
         specifier: ^3.24.1
         version: 3.25.76

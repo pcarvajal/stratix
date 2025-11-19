@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import type { Query } from '@stratix/abstractions';
+import type { Query } from '@stratix/core';
 import { InMemoryQueryBus } from '../InMemoryQueryBus.js';
 
 // Test queries

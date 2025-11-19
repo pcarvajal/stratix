@@ -1,4 +1,5 @@
-import type { AIAgent, AgentId, AgentCapability } from '@stratix/primitives';
+import type { AIAgent } from './AIAgent.js';
+import type { AgentId, AgentCapability } from './types.js';
 
 /**
  * Repository for persisting and retrieving AI agents.

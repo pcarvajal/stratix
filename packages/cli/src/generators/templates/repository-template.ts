@@ -2,7 +2,7 @@ import { NamingUtils } from '../../utils/naming.js';
 
 export function generateRepositoryInterface(entityName: string): string {
 
-  return `import type { EntityId } from '@stratix/primitives';
+  return `import type { EntityId } from '@stratix/core';
 import type { ${entityName} } from '../entities/${entityName}.js';
 
 export interface ${entityName}Repository {
@@ -17,7 +17,7 @@ export interface ${entityName}Repository {
 export function generateInMemoryRepository(entityName: string): string {
   const entityCamel = NamingUtils.toCamelCase(entityName);
 
-  return `import type { EntityId } from '@stratix/primitives';
+  return `import type { EntityId } from '@stratix/core';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';
 import type { ${entityName} } from '../../domain/entities/${entityName}.js';
 

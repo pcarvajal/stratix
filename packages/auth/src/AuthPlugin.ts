@@ -4,7 +4,7 @@ import type {
   HealthCheckResult,
   PluginMetadata,
   HealthStatus,
-} from '@stratix/abstractions';
+} from '@stratix/core';
 import type { AuthPluginOptions } from './types.js';
 import { JWTService } from './jwt/JWTService.js';
 import { BcryptPasswordHasher } from './jwt/PasswordHasher.js';

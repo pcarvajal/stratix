@@ -1,4 +1,4 @@
-import type { Query, QueryBus, QueryHandler } from '@stratix/abstractions';
+import type { Query, QueryBus, QueryHandler } from '@stratix/core';
 
 /**
  * In-memory query bus implementation.

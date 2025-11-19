@@ -1,4 +1,4 @@
-import type { Event, EventBus, EventHandler } from '@stratix/abstractions';
+import type { Event, EventBus, EventHandler } from '@stratix/core';
 
 /**
  * In-memory event bus implementation.

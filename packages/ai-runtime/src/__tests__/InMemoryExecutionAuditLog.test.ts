@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { InMemoryExecutionAuditLog } from '../InMemoryExecutionAuditLog.js';
-import { EntityId, ExecutionTrace } from '@stratix/primitives';
-import type { AgentId, AgentExecutionMetadata } from '@stratix/primitives';
-import type { AgentExecution } from '@stratix/abstractions';
+import { EntityId, ExecutionTrace } from '@stratix/core';
+import type { AgentId, AgentExecutionMetadata } from '@stratix/core';
+import type { AgentExecution } from '@stratix/core';
 
 // Helper to create test executions
 function createExecution(

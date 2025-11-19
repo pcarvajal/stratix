@@ -9,7 +9,7 @@ An **Entity** is an object with a unique identity that persists over time. Two e
 ### Example: User Entity
 
 ```typescript
-import { Entity, EntityId } from '@stratix/primitives';
+import { Entity, EntityId } from '@stratix/core';
 
 type UserId = EntityId<'User'>;
 
@@ -83,7 +83,7 @@ An **Aggregate** is a cluster of domain objects (entities and value objects) tha
 ### Example: Order Aggregate
 
 ```typescript
-import { AggregateRoot, Entity, EntityId, DomainEvent } from '@stratix/primitives';
+import { AggregateRoot, Entity, EntityId, DomainEvent } from '@stratix/core';
 
 type OrderId = EntityId<'Order'>;
 type OrderItemId = EntityId<'OrderItem'>;
@@ -216,7 +216,7 @@ Aggregates emit **Domain Events** to communicate changes to other parts of the s
 ### Creating Domain Events
 
 ```typescript
-import { DomainEvent, EntityId } from '@stratix/primitives';
+import { DomainEvent, EntityId } from '@stratix/core';
 
 type OrderId = EntityId<'Order'>;
 
@@ -437,7 +437,7 @@ class OrderPlacedEventHandler {
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { EntityId } from '@stratix/primitives';
+import { EntityId } from '@stratix/core';
 
 describe('Order', () => {
   it('should create a draft order', () => {

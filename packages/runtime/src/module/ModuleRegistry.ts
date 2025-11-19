@@ -1,4 +1,4 @@
-import type { ContextModule } from '@stratix/abstractions';
+import type { ContextModule } from '@stratix/core';
 import { DependencyGraph } from '../graph/DependencyGraph.js';
 import { DuplicatePluginError } from '../errors/RuntimeError.js';
 

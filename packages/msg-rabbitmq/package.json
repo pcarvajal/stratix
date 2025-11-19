@@ -33,8 +33,8 @@
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@stratix/abstractions": "workspace:*",
-    "amqplib": "^0.10.4"
+    "amqplib": "^0.10.4",
+    "@stratix/core": "workspace:*"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.5",

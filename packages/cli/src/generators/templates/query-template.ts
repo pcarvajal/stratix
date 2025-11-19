@@ -3,7 +3,7 @@ import type { TemplateData } from '../../types/index.js';
 export const queryTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
 
-  return `import type { Query } from '@stratix/abstractions';
+  return `import type { Query } from '@stratix/core';
 
 export interface ${entityName}Query {
 ${props.map(p => `  ${p.name}: ${p.type};`).join('\n')}
@@ -25,8 +25,8 @@ export const queryHandlerTemplate = (data: TemplateData, outputType: string): st
     ? `\n// TODO: Define or import ${baseTypeName} type\ntype ${baseTypeName} = unknown;\n` 
     : '';
 
-  return `import type { QueryHandler } from '@stratix/abstractions';
-import { Success, Failure, type Result } from '@stratix/primitives';
+  return `import type { QueryHandler } from '@stratix/core';
+import { Success, Failure, type Result } from '@stratix/core';
 import { ${entityName} } from './${entityName}.js';
 ${typeDefinition}
 export class ${entityName}Handler implements QueryHandler<${entityName}, Result<${outputType}, Error>> {

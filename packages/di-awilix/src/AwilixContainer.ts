@@ -1,5 +1,5 @@
-import type { Container, Token, Factory, RegisterOptions } from '@stratix/abstractions';
-import { ServiceLifetime } from '@stratix/abstractions';
+import type { Container, Token, Factory, RegisterOptions } from '@stratix/core';
+import { ServiceLifetime } from '@stratix/core';
 import * as awilix from 'awilix';
 
 /**

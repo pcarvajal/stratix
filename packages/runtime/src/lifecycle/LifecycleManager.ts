@@ -1,5 +1,5 @@
-import type { Plugin, PluginContext, ContextModule, Container, Logger } from '@stratix/abstractions';
-import { ServiceLifetime } from '@stratix/abstractions';
+import type { Plugin, PluginContext, ContextModule, Container, Logger } from '@stratix/core';
+import { ServiceLifetime } from '@stratix/core';
 import { PluginRegistry } from '../registry/PluginRegistry.js';
 import { ModuleRegistry } from '../module/ModuleRegistry.js';
 import { DefaultModuleContext } from '../module/DefaultModuleContext.js';

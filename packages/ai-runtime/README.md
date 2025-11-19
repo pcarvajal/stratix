@@ -33,7 +33,7 @@ import {
   InMemoryAgentRepository,
   InMemoryExecutionAuditLog,
 } from '@stratix/ai-runtime';
-import { AIAgent, AgentContext } from '@stratix/primitives';
+import { AIAgent, AgentContext } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 // Create dependencies

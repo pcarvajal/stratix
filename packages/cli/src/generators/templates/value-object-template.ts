@@ -4,7 +4,7 @@ export const valueObjectTemplate = (data: TemplateData): string => {
   const { entityName, props } = data;
   const hasProps = props.length > 0;
 
-  return `import { ValueObject } from '@stratix/primitives';
+  return `import { ValueObject } from '@stratix/core';
 
 export class ${entityName} extends ValueObject {
   private constructor(

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import type { Container, Logger, Plugin, PluginMetadata } from '@stratix/abstractions';
+import type { Container, Logger, Plugin, PluginMetadata } from '@stratix/core';
 import { ApplicationBuilder } from '../builder/ApplicationBuilder.js';
 
 describe('ApplicationBuilder', () => {

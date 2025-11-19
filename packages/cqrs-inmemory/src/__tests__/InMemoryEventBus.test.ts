@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import type { Event } from '@stratix/abstractions';
+import type { Event } from '@stratix/core';
 import { InMemoryEventBus } from '../InMemoryEventBus.js';
 
 // Test events

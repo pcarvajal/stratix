@@ -1,4 +1,4 @@
-import { Result } from '@stratix/primitives';
+import { Result } from '@stratix/core';
 
 /**
  * Assert that a Result is successful

@@ -4,8 +4,8 @@ export const entityTemplate = (data: TemplateData): string => {
   const { entityName, props, naming } = data;
   const hasProps = props.length > 0;
 
-  return `import { ${data.aggregate ? 'AggregateRoot' : 'Entity'} } from '@stratix/primitives';
-import { EntityId } from '@stratix/primitives';
+  return `import { ${data.aggregate ? 'AggregateRoot' : 'Entity'} } from '@stratix/core';
+import { EntityId } from '@stratix/core';
 
 export class ${entityName} extends ${data.aggregate ? 'AggregateRoot' : 'Entity'}<'${entityName}'> {
   private constructor(

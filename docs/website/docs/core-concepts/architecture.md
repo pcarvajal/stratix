@@ -10,8 +10,8 @@ Stratix is organized in 5 distinct layers:
 graph TD
     L5["Level 5: Extensions<br/>@stratix/db-postgres, @stratix/db-redis<br/>Complex plugins with external dependencies"] --> L4["Level 4: Basic Implementations<br/>@stratix/di-awilix, @stratix/impl-cqrs<br/>Simple, focused implementations"]
     L4 --> L3["Level 3: Runtime<br/>@stratix/runtime<br/>Plugin system, lifecycle, DI orchestration"]
-    L3 --> L2["Level 2: Abstractions<br/>@stratix/abstractions<br/>Interfaces only (zero runtime code)"]
-    L2 --> L1["Level 1: Primitives<br/>@stratix/primitives<br/>Building blocks (Entity, ValueObject, Result)"]
+    L3 --> L2["Level 2: Abstractions<br/>@stratix/core<br/>Interfaces only (zero runtime code)"]
+    L2 --> L1["Level 1: Primitives<br/>@stratix/core<br/>Building blocks (Entity, ValueObject, Result)"]
 
     style L5 fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
     style L4 fill:#60a5fa,stroke:#2563eb,stroke-width:2px,color:#fff

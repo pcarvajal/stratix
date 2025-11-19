@@ -35,9 +35,9 @@ This guide helps you migrate your LangChain applications to Stratix AI Agent Fra
 | -------------------------- | ---------------------------------------- |
 | `langchain/llms/openai`    | `@stratix/ai-openai`          |
 | `langchain/llms/anthropic` | `@stratix/ai-anthropic`       |
-| `langchain/chains`         | `@stratix/primitives` (AIAgent)          |
-| `langchain/tools`          | `@stratix/abstractions` (AgentTool)      |
-| `langchain/memory`         | `@stratix/primitives` (AgentMemory interface), `@stratix/ai-runtime` (InMemoryAgentMemory) |
+| `langchain/chains`         | `@stratix/core` (AIAgent)          |
+| `langchain/tools`          | `@stratix/core` (AgentTool)      |
+| `langchain/memory`         | `@stratix/core` (AgentMemory interface), `@stratix/ai-runtime` (InMemoryAgentMemory) |
 | `langchain/agents`         | `@stratix/ai-runtime` (Orchestrator) |
 
 ## Migration Examples
@@ -110,7 +110,7 @@ console.log(result.text);
 **Stratix:**
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
+import { AIAgent, AgentResult } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 interface CompanyNameInput {
@@ -203,8 +203,8 @@ console.log(result.output);
 **Stratix:**
 
 ```typescript
-import { AIAgent, AgentResult } from '@stratix/primitives';
-import { AgentTool } from '@stratix/abstractions';
+import { AIAgent, AgentResult } from '@stratix/core';
+import { AgentTool } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 // Define calculator tool
@@ -343,7 +343,7 @@ console.log(result2.response); // Should remember "John"
 **Stratix:**
 
 ```typescript
-import { AIAgent, AgentResult, AgentContext } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 
 class ConversationAgent extends AIAgent<{ input: string }, { response: string }> {
@@ -475,7 +475,7 @@ console.log(result.review);
 **Stratix:**
 
 ```typescript
-import { AIAgent, AgentResult, AgentContext } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import {
   StratixAgentOrchestrator,
   InMemoryAgentRepository,
@@ -584,7 +584,7 @@ if (synopsisResult.isSuccess()) {
 npm uninstall langchain
 
 # Install Stratix core packages
-npm install @stratix/primitives @stratix/abstractions @stratix/ai-runtime
+npm install @stratix/core @stratix/core @stratix/ai-runtime
 
 # Install provider
 npm install @stratix/ai-openai
@@ -608,7 +608,7 @@ import { PromptTemplate } from 'langchain/prompts';
 **After:**
 
 ```typescript
-import { AIAgent, AgentResult, AgentContext } from '@stratix/primitives';
+import { AIAgent, AgentResult, AgentContext } from '@stratix/core';
 import { OpenAIProvider } from '@stratix/ai-openai';
 import { StratixAgentOrchestrator } from '@stratix/ai-runtime';
 ```

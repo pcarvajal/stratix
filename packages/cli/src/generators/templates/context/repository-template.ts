@@ -3,9 +3,9 @@ import type { TemplateData } from '../../../types/index.js';
 export const repositoryInterfaceTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import type { Repository } from '@stratix/abstractions';
+  return `import type { Repository } from '@stratix/core';
 import type { ${entityName} } from '../entities/${entityName}.js';
-import { EntityId } from '@stratix/primitives';
+import { EntityId } from '@stratix/core';
 
 export interface ${entityName}Repository extends Repository<${entityName}, EntityId<'${entityName}'>> {
   findById(id: EntityId<'${entityName}'>): Promise<${entityName} | null>;
@@ -19,7 +19,7 @@ export interface ${entityName}Repository extends Repository<${entityName}, Entit
 export const inMemoryRepositoryTemplate = (data: TemplateData): string => {
   const { entityName } = data;
 
-  return `import { EntityId } from '@stratix/primitives';
+  return `import { EntityId } from '@stratix/core';
 import type { ${entityName} } from '../../domain/entities/${entityName}.js';
 import type { ${entityName}Repository } from '../../domain/repositories/${entityName}Repository.js';
 

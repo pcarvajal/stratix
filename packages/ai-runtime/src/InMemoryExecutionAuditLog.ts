@@ -1,10 +1,10 @@
-import type { AgentId, ExecutionTrace } from '@stratix/primitives';
+import type { AgentId, ExecutionTrace } from '@stratix/core';
 import type {
   ExecutionAuditLog,
   AgentExecution,
   ExecutionFilter,
   ExecutionStatistics,
-} from '@stratix/abstractions';
+} from '@stratix/core';
 
 /**
  * In-memory implementation of ExecutionAuditLog.
