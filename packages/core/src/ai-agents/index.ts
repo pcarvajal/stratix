@@ -27,3 +27,6 @@ export type {
 // Agent Tool
 export { AgentTool } from './AgentTool.js';
 export type { ToolDefinition as AgentToolDefinition } from './AgentTool.js';
+
+// Types and Constants
+export { AgentCapabilities, AgentVersionFactory } from './types.js';

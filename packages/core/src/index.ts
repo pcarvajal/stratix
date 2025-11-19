@@ -108,6 +108,9 @@ export type {
   ToolCall,
 } from './ai-agents/types.js';
 
+// Export AgentCapabilities constant
+export { AgentCapabilities } from './ai-agents/types.js';
+
 // Export AI Agent primitives
 export { AIAgent } from './ai-agents/AIAgent.js';
 export { AgentContext } from './ai-agents/AgentContext.js';
