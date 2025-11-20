@@ -108,4 +108,126 @@ export interface Container {
    * ```
    */
   dispose(): Promise<void>;
+
+  // ========================================
+  // CONVENIENCE API
+  // ========================================
+
+  /**
+   * Registers a singleton value or factory.
+   *
+   * Singletons are created once and reused for all resolutions.
+   *
+   * @template T - The type of service to register
+   * @param token - The token identifying the service
+   * @param value - The value or factory function
+   *
+   * @example
+   * ```typescript
+   * // Register a value
+   * container.singleton('config', { port: 3000 });
+   *
+   * // Register a factory
+   * container.singleton('logger', () => new Logger());
+   * ```
+   */
+  singleton<T>(token: Token<T>, value: T | (() => T)): void;
+
+  /**
+   * Registers a scoped factory.
+   *
+   * Scoped services are created once per scope and reused within that scope.
+   *
+   * @template T - The type of service to register
+   * @param token - The token identifying the service
+   * @param factory - Factory function that creates the service
+   *
+   * @example
+   * ```typescript
+   * container.scoped('requestContext', () => new RequestContext());
+   * ```
+   */
+  scoped<T>(token: Token<T>, factory: () => T): void;
+
+  /**
+   * Registers a transient factory.
+   *
+   * Transient services are created every time they are resolved.
+   *
+   * @template T - The type of service to register
+   * @param token - The token identifying the service
+   * @param factory - Factory function that creates the service
+   *
+   * @example
+   * ```typescript
+   * container.transient('requestId', () => uuid());
+   * ```
+   */
+  transient<T>(token: Token<T>, factory: () => T): void;
+
+  /**
+   * Registers a class as a singleton with auto-wiring.
+   *
+   * Dependencies are automatically resolved based on constructor parameter names.
+   *
+   * @template T - The type of service to register
+   * @param classType - The class constructor
+   * @param options - Registration options
+   *
+   * @example
+   * ```typescript
+   * // Auto-wiring based on parameter names
+   * class UserService {
+   *   constructor(
+   *     private userRepository: UserRepository,
+   *     private eventBus: EventBus
+   *   ) {}
+   * }
+   *
+   * container.registerClass(UserService);
+   * // or with custom token
+   * container.registerClass(UserService, { token: 'userService' });
+   * ```
+   */
+  registerClass<T>(
+    classType: new (...args: any[]) => T,
+    options?: {
+      token?: Token<T>;
+      lifetime?: RegisterOptions['lifetime'];
+    }
+  ): void;
+
+  /**
+   * Registers multiple services at once.
+   *
+   * @param services - Object mapping tokens to values, factories, or classes
+   *
+   * @example
+   * ```typescript
+   * container.registerAll({
+   *   config: appConfig,
+   *   logger: () => new Logger(),
+   *   database: () => new Database()
+   * });
+   * ```
+   */
+  registerAll(services: Record<string, any | (() => any)>): void;
+
+  /**
+   * Tries to resolve a service, returns undefined if not found.
+   *
+   * @template T - The type of service to resolve
+   * @param token - The token identifying the service
+   * @returns The resolved service instance or undefined
+   *
+   * @example
+   * ```typescript
+   * const logger = container.tryResolve<Logger>('logger');
+   * if (logger) {
+   *   logger.info('Service found');
+   * }
+   * ```
+   */
+  tryResolve<T>(token: Token<T>): T | undefined;
 }
+

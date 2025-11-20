@@ -148,6 +148,125 @@ export class AwilixContainer implements Container {
     await this.container.dispose();
   }
 
+  // ========================================
+  // CONVENIENCE API
+  // ========================================
+
+  /**
+   * Registers a singleton value or factory.
+   */
+  singleton<T>(token: Token<T>, value: T | (() => T)): void {
+    const name = this.getTokenName(token);
+
+    if (typeof value === 'function') {
+      // It's a factory function
+      this.container.register({
+        [name]: awilix.asFunction(value as () => T, {
+          lifetime: awilix.Lifetime.SINGLETON
+        })
+      });
+    } else {
+      // It's a direct value
+      this.container.register({
+        [name]: awilix.asValue(value)
+      });
+    }
+  }
+
+  /**
+   * Registers a scoped factory.
+   */
+  scoped<T>(token: Token<T>, factory: () => T): void {
+    const name = this.getTokenName(token);
+    this.container.register({
+      [name]: awilix.asFunction(factory, {
+        lifetime: awilix.Lifetime.SCOPED
+      })
+    });
+  }
+
+  /**
+   * Registers a transient factory.
+   */
+  transient<T>(token: Token<T>, factory: () => T): void {
+    const name = this.getTokenName(token);
+    this.container.register({
+      [name]: awilix.asFunction(factory, {
+        lifetime: awilix.Lifetime.TRANSIENT
+      })
+    });
+  }
+
+  /**
+   * Registers a class with auto-wiring.
+   */
+  registerClass<T>(
+    classType: new (...args: any[]) => T,
+    options?: {
+      token?: Token<T>;
+      lifetime?: RegisterOptions['lifetime'];
+    }
+  ): void {
+    const token = options?.token || classType;
+    const name = this.getTokenName(token);
+    const lifetime = this.mapLifetime(options?.lifetime ?? ServiceLifetime.SINGLETON);
+
+    this.container.register({
+      [name]: awilix.asClass(classType, { lifetime })
+    });
+  }
+
+  /**
+   * Registers multiple services at once.
+   */
+  registerAll(services: Record<string, any | (() => any)>): void {
+    for (const [token, value] of Object.entries(services)) {
+      // Check if it's a class (has prototype)
+      if (typeof value === 'function' && value.prototype && value.prototype.constructor === value) {
+        this.registerClass(value, { token });
+      } else if (typeof value === 'function') {
+        // It's a factory function
+        this.singleton(token, value);
+      } else {
+        // It's a direct value
+        this.singleton(token, value);
+      }
+    }
+  }
+
+  /**
+   * Tries to resolve a service, returns undefined if not found.
+   */
+  tryResolve<T>(token: Token<T>): T | undefined {
+    try {
+      return this.resolve(token);
+    } catch {
+      return undefined;
+    }
+  }
+
+  // ========================================
+  // ADVANCED AWILIX API
+  // ========================================
+
+  /**
+   * Registers using Awilix's native API for advanced scenarios.
+   *
+   * @param registrations - Awilix registration object
+   *
+   * @example
+   * ```typescript
+   * container.registerAwilix({
+   *   userService: awilix.asClass(UserService)
+   *     .singleton()
+   *     .inject(() => ({ customDep: 'value' }))
+   * });
+   * ```
+   */
+  registerAwilix(registrations: awilix.NameAndRegistrationPair<any>): void {
+    this.container.register(registrations);
+  }
+
   /**
    * Gets the internal Awilix container.
    *
