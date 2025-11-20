@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "openai": "^4.75.0",
+    "openai": "^6.9.1",
     "@stratix/core": "workspace:*"
   },
   "devDependencies": {
