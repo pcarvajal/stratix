@@ -6,6 +6,7 @@ import { resolve, join } from 'path';
 const NEW_VERSION = '0.2.0';
 
 // Find all package.json files in packages directory (excluding templates)
+// Recursively searches through subdirectories (e.g., plugins, integrations)
 function findPackageFiles(dir) {
   const packages = [];
   const items = readdirSync(dir);
@@ -20,7 +21,8 @@ function findPackageFiles(dir) {
         statSync(packageJsonPath);
         packages.push(packageJsonPath);
       } catch {
-        // No package.json in this directory
+        // No package.json in this directory, search subdirectories
+        packages.push(...findPackageFiles(fullPath));
       }
     }
   }
