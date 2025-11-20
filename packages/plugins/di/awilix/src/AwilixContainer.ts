@@ -205,14 +205,18 @@ export class AwilixContainer implements Container {
     options?: {
       token?: Token<T>;
       lifetime?: RegisterOptions['lifetime'];
+      injectionMode?: 'PROXY' | 'CLASSIC';
     }
   ): void {
     const token = options?.token || classType;
     const name = this.getTokenName(token);
     const lifetime = this.mapLifetime(options?.lifetime ?? ServiceLifetime.SINGLETON);
+    const injectionMode = options?.injectionMode === 'CLASSIC'
+      ? awilix.InjectionMode.CLASSIC
+      : awilix.InjectionMode.PROXY;
 
     this.container.register({
-      [name]: awilix.asClass(classType, { lifetime })
+      [name]: awilix.asClass(classType, { lifetime, injectionMode })
     });
   }
 

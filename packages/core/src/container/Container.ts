@@ -176,7 +176,7 @@ export interface Container {
    *
    * @example
    * ```typescript
-   * // Auto-wiring based on parameter names
+   * // Auto-wiring based on parameter names (PROXY mode - default)
    * class UserService {
    *   constructor(
    *     private userRepository: UserRepository,
@@ -185,8 +185,12 @@ export interface Container {
    * }
    *
    * container.registerClass(UserService);
-   * // or with custom token
+   *
+   * // With custom token
    * container.registerClass(UserService, { token: 'userService' });
+   *
+   * // With CLASSIC injection mode
+   * container.registerClass(UserService, { injectionMode: 'CLASSIC' });
    * ```
    */
   registerClass<T>(
@@ -194,6 +198,7 @@ export interface Container {
     options?: {
       token?: Token<T>;
       lifetime?: RegisterOptions['lifetime'];
+      injectionMode?: 'PROXY' | 'CLASSIC';
     }
   ): void;
 

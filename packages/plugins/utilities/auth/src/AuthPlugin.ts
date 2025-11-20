@@ -21,16 +21,18 @@ export class AuthPlugin implements Plugin {
   private passwordHasher?: BcryptPasswordHasher;
   private rbacService?: RBACService;
 
-  constructor(private readonly options: AuthPluginOptions) {}
+  constructor(private readonly options: AuthPluginOptions) { }
 
   initialize(context: PluginContext): Promise<void> {
     this.jwtService = new JWTService(this.options.jwt);
     this.passwordHasher = new BcryptPasswordHasher(this.options.passwordHashRounds);
     this.rbacService = new RBACService(this.options.roles);
 
-    context.container.register('jwtService', () => this.jwtService);
-    context.container.register('passwordHasher', () => this.passwordHasher);
-    context.container.register('rbacService', () => this.rbacService);
+    context.container.registerAll({
+      jwtService: this.jwtService,
+      passwordHasher: this.passwordHasher,
+      rbacService: this.rbacService
+    });
 
     return Promise.resolve();
   }
