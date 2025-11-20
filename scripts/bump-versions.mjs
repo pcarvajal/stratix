@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
 import { resolve, join } from 'path';
 
-const NEW_VERSION = '0.2.0';
+const NEW_VERSION = '0.3.0';
 
 // Find all package.json files in packages directory (excluding templates)
 // Recursively searches through subdirectories (e.g., plugins, integrations)

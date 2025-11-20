@@ -1,6 +1,6 @@
 {
   "name": "@stratix/di-awilix",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Awilix dependency injection container implementation for Stratix",
   "type": "module",
   "main": "./dist/index.js",
