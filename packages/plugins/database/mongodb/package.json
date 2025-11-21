@@ -31,7 +31,7 @@
   "author": "P. Andrés Carvajal <causticrez@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "^6.10.0",
+    "mongodb": "^7.0.0",
     "@stratix/core": "workspace:*"
   },
   "devDependencies": {
