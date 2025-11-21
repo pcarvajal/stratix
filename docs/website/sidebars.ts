@@ -35,7 +35,22 @@ const sidebars: SidebarsConfig = {
     },
 
     // ========================================
-    // 2. CORE CONCEPTS
+    // 2. STRATIX COPILOT (VS CODE EXTENSION)
+    // ========================================
+    {
+      type: 'category',
+      label: '🤖 Stratix Copilot',
+      collapsed: false,
+      items: [
+        'stratix-copilot/overview',
+        'stratix-copilot/installation',
+        'stratix-copilot/usage',
+        'stratix-copilot/commands',
+      ],
+    },
+
+    // ========================================
+    // 3. CORE CONCEPTS
     // ========================================
     {
       type: 'category',
@@ -52,7 +67,7 @@ const sidebars: SidebarsConfig = {
     },
 
     // ========================================
-    // 3. PLUGIN SYSTEM
+    // 4. PLUGIN SYSTEM
     // ========================================
     {
       type: 'category',
@@ -67,7 +82,7 @@ const sidebars: SidebarsConfig = {
     },
 
     // ========================================
-    // 4. AI AGENTS (AI-FIRST)
+    // 5. AI AGENTS (AI-FIRST)
     // ========================================
     {
       type: 'category',
@@ -85,7 +100,7 @@ const sidebars: SidebarsConfig = {
     },
 
     // ========================================
-    // 5. CLI REFERENCE
+    // 6. CLI REFERENCE
     // ========================================
     {
       type: 'category',
@@ -101,7 +116,7 @@ const sidebars: SidebarsConfig = {
     },
 
     // ========================================
-    // 6. DATABASE & PERSISTENCE
+    // 7. DATABASE & PERSISTENCE
     // ========================================
     {
       type: 'category',

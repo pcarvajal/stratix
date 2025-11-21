@@ -1,0 +1,110 @@
+{
+    "name": "@stratix/copilot-rag",
+    "displayName": "Stratix Copilot",
+    "description": "AI-powered coding assistant for Stratix framework with intelligent code generation",
+    "version": "0.1.0",
+    "publisher": "stratix",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "AI",
+        "Programming Languages",
+        "Snippets"
+    ],
+    "keywords": [
+        "stratix",
+        "ddd",
+        "cqrs",
+        "copilot",
+        "ai",
+        "rag"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "chatParticipants": [
+            {
+                "id": "stratix.assistant",
+                "name": "stratix",
+                "description": "Stratix DDD/CQRS expert assistant with RAG-powered knowledge base",
+                "isSticky": true,
+                "commands": [
+                    {
+                        "name": "entity",
+                        "description": "Generate a domain entity"
+                    },
+                    {
+                        "name": "command",
+                        "description": "Generate a CQRS command with handler"
+                    },
+                    {
+                        "name": "query",
+                        "description": "Generate a CQRS query with handler"
+                    },
+                    {
+                        "name": "vo",
+                        "description": "Generate a value object"
+                    },
+                    {
+                        "name": "repository",
+                        "description": "Generate a repository interface"
+                    },
+                    {
+                        "name": "context",
+                        "description": "Generate a complete bounded context"
+                    },
+                    {
+                        "name": "refactor",
+                        "description": "Suggest DDD/CQRS refactorings"
+                    },
+                    {
+                        "name": "explain",
+                        "description": "Explain Stratix patterns and concepts"
+                    }
+                ]
+            }
+        ],
+        "commands": [
+            {
+                "command": "stratix.openChat",
+                "title": "Stratix: Open AI Assistant"
+            },
+            {
+                "command": "stratix.rebuildKnowledge",
+                "title": "Stratix: Rebuild Knowledge Base"
+            },
+            {
+                "command": "stratix.showKnowledgeBaseInfo",
+                "title": "Stratix: Show Knowledge Base Info"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile && npm run build:knowledge",
+        "compile": "tsc -p ./ && npm run copy:json",
+        "copy:json": "mkdir -p dist/rag && cp src/rag/initial-knowledge.json dist/rag/ 2>/dev/null || true",
+        "watch": "tsc -watch -p ./",
+        "build:knowledge": "tsx knowledge-base/build-knowledge.ts",
+        "test": "vitest",
+        "package": "vsce package"
+    },
+    "extensionDependencies": [
+        "github.copilot-chat"
+    ],
+    "dependencies": {
+        "chromadb": "^1.8.1",
+        "@xenova/transformers": "^2.17.0",
+        "gray-matter": "^4.0.3"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.85.0",
+        "@types/node": "^20.11.0",
+        "@vscode/vsce": "^2.22.0",
+        "typescript": "^5.3.3",
+        "tsx": "^4.7.0",
+        "vitest": "^1.2.0"
+    }
+}
