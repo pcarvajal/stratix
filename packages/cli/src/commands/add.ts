@@ -165,7 +165,7 @@ export function createAddCommand(): Command {
       console.log(chalk.blue.bold('\nAvailable Stratix Extensions\n'));
 
       console.log(chalk.yellow.bold('Production Extensions:'));
-      ['http', 'validation', 'mappers', 'auth', 'migrations', 'errors'].forEach(
+      ['http', 'validation', 'mappers', 'auth', 'errors'].forEach(
         (name) => {
           const ext = EXTENSIONS[name];
           console.log(

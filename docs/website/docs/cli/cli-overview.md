@@ -57,8 +57,6 @@ stratix <command> [options] [arguments]
 ```bash
 --help, -h      Show help
 --version, -v   Show version
---verbose       Enable verbose output
---quiet         Suppress output
 ```
 
 ## Interactive Mode

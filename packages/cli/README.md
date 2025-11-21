@@ -16,7 +16,7 @@ stratix new my-app
 
 # Generate a bounded context
 cd my-app
-stratix generate context Products --props "name:string,price:number,stock:number"
+stratix generate context Products --props '[{"name":"name","type":"string"},{"name":"price","type":"number"},{"name":"stock","type":"number"}]'
 ```
 
 ## Commands

@@ -24,6 +24,7 @@ stratix g <generator> <name> [options]
 | `command` | CQRS command |
 | `query` | CQRS query |
 | `repository` | Repository interface |
+| `context` | Bounded context (modular architecture) |
 | `quality` | Quality checks (tests, linting) |
 
 ## entity Generator
@@ -209,6 +210,65 @@ stratix g repository User --path src/domain/repositories
 **Generated files:**
 - `product.repository.ts` - Repository interface
 - `postgres-product.repository.ts` - PostgreSQL implementation
+
+## context Generator
+
+Generate a complete bounded context for modular architecture projects:
+
+```bash
+stratix generate context Order
+stratix g context Product --props '[{"name":"name","type":"string"},{"name":"price","type":"number"}]'
+```
+
+**Generated files:**
+- `order/domain/entities/Order.ts` - Entity/Aggregate root
+- `order/domain/repositories/OrderRepository.ts` - Repository interface
+- `order/infrastructure/repositories/InMemoryOrderRepository.ts` - In-memory implementation
+- `order/application/commands/CreateOrder.ts` - Create command
+- `order/application/commands/CreateOrderHandler.ts` - Command handler
+- `order/application/queries/GetOrderById.ts` - Get by ID query
+- `order/application/queries/GetOrderByIdHandler.ts` - Query handler
+- `order/application/queries/ListOrders.ts` - List query
+- `order/application/queries/ListOrdersHandler.ts` - List handler
+- `order/index.ts` - Barrel exports
+
+**Example output structure:**
+
+```
+src/contexts/order/
+├── domain/
+│   ├── entities/
+│   │   └── Order.ts
+│   └── repositories/
+│       └── OrderRepository.ts
+├── application/
+│   ├── commands/
+│   │   ├── CreateOrder.ts
+│   │   └── CreateOrderHandler.ts
+│   └── queries/
+│       ├── GetOrderById.ts
+│       ├── GetOrderByIdHandler.ts
+│       ├── ListOrders.ts
+│       └── ListOrdersHandler.ts
+├── infrastructure/
+│   └── repositories/
+│       └── InMemoryOrderRepository.ts
+└── index.ts
+```
+
+**With properties:**
+
+```bash
+stratix g context Product --props '[
+  {"name":"name","type":"string"},
+  {"name":"price","type":"number"},
+  {"name":"stock","type":"number"}
+]'
+```
+
+This creates a complete bounded context with the specified properties in the entity. The context generator is ideal for modular monolith projects where you want to keep related functionality together.
+
+**Note:** This generator automatically creates all necessary files and intelligent dependencies. If an entity or repository is missing, it will be created automatically.
 
 ## quality Generator
 

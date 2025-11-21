@@ -49,7 +49,7 @@ yarn global add @stratix/cli
 ```bash
 stratix --version
 
-# Should output: @stratix/cli/0.1.3 (or later)
+# Should output: @stratix/cli/0.3.0 (or later)
 ```
 
 ## Create Your First Project
@@ -138,6 +138,8 @@ stratix add validation
 # List all available extensions
 stratix add list
 ```
+
+**Note:** The `stratix add` command uses simplified names for official Stratix extensions. External dependencies (like `pg`, `redis`, etc.) are automatically installed from the public npm registry.
 
 **Available Extensions:**
 
@@ -273,6 +275,22 @@ npm install -g pnpm
 
 # Install yarn
 npm install -g yarn
+```
+
+### CLI Version Mismatch
+
+If you see version-related errors or unexpected behavior:
+
+```bash
+# Check CLI version
+stratix --version
+
+# Update to latest
+npm update -g @stratix/cli
+# or
+pnpm update -g @stratix/cli
+# or
+yarn global upgrade @stratix/cli
 ```
 
 ## Next Steps
