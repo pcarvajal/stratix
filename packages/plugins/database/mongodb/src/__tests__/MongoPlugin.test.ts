@@ -94,18 +94,15 @@ describe('MongoPlugin', () => {
       expect(mockContainer.register).toHaveBeenCalledTimes(3);
       expect(mockContainer.register).toHaveBeenCalledWith(
         'mongo:connection',
-        expect.any(Function),
-        expect.any(Object)
+        expect.any(Function)
       );
       expect(mockContainer.register).toHaveBeenCalledWith(
         'mongo:client',
-        expect.any(Function),
-        expect.any(Object)
+        expect.any(Function)
       );
       expect(mockContainer.register).toHaveBeenCalledWith(
         'mongo:createUnitOfWork',
-        expect.any(Function),
-        expect.any(Object)
+        expect.any(Function)
       );
     });
 

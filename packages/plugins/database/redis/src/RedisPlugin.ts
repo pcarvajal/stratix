@@ -107,11 +107,9 @@ export class RedisPlugin implements Plugin {
     });
 
     // Register services in container
-    context.container.registerAll({
-      'redis:connection': this.connection!,
-      'redis:cache': this.cache!,
-      'redis:client': () => this.connection!.getClient()
-    });
+    context.container.register('redis:connection', () => this.connection!);
+    context.container.register('redis:cache', () => this.cache!);
+    context.container.register('redis:client', () => this.connection!.getClient());
   }
 
   /**

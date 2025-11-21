@@ -113,11 +113,9 @@ export class MongoPlugin implements Plugin {
     );
 
     // Register connection in container
-    context.container.registerAll({
-      'mongo:connection': this.connection!,
-      'mongo:client': () => this.connection!.getClient(),
-      'mongo:createUnitOfWork': () => () => this.connection!.createUnitOfWork()
-    });
+    context.container.register('mongo:connection', () => this.connection!);
+    context.container.register('mongo:client', () => this.connection!.getClient());
+    context.container.register('mongo:createUnitOfWork', () => () => this.connection!.createUnitOfWork());
   }
 
   /**

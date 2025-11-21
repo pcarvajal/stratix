@@ -28,11 +28,9 @@ export class AuthPlugin implements Plugin {
     this.passwordHasher = new BcryptPasswordHasher(this.options.passwordHashRounds);
     this.rbacService = new RBACService(this.options.roles);
 
-    context.container.registerAll({
-      jwtService: this.jwtService,
-      passwordHasher: this.passwordHasher,
-      rbacService: this.rbacService
-    });
+    context.container.register('jwtService', () => this.jwtService);
+    context.container.register('passwordHasher', () => this.passwordHasher);
+    context.container.register('rbacService', () => this.rbacService);
 
     return Promise.resolve();
   }
