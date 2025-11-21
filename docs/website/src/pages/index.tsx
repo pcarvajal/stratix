@@ -1,53 +1,130 @@
-import type { ReactNode } from 'react';
 import clsx from 'clsx';
+import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-
 import styles from './index.module.css';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
-
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)} style={{ minHeight: 'calc(100vh - 60px)', display: 'flex', alignItems: 'center' }}>
+    <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
-        <div style={{ textAlign: 'center' }}>
-          <img
-            src={useBaseUrl('/img/logo-light.png')}
-            alt="Stratix Logo"
-            className={styles.heroLogo}
-            style={{
-              width: '160px',
-              height: 'auto',
-              maxWidth: '100%',
-              marginBottom: '3rem',
-              filter: 'drop-shadow(0 20px 25px rgb(0 0 0 / 0.15))'
-            }}
-          />
-          <Heading as="h1" className="hero__title" style={{ color: 'white' }}>
-            {siteConfig.title}
-          </Heading>
-          <p className="hero__subtitle" style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.5rem', marginTop: '2rem' }}>
-            Documentation Coming Soon
-          </p>
-          <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.1rem', maxWidth: '600px', margin: '1rem auto' }}>
-            We are working hard to bring you comprehensive documentation for Stratix.
-            Stay tuned for updates!
-          </p>
+        <div className={styles.heroContent}>
+          <div className={styles.heroLeft}>
+            <div className={styles.preReleaseWarning}>
+              <span className={styles.warningIcon}>⚠️</span>
+              <span>PRE-RELEASE - ACTIVE DEVELOPMENT</span>
+            </div>
+
+            <div className={styles.brandSection}>
+              <img
+                src="/stratix/img/rustic-ai-20251120T043545.jpg"
+                alt="Stratix Logo"
+                className={styles.heroLogo}
+              />
+              <Heading as="h1" className={styles.heroTitle}>
+                Stratix
+              </Heading>
+            </div>
+
+            <p className={styles.heroSubtitle}>
+              AI-First TypeScript Framework for Enterprise Applications
+            </p>
+
+            <p className={styles.heroDescription}>
+              Build scalable, maintainable applications with AI agents as first-class citizens.
+              Start with a modular monolith, scale to microservices when needed.
+            </p>
+
+            <div className={styles.buttons}>
+              <Link
+                className={clsx('button button--primary button--lg', styles.primaryButton)}
+                to="/docs/getting-started/introduction">
+                Get Started
+              </Link>
+              <Link
+                className={clsx('button button--secondary button--lg', styles.secondaryButton)}
+                to="/docs/getting-started/quick-start">
+                Quick Start →
+              </Link>
+            </div>
+
+            <div className={styles.stats}>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>14+</div>
+                <div className={styles.statLabel}>Official Plugins</div>
+              </div>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>100%</div>
+                <div className={styles.statLabel}>Type-Safe</div>
+              </div>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>AI</div>
+                <div className={styles.statLabel}>First-Class</div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.heroRight}>
+            <div className={styles.codeWindow}>
+              <div className={styles.codeWindowHeader}>
+                <div className={styles.codeWindowDots}>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className={styles.codeWindowTitle}>main.ts</div>
+              </div>
+              <pre className={styles.codeContent}>
+                {`import { ApplicationBuilder } from '@stratix/runtime';
+import { OpenAIProvider } from '@stratix/ai-openai';
+
+// Build AI-powered application
+const app = await ApplicationBuilder.create()
+  .usePlugin(new OpenAIProvider({ apiKey }))
+  .build();
+
+// Create an AI agent
+class SupportAgent extends AIAgent {
+  readonly name = 'Customer Support';
+  
+  async execute(input: string) {
+    const response = await this.llm.chat({
+      model: 'gpt-4o',
+      messages: [
+        { role: 'system', 
+          content: 'You are helpful.' },
+        { role: 'user', content: input }
+      ]
+    });
+    
+    return AgentResult.success(
+      response.content
+    );
+  }
+}
+
+await app.start();`}
+              </pre>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div className={styles.heroBackground}>
+        <div className={styles.gridPattern}></div>
       </div>
     </header>
   );
 }
 
-export default function Home(): ReactNode {
+export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title}`}
-      description="Stratix Framework - Documentation Coming Soon">
+      title={`${siteConfig.title} - AI-First TypeScript Framework`}
+      description="AI-First TypeScript Framework for Enterprise Applications - Modular, Scalable, Production-Ready">
       <HomepageHeader />
     </Layout>
   );

@@ -1,20 +1,120 @@
 import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 /**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
+ * Comprehensive sidebar configuration for Stratix documentation.
+ * 
+ * Organized into 6 major sections:
+ * 1. Getting Started
+ * 2. Core Concepts
+ * 3. Plugin System
+ * 4. AI Agents (AI-First Feature)
+ * 5. CLI Reference
+ * 6. Database & Persistence
  */
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
-    'intro',
+    {
+      type: 'doc',
+      id: 'intro',
+      label: 'Introduction',
+    },
+
+    // ========================================
+    // 1. GETTING STARTED
+    // ========================================
+    {
+      type: 'category',
+      label: 'Getting Started',
+      collapsed: false,
+      items: [
+        'getting-started/introduction',
+        'getting-started/installation',
+        'getting-started/quick-start',
+        'getting-started/project-structure',
+      ],
+    },
+
+    // ========================================
+    // 2. CORE CONCEPTS
+    // ========================================
+    {
+      type: 'category',
+      label: 'Core Concepts',
+      collapsed: false,
+      items: [
+        'core-concepts/architecture-overview',
+        'core-concepts/domain-modeling',
+        'core-concepts/result-pattern',
+        'core-concepts/cqrs',
+        'core-concepts/bounded-contexts',
+        'core-concepts/dependency-injection',
+      ],
+    },
+
+    // ========================================
+    // 3. PLUGIN SYSTEM
+    // ========================================
+    {
+      type: 'category',
+      label: 'Plugin System',
+      collapsed: true,
+      items: [
+        'plugins/plugin-architecture',
+        'plugins/creating-plugins',
+        'plugins/official-plugins',
+        'plugins/plugin-configuration',
+      ],
+    },
+
+    // ========================================
+    // 4. AI AGENTS (AI-FIRST)
+    // ========================================
+    {
+      type: 'category',
+      label: 'AI Agents',
+      collapsed: true,
+      items: [
+        'ai-agents/ai-agents-overview',
+        'ai-agents/creating-agents',
+        'ai-agents/llm-providers',
+        'ai-agents/agent-tools',
+        'ai-agents/agent-memory',
+        'ai-agents/agent-orchestration',
+        'ai-agents/agent-testing',
+      ],
+    },
+
+    // ========================================
+    // 5. CLI REFERENCE
+    // ========================================
+    {
+      type: 'category',
+      label: 'CLI Reference',
+      collapsed: true,
+      items: [
+        'cli/cli-overview',
+        'cli/new-command',
+        'cli/generate-commands',
+        'cli/add-command',
+        'cli/info-command',
+      ],
+    },
+
+    // ========================================
+    // 6. DATABASE & PERSISTENCE
+    // ========================================
+    {
+      type: 'category',
+      label: 'Database & Persistence',
+      collapsed: true,
+      items: [
+        'database/database-overview',
+        'database/postgres',
+        'database/mongodb',
+        'database/redis',
+        'database/migrations',
+      ],
+    },
   ],
 };
 

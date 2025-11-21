@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Stratix',
-  tagline: 'The Modern TypeScript Framework for Enterprise Applications',
+  tagline: 'AI-First TypeScript Framework for Enterprise Applications - Modular, Scalable, Production-Ready',
   favicon: 'img/favicon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -110,8 +110,8 @@ const config: Config = {
       title: 'Stratix',
       logo: {
         alt: 'Stratix Logo',
-        src: 'img/logo-black.png',
-        srcDark: 'img/logo-white.png',
+        src: 'img/logo-no-bg.png',
+        srcDark: 'img/white-no-bg.png',
       },
       items: [
         {
@@ -134,24 +134,34 @@ const config: Config = {
           title: 'Documentation',
           items: [
             {
-              label: 'Coming Soon',
-              to: '/docs/intro',
+              label: 'Getting Started',
+              to: '/docs/getting-started/introduction',
+            },
+            {
+              label: 'Core Concepts',
+              to: '/docs/core-concepts/architecture-overview',
+            },
+            {
+              label: 'AI Agents',
+              to: '/docs/ai-agents/ai-agents-overview',
+            },
+            {
+              label: 'CLI Reference',
+              to: '/docs/cli/cli-overview',
             },
           ],
         },
         {
           title: 'Resources',
           items: [
-
-            // TODO: Add these guides
-            // {
-            //   label: 'Migration from LangChain',
-            //   to: '/docs/guides/migration-from-langchain',
-            // },
-            // {
-            //   label: 'Troubleshooting',
-            //   to: '/docs/guides/troubleshooting',
-            // },
+            {
+              label: 'Plugin System',
+              to: '/docs/plugins/plugin-architecture',
+            },
+            {
+              label: 'Database',
+              to: '/docs/database/database-overview',
+            },
           ],
         },
         {
