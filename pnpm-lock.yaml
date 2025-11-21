@@ -241,8 +241,8 @@ importers:
         specifier: workspace:*
         version: link:../../../core
       awilix:
-        specifier: ^10.0.2
-        version: 10.0.2
+        specifier: ^12.0.5
+        version: 12.0.5
     devDependencies:
       '@types/node':
         specifier: ^20.10.0
@@ -381,25 +381,6 @@ importers:
       '@stratix/core':
         specifier: workspace:*
         version: link:../../../core
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.19.0
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.0)(terser@5.44.0)
-
-  packages/plugins/utilities/migrations:
-    dependencies:
-      '@stratix/core':
-        specifier: workspace:*
-        version: link:../../../core
-      '@stratix/runtime':
-        specifier: workspace:*
-        version: link:../../../runtime
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -3468,9 +3449,9 @@ packages:
   avvio@9.1.0:
     resolution: {integrity: sha512-fYASnYi600CsH/j9EQov7lECAniYiBFiiAtBNuZYLA2leLe9qOvZzqYHFjtIj6gD2VMoMLP14834LFWvr4IfDw==}
 
-  awilix@10.0.2:
-    resolution: {integrity: sha512-hFatb7eZFdtiWjjmGRSm/K/uxZpmcBlM+YoeMB3VpOPXk3xa6+7zctg3LRbUzoimom5bwGrePF0jXReO6b4zNQ==}
-    engines: {node: '>=14.0.0'}
+  awilix@12.0.5:
+    resolution: {integrity: sha512-Qf/V/hRo6DK0FoBKJ9QiObasRxHAhcNi0mV6kW2JMawxS3zq6Un+VsZmVAZDUfvB+MjTEiJ2tUJUl4cr0JiUAw==}
+    engines: {node: '>=16.3.0'}
 
   babel-loader@9.2.1:
     resolution: {integrity: sha512-fqe8naHt46e0yIdkjUZYqddSXfej3AHajX+CSO5X7oy0EmPc6o5Xh+RClNoHjnieWz9AW4kZxW9yyFMhVB1QLA==}
@@ -12239,7 +12220,7 @@ snapshots:
       '@fastify/error': 4.2.0
       fastq: 1.19.1
 
-  awilix@10.0.2:
+  awilix@12.0.5:
     dependencies:
       camel-case: 4.1.2
       fast-glob: 3.3.3
