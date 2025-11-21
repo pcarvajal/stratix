@@ -69,25 +69,6 @@ export class PostgresProductRepository implements IProductRepository {
 }
 ```
 
-## Migrations
-
-```typescript
-// migrations/001_create_products.ts
-export async function up(db: Database): Promise<void> {
-  await db.schema.createTable('products', (table) => {
-    table.uuid('id').primary();
-    table.string('name').notNullable();
-    table.decimal('price', 10, 2).notNullable();
-    table.timestamps(true, true);
-  });
-}
-
-export async function down(db: Database): Promise<void> {
-  await db.schema.dropTable('products');
-}
-```
-
 ## Next Steps
 
 - **[Database Overview](./database-overview)** - Database basics
-- **[Migrations](./migrations)** - Migration guide

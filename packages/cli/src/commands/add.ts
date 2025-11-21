@@ -54,10 +54,6 @@ const EXTENSIONS: Record<string, ExtensionInfo> = {
     package: '@stratix/errors',
     description: 'Structured error handling',
   },
-  migrations: {
-    package: '@stratix/migrations',
-    description: 'Database migration system',
-  },
   opentelemetry: {
     package: '@stratix/obs-opentelemetry',
     description: 'OpenTelemetry observability',

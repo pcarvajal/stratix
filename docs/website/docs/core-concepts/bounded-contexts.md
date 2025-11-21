@@ -440,21 +440,7 @@ const order = await this.orderRepository.findByProductId(productId);
 
 ### 4. Keep Contexts Independent
 
-```typescript
-// ✅ Good: Each context has its own database schema
-products/
-  └── migrations/
-      └── 001_create_products_table.sql
-
-orders/
-  └── migrations/
-      └── 001_create_orders_table.sql
-
-// ❌ Bad: Shared tables between contexts
-shared/
-  └── migrations/
-      └── 001_create_all_tables.sql
-```
+Each bounded context should have its own database schema and tables. Avoid sharing database tables between contexts, as this creates tight coupling and makes contexts harder to evolve independently.
 
 ## Real-World Example
 

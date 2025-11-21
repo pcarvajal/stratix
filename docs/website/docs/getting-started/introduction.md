@@ -35,11 +35,11 @@ Stratix combines proven enterprise patterns with cutting-edge AI capabilities to
 - **Hexagonal Architecture** - Clean separation of concerns with ports and adapters
 - **Result Pattern** - Explicit error handling without exceptions
 - **Type Safety** - Full TypeScript strict mode with phantom types
-- **Production Extensions** - HTTP, validation, authentication, migrations, observability
+- **Production Extensions** - HTTP, validation, authentication, observability
 
 ### 💎 Developer Experience
 - **Powerful CLI** - Scaffold projects and generate code in seconds
-- **14 Official Plugins** - Database, messaging, HTTP, AI, and utility plugins
+- **13 Official Plugins** - Database, messaging, HTTP, AI, and utility plugins
 - **Comprehensive Testing** - Built-in testing utilities and mocks
 - **Complete Documentation** - Guides, tutorials, and API reference
 

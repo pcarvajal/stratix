@@ -146,7 +146,6 @@ stratix add list
 - `validation` - Zod schema validation
 - `mappers` - Entity-to-DTO mapping
 - `auth` - JWT authentication & RBAC
-- `migrations` - Database migrations
 - `errors` - Structured error handling
 
 ### Database & Infrastructure

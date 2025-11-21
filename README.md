@@ -12,11 +12,11 @@ Production-ready from day one with type safety, dependency injection, AI agents 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Version](https://img.shields.io/badge/version-0.2.x-orange.svg)](https://github.com/pcarvajal/stratix)
 
-[Documentation](https://pcarvajal.github.io/stratix/) | [Getting Started](https://pcarvajal.github.io/stratix/docs/getting-started/installation) | [Examples](./examples)
+[Documentation](https://pcarvajal.github.io/stratix/) | [Getting Started](https://pcarvajal.github.io/stratix)
 
 </div>
 
-> **Pre-release Notice**: Stratix is in active development. The API may change until version 1.0.0. See [Versioning Policy](https://pcarvajal.github.io/stratix/docs/getting-started/versioning) for details.
+> **Pre-release Notice**: Stratix is in active development. The API may change until version 1.0.0.
 
 ## Features
 
@@ -27,10 +27,8 @@ Production-ready from day one with type safety, dependency injection, AI agents 
 - **CQRS** - Command and Query Responsibility Segregation with dedicated buses
 - **AI Agents** - AI agents as first-class domain entities with production patterns
 - **Type Safety** - Full TypeScript strict mode with phantom types
-- **Production Extensions** - HTTP, validation, authentication, migrations, error handling
+- **Production Extensions** - HTTP, validation, authentication, error handling
 - **Code Generation** - CLI for scaffolding projects, contexts, entities, commands, and queries
-
-[Learn more in the documentation](https://pcarvajal.github.io/stratix/docs/core-concepts/architecture)
 
 ## Quick Start
 
@@ -58,8 +56,6 @@ npm run dev
 - Repository pattern with in-memory implementation
 - Type-safe entity IDs and Result pattern
 - Production-ready project structure
-
-[View full installation guide](https://pcarvajal.github.io/stratix/docs/getting-started/installation)
 
 ## Documentation
 

@@ -162,14 +162,13 @@ stratix add ai-anthropic
 stratix add list
 ```
 
-**Available Extensions (14):**
+**Available Extensions (13):**
 
 **Production Extensions:**
 - `http` - Fastify HTTP server integration
 - `validation` - Zod-based schema validation
 - `mappers` - Entity-to-DTO mapping utilities
 - `auth` - JWT authentication and RBAC authorization
-- `migrations` - Database migration system
 - `errors` - Structured error handling
 
 **Data & Infrastructure:**
@@ -246,7 +245,7 @@ pnpm start
 
 - ✨ **Quick Project Setup** - Create production-ready projects in seconds
 - 🔨 **6 Code Generators** - Generate entities, commands, queries, repositories, value objects, and quality configs
-- 📦 **Extension Manager** - Install 14 Stratix extensions with automatic dependency resolution
+- 📦 **Extension Manager** - Install 13 Stratix extensions with automatic dependency resolution
 - 🎯 **Interactive Mode** - Smart prompts guide you through project creation
 - ⚙️ **Flexible Options** - CLI flags or interactive prompts, your choice
 - 📊 **Project Info** - Instant overview of your Stratix project

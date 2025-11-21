@@ -113,4 +113,3 @@ async createOrder(order: Order): Promise<void> {
 
 - **[PostgreSQL](./postgres)** - PostgreSQL integration
 - **[MongoDB](./mongodb)** - MongoDB integration
-- **[Migrations](./migrations)** - Database migrations
