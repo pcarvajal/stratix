@@ -18,13 +18,16 @@ Before installing Stratix Copilot, ensure you have:
 
 ### Method 1: VS Code Marketplace (Recommended)
 
-> [!NOTE]
-> Coming soon! The extension will be published to the VS Code Marketplace.
+**[Install from VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag)**
 
 1. Open VS Code
 2. Go to Extensions (`Cmd+Shift+X`)
 3. Search for "Stratix Copilot"
 4. Click **Install**
+
+Or install directly from the marketplace:
+- Visit [marketplace.visualstudio.com](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag)
+- Click **Install**
 
 ### Method 2: From Source (Development)
 

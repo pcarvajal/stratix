@@ -1,6 +1,6 @@
 {
   "name": "@stratix/db-postgres",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "PostgreSQL extension for Stratix framework",
   "type": "module",
   "main": "./dist/index.js",

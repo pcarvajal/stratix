@@ -8,6 +8,8 @@ description: Stratix CLI for project scaffolding and code generation
 
 The Stratix CLI (`@stratix/cli`) is a powerful command-line tool for creating projects, generating code, and managing extensions.
 
+**Tip**: For an even faster workflow, use [Stratix Copilot](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag) to generate code directly in VS Code with AI assistance.
+
 ## Installation
 
 ```bash

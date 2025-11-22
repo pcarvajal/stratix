@@ -20,7 +20,7 @@ sidebar_position: 1
 - **Smart Generation** - Entities, commands, queries, value objects
 - **One-Click Files** - Generate and save directly from chat
 
-**[Get Started with Stratix Copilot →](./stratix-copilot/overview)**
+**[Install from VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag)** | **[Get Started →](./stratix-copilot/overview)**
 
 ## Get Started
 

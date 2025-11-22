@@ -8,6 +8,8 @@ sidebar_position: 1
 
 Stratix Copilot is a VS Code extension that enhances GitHub Copilot with deep knowledge of the Stratix framework, enabling you to generate DDD/CQRS code that follows best practices automatically.
 
+**[Install from VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag)**
+
 ## What is Stratix Copilot?
 
 Stratix Copilot is an intelligent VS Code extension that integrates with GitHub Copilot Chat to provide:
