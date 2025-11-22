@@ -2,7 +2,7 @@
     "name": "stratix-copilot-rag",
     "displayName": "Stratix Copilot",
     "description": "AI-powered coding assistant for Stratix framework with intelligent code generation",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "stratix",
     "icon": "icon.png",
     "engines": {
