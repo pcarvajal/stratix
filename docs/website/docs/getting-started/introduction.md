@@ -39,6 +39,7 @@ Stratix combines proven enterprise patterns with cutting-edge AI capabilities to
 
 ### Developer Experience
 - **Powerful CLI** - Scaffold projects and generate code in seconds
+- **AI-Powered Copilot** - [VS Code extension](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag) with framework knowledge
 - **13 Official Plugins** - Database, messaging, HTTP, AI, and utility plugins
 - **Comprehensive Testing** - Built-in testing utilities and mocks
 - **Complete Documentation** - Guides, tutorials, and API reference

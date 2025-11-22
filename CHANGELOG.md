@@ -5,9 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.4.1] - 2025-11-22
 
-## [0.4.0] - 2025-01-21
+### Added
+
+#### VS Code Extension
+- **Stratix Copilot**: Published to VS Code Marketplace
+  - Extension ID: `stratix.stratix-copilot-rag`
+  - Marketplace URL: https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag
+  - AI-powered coding assistant with GitHub Copilot integration
+  - RAG-enhanced responses with framework knowledge
+  - Slash commands for quick code generation
+  - Knowledge base with 40+ indexed documents
+
+### Changed
+
+#### Documentation
+- **Marketplace Links**: Added VS Code Marketplace links throughout documentation
+  - Updated `README.md` with npm package links and VS Code extension link
+  - Added marketplace links to Docusaurus documentation:
+    - `docs/website/docs/intro.md`
+    - `docs/website/docs/stratix-copilot/overview.md`
+    - `docs/website/docs/stratix-copilot/installation.md`
+    - `docs/website/docs/getting-started/introduction.md`
+    - `docs/website/docs/getting-started/quick-start.md`
+    - `docs/website/docs/cli/cli-overview.md`
+
+#### CI/CD
+- **Knowledge Base Workflow**: Fixed `tsx` dependency installation
+  - Added step to install copilot-rag dependencies before building knowledge base
+  - Resolves `tsx: not found` error in GitHub Actions
+
+#### VS Code Extension
+- **Package Metadata**: Updated extension configuration
+  - Added icon (Stratix logo, 128x128px)
+  - Updated repository URLs to `stratix-dev` organization
+  - Version bumped to 0.1.2
+
+## [0.4.0] - 2025-11-21
 
 ### Changed
 
@@ -79,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CHANGELOG.md**: Updated version comparison links to use new repository URL
 - **GitHub Issue Templates**: Updated discussion and documentation URLs
 
-## [0.3.0] - 2025-01-21
+## [0.3.0] - 2025-11-21
 
 ### Breaking Changes
 - Consolidated package structure: merged `@stratix/primitives` and `@stratix/abstractions` into `@stratix/core`
@@ -165,7 +200,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated MongoDB README with new features
 - Improved getting started guides
 
-## [0.1.3] - 2025-01-18
+## [0.1.3] - 2025-11-18
 
 ### Added
 - **@stratix/cli**: Complete code generation CLI tool with 8 generators
@@ -195,18 +230,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - `create-stratix` package (replaced by `@stratix/cli`)
 
-## [0.1.2] - 2025-01-15
+## [0.1.2] - 2025-11-15
 
 ### Added
 - Versioning policy documentation
 - Pre-release status badges and notices
 
-## [0.1.1] - 2025-01-11
+## [0.1.1] - 2025-11-11
 
 ### Fixed
 - Documentation updates and synchronization
 
-## [0.1.0] - 2025-01-11
+## [0.1.0] - 2025-11-11
 
 ### Added
 - Initial public release

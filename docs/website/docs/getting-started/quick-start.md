@@ -52,6 +52,8 @@ This creates:
 - `src/domain/entities/Product.ts` - The Product entity
 - Type-safe entity with validation
 
+**Tip**: Use [Stratix Copilot](https://marketplace.visualstudio.com/items?itemName=stratix.stratix-copilot-rag) to generate code directly in VS Code with `@stratix /entity Product with name, price, and stock`
+
 ## Step 4: Generate Repository
 
 ```bash
